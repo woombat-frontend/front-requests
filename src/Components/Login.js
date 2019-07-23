@@ -7,7 +7,7 @@ import { Input, Button, Icon  } from 'antd';
 import Ajax from '../assets/Ajax.svg';
 import Background from '../assets/bg.svg';
 
-const Login = () =>{
+const Login = () => {
     return(
         <React.Fragment>
             <div className="container-master">
