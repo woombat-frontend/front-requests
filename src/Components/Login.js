@@ -1,6 +1,5 @@
 import React from 'react';
 import '../Styles/login.css';
-import Computador from '../assets/Computador.svg';
 import JustReact from '../assets/LogoJustReact.svg';
 import WoombatLogo from'../assets/LogoWoombat.svg';
 import { Input, Button, Icon  } from 'antd';

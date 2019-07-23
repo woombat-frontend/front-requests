@@ -16,12 +16,12 @@ const db = firebase.firestore()
 
 export default db;
 
-import React, { useState, useEffect } from 'react'
-import logo from './logo.svg';
-import './App.css';
-import db from './FirebaseConfig/firestore'
-import firebase from 'firebase'
-import { Button, Input } from 'antd'
+// import React, { useState, useEffect } from 'react'
+// import logo from './logo.svg';
+// import './App.css';
+// import db from './FirebaseConfig/firestore'
+// import firebase from 'firebase'
+// import { Button, Input } from 'antd'
 
 
 // const App = () => {
