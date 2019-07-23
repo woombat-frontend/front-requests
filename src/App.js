@@ -1,26 +1,34 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react'
 import logo from './logo.svg';
 import './App.css';
+import db from './FirebaseConfig/firestore'
+import firebase from 'firebase'
+import { Button, Input } from 'antd'
 
-function App() {
+
+const App = () => {
+
+  const [local, setLocal] = useState({})
+  
+  useEffect(() => {
+    // db.collection('users').doc('nh1TudwtQzWkYG88NzM8r37o5vy2').get().then(res => setLocal(res.data()))
+    db.doc('users/nh1TudwtQzWkYG88NzM8r37o5vy2/projects/single_project').get().then(res => setLocal(res.data()))
+  })
+
+  const addItem = () => {
+    db.doc('users/nh1TudwtQzWkYG88NzM8r37o5vy2/projects/single_project_2').set({
+      name: "ronald", 
+      age: 19
+    }).then(() => console.log("%c Success", "color: green; font-weight: bolder;"))
+      .catch(err => console.log(err))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Button type="primary" onClick={addItem}>Add</Button>
+      <Button type="primary" onClick={()=> console.log(local)}>Check</Button>
     </div>
-  );
+  )
 }
 
 export default App;
