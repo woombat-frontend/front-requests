@@ -1,8 +1,8 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import Login from '../components/Login';
-import Landing from '../components/Landing';
+import Login from '../views/login/Login';
+import Landing from '../views/Landing/Landing';
 
 const Router = () => 
     <Switch>
