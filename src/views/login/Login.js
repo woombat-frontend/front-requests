@@ -1,10 +1,10 @@
 import React from 'react';
-import '../Styles/login.css';
-import JustReact from '../assets/LogoJustReact.svg';
-import WoombatLogo from'../assets/LogoWoombat.svg';
+import '../../Styles/login.css';
+import JustReact from '../../assets/LogoJustReact.svg';
+import WoombatLogo from'../../assets/LogoWoombat.svg';
 import { Input, Button, Icon  } from 'antd';
-import Ajax from '../assets/Ajax.svg';
-import Background from '../assets/bg.svg';
+import Ajax from '../../assets/Ajax.svg';
+import Background from '../../assets/bg.svg';
 
 const Login = () => {
     return(
