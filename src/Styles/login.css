@@ -8,14 +8,82 @@
     width: 100%;
     height: 100vh;
     display: flex;
-    background: rgb(0,1,49);
-    background: linear-gradient(90deg, rgba(0,1,49,1) 0%, rgb(27, 177, 182) 100%);
     overflow: hidden;
-    padding: 0 5rem ;
+    padding: 0 5rem;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
 }
-.container-one{
-    width: 60%;
+.container-login{
+    width: 50%;
 }
-.container-two{
-    width: 40%;
+.img-computador{
+    width: 27rem;
+    pointer-events: none;
+}
+.login-modal{
+    background-color: #0006;
+    border-radius: 2rem;
+    color: #fff;
+    font-family: 'Questrial', sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 6rem;
+    padding: 1rem 0;
+    transform: scale(0.95);
+}
+.text-copyright{
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+.container-copyright{
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.woombat-logo{
+    width: 5rem;
+    margin-left: 0.375rem;
+    pointer-events: none;
+}
+.frontend-logo{
+    width: 8rem;
+    pointer-events: none;
+}
+.frontend-logo-container{
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+}
+.title-input{
+    margin: 0;
+    text-transform: uppercase;
+}
+.input-login{
+    width: 16rem !important;
+    margin-top: 0.5rem !important;
+}
+.input-container{
+    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+.button-login{
+    width: 16rem;
+}
+.ajax-logo{
+    width: 11rem;
+}
+.ajax-container{
+    padding: 1rem 0;
+}
+.background{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0%;
+    z-index: -1;
+    left: 0%;
+    transform: translateY(-15%);
 }
