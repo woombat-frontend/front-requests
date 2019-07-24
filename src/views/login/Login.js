@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/components/Login.js
 import React, {useState, useEffect} from 'react';
 import '../Styles/login.css';
 import JustReact from '../assets/LogoJustReact.svg';
@@ -46,15 +45,6 @@ const Login = props => {
 
         })
     }
-=======
-import React from 'react';
-import '../../Styles/login.css';
-import JustReact from '../../assets/LogoJustReact.svg';
-import WoombatLogo from'../../assets/LogoWoombat.svg';
-import { Input, Button, Icon  } from 'antd';
-import Ajax from '../../assets/Ajax.svg';
-import Background from '../../assets/bg.svg';
->>>>>>> 7d1ebacc2f9617a38b5a36b55db0a93cdc7d5cb6:src/views/login/Login.js
 
     return(
         <React.Fragment>
