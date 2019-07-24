@@ -1,62 +1,53 @@
-<<<<<<< HEAD:src/components/Login.js
-import React, {useState, useEffect} from 'react';
-import '../Styles/login.css';
-import JustReact from '../assets/LogoJustReact.svg';
-import WoombatLogo from'../assets/LogoWoombat.svg';
-import { Input, Button, Icon  } from 'antd';
-import Ajax from '../assets/Ajax.svg';
-import Background from '../assets/bg.svg';
-import {withRouter} from 'react-router-dom'
-import fire from '../FirebaseConfig/auth'
+import React, { useState, useEffect, useContext } from 'react';
+import '../../Styles/login.css';
+import JustReact from '../../assets/LogoJustReact.svg';
+import WoombatLogo from '../../assets/LogoWoombat.svg';
+import { Input, Button, Icon } from 'antd';
+import Ajax from '../../assets/Ajax.svg';
+import Background from '../../assets/bg.svg';
+import { withRouter } from 'react-router-dom'
+import fire from '../../FirebaseConfig/auth'
+import Context from '../../GlobalState/context';
 
 const Login = props => {
 
+    const {state, actions} = useContext(Context)
     const [data, setData] = useState({ user: "", password: "" })
     const [user, setUser] = useState("")
     const [showLogin, setShowLogin] = useState(null)
 
     useEffect(() => {
-        authListener()
+        state.fire_init !== null ? authListener() : console.log("Loading...")
     })
 
     const login = () => {
-        fire.auth().signInWithEmailAndPassword(data.user, data.password)
+        state.fire_init.auth().signInWithEmailAndPassword(data.user, data.password)
             .then(() => {
                 setShowLogin(false)
-                props.history.push('landing')
+                props.history.push('p_enpoint')
             })
             .catch(() => alert('Hubo un error, intente de nuevo'))
     }
 
     const authListener = () => {
-        fire.auth().onAuthStateChanged(user => {
+        state.fire_init.auth().onAuthStateChanged(user => {
 
 
             if (user) {
                 setUser(user)
-                props.history.push('landing')
-                // console.log("%c User: ", "color: green; font-weight: bolder", user.Pb.email);
-                // console.log("%c UID: ", "color: green; font-weight: bolder", user.uid);
+                props.history.push('p_enpoint')
+
             } else {
                 setShowLogin(true)
                 setUser(null)
-                
+
                 // console.log("%c Signed Out ", "color: red; font-weight: bolder");
             }
 
         })
     }
-=======
-import React from 'react';
-import '../../Styles/login.css';
-import JustReact from '../../assets/LogoJustReact.svg';
-import WoombatLogo from'../../assets/LogoWoombat.svg';
-import { Input, Button, Icon  } from 'antd';
-import Ajax from '../../assets/Ajax.svg';
-import Background from '../../assets/bg.svg';
->>>>>>> 7d1ebacc2f9617a38b5a36b55db0a93cdc7d5cb6:src/views/login/Login.js
 
-    return(
+    return (
         <React.Fragment>
             {
                 showLogin ?
@@ -102,8 +93,8 @@ import Background from '../../assets/bg.svg';
                             </div>
                         </div>
                     </div>
-                : 
-                    <div></div>
+                    :
+                    <Button onClick={() => state.fire_init.auth().signOut()} type="primary"> Cerrar Sesion </Button>
             }
         </React.Fragment>
     )

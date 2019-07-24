@@ -10,7 +10,7 @@ const firebaseConfig = {
     appId: "1:540371024328:web:79337ccb3741aa35"
 };
 
-firebase.initializeApp(firebaseConfig)
+// firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
@@ -40,4 +40,3 @@ export default db;
 //         }).then(() => console.log("%c Success", "color: green; font-weight: bolder;"))
 //             .catch(err => console.log(err))
 //     }
-// >>>>>>> mcrunny
