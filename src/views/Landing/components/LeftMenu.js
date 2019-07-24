@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import UserDefault from '../../../assets/User-icon.svg';
 import { Icon } from 'antd';
 import {Link} from "react-router-dom";
+import Context from '../../../GlobalState/context'
 
 const LeftMenu = () => {
+
+    const {state, actions} = useContext(Context)
 
     const titulos = [
         {Nombre: "Proyectos", url: "proyectos", icon: "folder-open"},
@@ -11,6 +14,11 @@ const LeftMenu = () => {
         {Nombre: "Solicitudes", url: "solicitudes", icon: "plus-circle"},
         {Nombre: "Entregas", url: "entregas", icon: "file-done"}
     ]
+
+    const changeCurrentMenuOption = option => {
+        console.log(option)
+        actions({type: "setState", payload: {...state, current_menu_option: option }})
+    }
 
     return(
         <div className="container-landing-left-menu">
@@ -24,16 +32,14 @@ const LeftMenu = () => {
                 </div>
                 <div className="container-texts-signout">
                     <div className="container-master-text-menu-left">
-                        {titulos.map(titulo =>{
+                        {titulos.map((titulo, i)=>{
                             return(
-                                <Link to={titulo.url}>
-                                    <div className="container-text-menu-left">
-                                        <p className="text-menu-left"><Icon type={titulo.icon} /> {titulo.Nombre}</p>
-                                        <div>
-                                            <Icon type="right" className="icon-title-menu-left" />
-                                        </div>
+                                <div onClick={() => changeCurrentMenuOption(titulo.Nombre)} key={i} className="container-text-menu-left">
+                                    <p className="text-menu-left"><Icon type={titulo.icon} /> {titulo.Nombre}</p>
+                                    <div>
+                                        <Icon type="right" className="icon-title-menu-left" />
                                     </div>
-                                </Link>
+                                </div>
                             )
                         })}
                     </div>
