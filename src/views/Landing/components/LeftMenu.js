@@ -7,6 +7,7 @@ import Context from '../../../GlobalState/context'
 const LeftMenu = () => {
 
     const {state, actions} = useContext(Context)
+    const user = state.fire_init.auth().currentUser
 
     const titulos = [
         {Nombre: "Proyectos", url: "proyectos", icon: "folder-open"},
@@ -25,7 +26,7 @@ const LeftMenu = () => {
             <img src={UserDefault} className="user-default-left-menu"></img>
             <div className="text-container-left-menu">
                 <p className="text-left-menu">Usuario</p>
-                <p className="text-left-menu">usuario@gmail.com</p>
+                <p className="text-left-menu">{user.email}</p>
                 <div className="container-span-left-menu">
                     <span className="span-left-menu"><Icon type="plus" className="icon-span-plus" /> Crear proyecto</span>
                     <span className="mark-left-menu"></span>
