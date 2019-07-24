@@ -5,7 +5,7 @@ import { Icon } from 'antd';
 const Historial = () =>{
     return(
         <div className="container-body-empty">
-            <h2>Historial</h2>
+            <h2>Historial 2</h2>
         </div>
     )
 }
