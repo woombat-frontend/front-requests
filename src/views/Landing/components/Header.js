@@ -13,7 +13,7 @@ const Header = () =>{
                 </div>
                 <span className="bar-separator-landing"></span>
                 <div>
-                    <h4 className="text-header-landing-two">Cerrar Sesión</h4>
+                    <h4 className="text-header-landing-two"><Icon type="logout" className="icon-header-sign-out" /> Cerrar Sesión</h4>
                 </div>
             </div>
         </div>
