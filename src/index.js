@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
+import 'filepond/dist/filepond.min.css';
 import firebaseConfig from './FirebaseConfig/auth';
 import firebase from 'firebase'
 
