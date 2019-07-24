@@ -3,7 +3,6 @@ import '../../Styles/Landing.css';
 import Header from './components/Header';
 import LeftMenu from './components/LeftMenu';
 
-
 const Landing = () => {
 
     return (
