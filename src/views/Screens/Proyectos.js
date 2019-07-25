@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Input, DatePicker, Upload, message } from 'antd'
+import { Icon, Input, DatePicker, Upload, message, Button } from 'antd'
 
 const Proyectos = () => {
 
@@ -30,35 +30,37 @@ const Proyectos = () => {
     return (
         <React.Fragment>
             <div className="container-master-proyectos">
-                <div className="container-proyectos">
-                    <div className="container-left">
-                        <div className="buttom-proyectos">
-                            <p className="text-buttom-proyectos"><Icon type="profile" /> Descripcion General</p>
+
+
+                <div className="container-left">
+                    <div className="buttom-proyectos">
+                        <p className="text-buttom-proyectos"><Icon type="profile" /> Descripcion General</p>
+                    </div>
+                    <div className="container-master-descripcion-up">
+                        <div className="container-title-descripcion">
+                            <p className="title-proyect-input">Titulo del Proyecto</p>
+                            <Input />
                         </div>
-                        <div className="container-master-descripcion-up">
-                            <div className="container-title-descripcion">
-                                <p className="title-proyect-input">Titulo del Proyecto</p>
-                                <Input />
-                            </div>
-                            <div className="container-date-input">
-                                <p className="title-proyect-input">Estimado del Demo</p>
-                                <DatePicker onChange={onChange} placeholder="Seleccionar Fecha" className="input-proyectos-style-datepicker" />
-                            </div>
-                        </div>
-                        <div className="container-master-descripcion">
-                            <p className="title-proyect-input">Descripcion del Proyecto</p>
-                            <TextArea rows={4} />
+                        <div className="container-date-input">
+                            <p className="title-proyect-input">Estimado del Demo</p>
+                            <DatePicker onChange={onChange} placeholder="Seleccionar Fecha" className="input-proyectos-style-datepicker" />
                         </div>
                     </div>
-                    <div className="container-right">
-                        <div className="buttom-proyectos">
-                            <p className="text-buttom-proyectos"><Icon type="tool" /> Preferencias Tecnicas</p>
-                        </div>
-                        <div>
-                            <p className="title-proyect-input">Seleccione sus preferencias tecnicas a tener en cuenta.</p>
-                        </div>
+                    <div className="container-master-descripcion">
+                        <p className="title-proyect-input">Descripcion del Proyecto</p>
+                        <TextArea rows={4} />
                     </div>
                 </div>
+                <div className="container-right">
+                    <div className="buttom-proyectos">
+                        <p className="text-buttom-proyectos"><Icon type="tool" /> Preferencias Tecnicas</p>
+                    </div>
+                    <div>
+                        <p className="title-proyect-input">Seleccione sus preferencias tecnicas a tener en cuenta.</p>
+                    </div>
+                </div>
+
+
                 <div className="container-upload-files">
                     <div className="container-down">
                         <Dragger {...props}>
@@ -70,9 +72,7 @@ const Proyectos = () => {
                     </div>
                 </div>
                 <div className="container-final-process">
-                    <div>
-                    
-                    </div>
+                    <Button type="primary">Finalizar</Button>
                 </div>
             </div>
         </React.Fragment>
