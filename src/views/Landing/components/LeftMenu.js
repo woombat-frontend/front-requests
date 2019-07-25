@@ -37,7 +37,7 @@ const LeftMenu = props => {
                 <div className="container-texts-signout">
                     <div className="container-master-text-menu-left">
                         {titulos.map((titulo, i)=>{
-                            return(
+                            return( 
                                 titulo.Nombre === state.current_menu_option ?
                                     <div className="text-container-left-menu-singled">
                                         <div className="container-span-left-menu-singled">
