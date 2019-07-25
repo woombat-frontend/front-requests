@@ -187,3 +187,79 @@
 .buttom-create-proyect:hover{
     background-color: #01031a;
 }
+.container-left{
+    width: 50%;
+}
+.container-right{
+    width: 50%;
+}
+.container-down{
+    background-color: #F0F0F0;
+}
+.container-master-proyectos{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2rem 5rem;
+}
+.text-buttom-proyectos{
+    margin: 0;
+    color: #fff;
+    background-color: #00b9b4;
+    width: fit-content;
+    text-transform: uppercase;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.6rem;
+    font-family: 'Questrial', sans-serif;
+    font-size: 1rem;
+}
+.buttom-proyectos{
+    padding-bottom: 1rem;
+}
+.title-proyect-input{
+    margin: 0;
+    text-transform: uppercase;
+    color: #020633;
+    padding-bottom: 0.5rem;
+}
+.container-master-descripcion-up{
+    width: 100%;
+    display: flex;
+}
+.container-title-descripcion{
+    width: 50%;
+}
+.container-date-input{
+    width: 50%;
+}
+.container-title-descripcion:first-child{
+    margin-right: 2rem;
+}
+/* .ant-input{
+    border-radius: 0.6rem !important;
+    height: 1.5rem !important;
+    border: 1px solid #062c59 !important;
+    color: #020633;
+} */
+.container-master-descripcion{
+    padding-top: 1rem;
+}
+.container-proyectos{
+    display: flex;
+    width: 100%;
+    height: 50%;
+}
+.container-upload-files{
+    width: 100%;
+    height: 40%;
+}
+.container-final-process{
+    width: 100%;
+    height: 10%;
+}
+.text-upload-file{
+    margin: 0;
+}
+.container-down{
+    margin: 1rem 0;
+}
