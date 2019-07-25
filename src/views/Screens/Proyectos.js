@@ -1,18 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Icon, Input, DatePicker, Upload, message, Checkbox } from 'antd'
 import Amazon from '../../assets/brands/Amazon.svg';
 import Azure from '../../assets/brands/Azure.svg';
 import Cloudera from '../../assets/brands/Cloudera.svg';
 import Lambda from '../../assets/brands/Lambda.svg';
+import { FilePond } from 'react-filepond';
+import firebase from 'firebase'
+import Context from '../../GlobalState/context';
 
 const Proyectos = () => {
 
-    function onChange(date, dateString) {
-        console.log(date, dateString);
-      }
     const { TextArea } = Input;
-
     const { Dragger } = Upload;
+    const {state, actions} = useContext(Context)
+    const db = firebase.firestore()
+    const storage = firebase.storage()
 
     const props = {
         name: 'file',
@@ -31,13 +33,19 @@ const Proyectos = () => {
       let rute_svg = "../../assets/brands/";
 
       const technologies = [
-      {name: "Amazon", svg: Amazon},
-      {name: "Azure", svg: Azure},
-      {name: "Cloudera", svg: Cloudera},
-      {name: "Lambda", svg: Lambda}
+        {name: "Amazon", svg: Amazon},
+        {name: "Azure", svg: Azure},
+        {name: "Cloudera", svg: Cloudera},
+        {name: "Lambda", svg: Lambda}
       ]
 
-      const [tecnologia, setTecnologia] = useState("No selecciono");
+      const [tecnologias, setTecnologias] = useState([])
+      const [mandatoryData, setMandatoryData] = useState({
+          name: "",
+          description: "",
+          date: ""
+      })
+      const [optionalTech, setOptionalTech] = useState("")
       const [otherTech, setOtherTech] = useState(true)
       const [buttonsState, setButtonsState] = useState({
           "Amazon": false,
@@ -45,20 +53,65 @@ const Proyectos = () => {
           "Cloudera": false,
           "Lambda": false,
       })
+      const [files, setFiles] = useState([])
 
       const setName = e =>{
         console.log(e)
-        otherTech ? 
-            setButtonsState({... buttonsState, [e]: !buttonsState[e]})
-        : console.log()
+        otherTech  
+            ? setButtonsState({... buttonsState, [e]: !buttonsState[e]})
+            : console.log()
 
-        setTecnologia(e)
+        !buttonsState[e] 
+            ? setTecnologias([... tecnologias, e])
+            : tecnologias.splice(tecnologias.indexOf(e), 1)
       }
 
       const resetButtonsState = () => {
           setOtherTech(!otherTech)
           setButtonsState(false)
       }
+
+    const changeDate = (date, dateString) => {
+        setMandatoryData({...mandatoryData, date: dateString})
+    }
+
+    const validateData = () => {
+        if (!Object.values(mandatoryData).includes("")) {
+            return true
+        }else {
+            alert("Hay un error")
+            return false
+        }
+        
+    }
+
+    const sendData = () => {
+
+        if ( validateData() ) {
+            
+            db.doc(`users/${state.personal_info.uid}/projects/${mandatoryData.name}`)
+            .set({
+                nombre: mandatoryData.name,
+                description: mandatoryData.description,
+                fecha_demo: mandatoryData.date,
+                tegnologias: tecnologias,
+                preferencias: optionalTech
+            })
+            .then(() => {
+                files.map(file =>
+                    storage.ref(`users/${state.personal_info.uid}/${mandatoryData.name}/` + file.name).put(file)
+                    .then(() => console.log("%c Archivo Cargado"))
+                    .catch(err => console.log(err))
+                )
+            })
+            .then(() => {
+                setFiles([])
+            })
+            .then(() => alert("Proyecto Creado"))
+
+
+        }
+    }
 
 
     return (
@@ -73,16 +126,16 @@ const Proyectos = () => {
                     <div className="container-master-descripcion-up">
                         <div className="container-title-descripcion">
                             <p className="title-proyect-input"><Icon type="font-size" /> Titulo del Proyecto</p>
-                            <Input />
+                            <Input onChange={e => setMandatoryData({...mandatoryData, name: e.target.value})}/>
                         </div>
                         <div className="container-date-input">
                             <p className="title-proyect-input"><Icon type="clock-circle" /> Estimado del Demo</p>
-                            <DatePicker onChange={onChange} placeholder="Seleccionar Fecha" className="input-proyectos-style-datepicker" />
+                            <DatePicker onChange={changeDate} placeholder="Seleccionar Fecha" className="input-proyectos-style-datepicker" />
                         </div>
                     </div>
                     <div className="container-master-descripcion">
                         <p className="title-proyect-input"><Icon type="file-text" /> Descripcion del Proyecto</p>
-                        <TextArea rows={4} className="text-area-resize" />
+                        <TextArea onChange={e => setMandatoryData({...mandatoryData, description: e.target.value})} rows={4} className="text-area-resize" />
                     </div>
                 </div>
                 <div className="container-right">
@@ -113,23 +166,26 @@ const Proyectos = () => {
                     <div className="container-master-descripcion">
                         <p className="title-proyect-input"><Icon type="exclamation-circle" /> Otras preferencias tecnicas</p>
                         <TextArea 
+                            onChange={e => setOptionalTech(e.target.value)}
                             disabled={otherTech}
                             rows={3} className="text-area-resize" 
                         />
                     </div>
                 </div>
                 <div className="container-upload-files">
-                    <div className="container-down">
-                        <Dragger {...props}>
-                            <p className="ant-upload-drag-icon">
-                            <Icon type="inbox" />
-                            </p>
-                            <p className="ant-upload-text">Haz click o arrastra los archivos para cargarlos (Max. 15MB)</p>
-                        </Dragger>
-                    </div>
+                    
+                    <FilePond
+                        labelIdle='Arrastra los archivos que desees o dale click acá para buscar (Max. 3)'
+                        allowMultiple={true}
+                        files={files}
+                        maxFiles={3}
+                        onupdatefiles={e => {
+                            setFiles(e.map(single_file => single_file.file))
+                        }}
+                    />
                 </div>
                 <div className="container-final-process">
-                    <div onClick={() => console.log(otherTech)} className="buttom-final">
+                    <div onClick={sendData} className="buttom-final">
                         <p className="text-buttom-final"><Icon type="select" className="icon-buttom-final" /> Finalizar</p>
                     </div>
                 </div>

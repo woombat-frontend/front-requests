@@ -44,7 +44,7 @@ const Login = props => {
                         actions({
                             type: 'setState',
                             payload: {
-                                ...state,
+                                ...state, 
                                 personal_info: {
                                     name: res.data().name,
                                     gender: res.data().gender,

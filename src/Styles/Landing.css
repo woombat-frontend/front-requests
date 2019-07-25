@@ -281,24 +281,15 @@
     grid-row: 1/7;
 }
 
-.container-upload-files{
-    width: 100%;
-    height: 100%;
-    grid-column: 1/13;
-    grid-row: 7/11;
-}
 
 .container-final-process{
     width: 100%;
     grid-row: 12/13;
-    grid-column: 11/12;
+    grid-column: 12/13;
 }
 
 .text-upload-file{
     margin: 0;
-}
-.container-down{
-    margin: 2rem 0;
 }
 .text-buttom-final{
     color: #fff;
@@ -348,3 +339,48 @@
 .text-technologies{
     margin: 0;
 }
+
+
+
+.container-upload-files{
+    width: 100%;
+    height: 100%;
+    grid-column: 1/13;
+    grid-row: 8/11  ;
+}
+.container-upload-files:hover {
+    cursor: pointer;
+}
+
+.upload-icon {
+    width: 100%;
+    justify-self: center;
+    font-size: 6em;
+}
+
+/*  FilePond Overwrite  */
+.filepond--drop-label  {
+    color: rgba(0, 0, 0, .8) !important;
+    width: 100% !important;
+    border: .5px dashed gray !important;
+    border-radius: 5px !important;
+}   
+.filepond--list {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    
+}
+.filepond--item {
+    width: 32.5% !important;
+    
+}
+.filepond--file-wrapper {
+    display: grid !important;
+    
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.filepond--drop-label label:hover{
+    cursor: pointer;
+}
+
