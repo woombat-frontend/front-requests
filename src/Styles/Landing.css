@@ -57,9 +57,7 @@
     align-items: center;
     padding: 3rem 0;
     flex-direction: column;
-}
-.container-landing-left-menu-singled {
-
+    z-index: 5;
 }
 .container-main-landing{
     width: 100%;
@@ -127,10 +125,10 @@
 }
 .mark-left-menu{
     background-color: #778ba2;
-    width: 100%;
+    width: 92%;
     height: 280px;
     position: absolute;
-    right: -34%;
+    right: -32%;
     margin-top: -7em;
     z-index: -1;
     -webkit-clip-path: polygon(64% 15%, 64% 23%, 76% 23%);

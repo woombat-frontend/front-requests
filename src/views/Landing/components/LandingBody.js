@@ -10,6 +10,8 @@ import Historial from '../../Screens/Historial'
 import Solicitudes from '../../Screens/Solicitudes'
 import Entregas from '../../Screens/Entregas'
 
+// Test SweetAlert
+import Sweet from '../../SweetAlert';
 
 const LandingBody = () => {
 
@@ -17,7 +19,7 @@ const LandingBody = () => {
 
     return (
         state.current_menu_option === "Crear Proyecto" ?
-            <Empty />
+            <Sweet></Sweet>
         : state.current_menu_option === "Proyectos" ? 
             <Proyectos />
         : state.current_menu_option === "Historial" ? 
