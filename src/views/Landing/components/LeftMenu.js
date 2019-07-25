@@ -10,7 +10,6 @@ import { withRouter } from 'react-router-dom'
 const LeftMenu = props => {
 
     const {state, actions} = useContext(Context)
-    const user = state.fire_init.auth().currentUser
     const [name, setName] = useState("User")
     const db = firebase.firestore()
 
@@ -29,10 +28,10 @@ const LeftMenu = props => {
 
     return(
         <div className="container-landing-left-menu">
-            <img src={props.gender === "f" ? UserDefaultGirl : props.gender === "m" ? UserDefaultBoy : ""} className="user-default-left-menu"></img>
+            <img src={state.personal_info.gender === "f" ? UserDefaultGirl : state.personal_info.gender === "m" ? UserDefaultBoy : ""} className="user-default-left-menu"></img>
             <div className="text-container-left-menu">
-                <p className="text-left-menu">{props.name}</p>
-                <p className="text-left-menu">{user.email}</p>
+                <p className="text-left-menu">{state.personal_info.name}</p>
+                <p className="text-left-menu">{state.personal_info.email}</p>
 
                 <div className="container-texts-signout">
                     <div className="container-master-text-menu-left">

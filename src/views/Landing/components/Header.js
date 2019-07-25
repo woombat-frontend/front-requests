@@ -14,7 +14,7 @@ const Header = props =>{
                     <a href="#" className="icon-landing"><Icon type="bell" /></a>
                 </div>
                 <div>
-                    <h4 className="text-header-landing">{props.gender === "f" ? "Bienvenida" : "Bienvenido"}, {props.name}</h4>
+                    <h4 className="text-header-landing">{state.personal_info.gender === "f" ? "Bienvenida" : "Bienvenido"}, {state.personal_info.name}</h4>
                 </div>
                 <span className="bar-separator-landing"></span>
                 <div>

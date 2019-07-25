@@ -7,7 +7,7 @@ import { Input, Button, Icon, Form } from 'antd';
 import Ajax from '../../assets/Ajax.svg';
 import Background from '../../assets/bg.svg';
 import { withRouter } from 'react-router-dom'
-import fire from '../../FirebaseConfig/auth'
+import firebase from 'firebase'
 import Context from '../../GlobalState/context';
 
 const Login = props => {
@@ -16,10 +16,11 @@ const Login = props => {
     const [data, setData] = useState({ user: "", password: "" })
     const [user, setUser] = useState("")
     const [showLogin, setShowLogin] = useState(null)
+    const db = firebase.firestore()
 
     useEffect(() => {
-        state.fire_init !== null ? authListener() : console.log("Loading...")
-    })
+        authListener()
+    }, [])
 
     const login = () => {
         state.fire_init.auth().signInWithEmailAndPassword(data.user, data.password)
@@ -28,15 +29,33 @@ const Login = props => {
                 props.history.push('landing')
             })
             .catch(() => alert('Hubo un error, intente de nuevo'))
+
+        
     }
 
     const authListener = () => {
         state.fire_init.auth().onAuthStateChanged(user => {
 
-
+            
             if (user) {
                 setUser(user)
-                props.history.push('landing')
+                db.doc(`users/${user.uid}/`).get()
+                   .then(res => {
+                        actions({
+                            type: 'setState',
+                            payload: {
+                                ...state,
+                                personal_info: {
+                                    name: res.data().name,
+                                    gender: res.data().gender,
+                                    email: state.fire_init.auth().currentUser.email,
+                                    uid: state.fire_init.auth().currentUser.uid
+                                }
+                            }
+                        })
+                    })
+                
+                    .then(() => props.history.push('landing'))
 
             } else {
                 setShowLogin(true)
