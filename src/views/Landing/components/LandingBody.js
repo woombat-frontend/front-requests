@@ -16,7 +16,7 @@ const LandingBody = () => {
     const {state, actions} = useContext(Context)
 
     return (
-        state.current_menu_option === "CrearProyecto" ?
+        state.current_menu_option === "Crear Proyecto" ?
             <Empty />
         : state.current_menu_option === "Proyectos" ? 
             <Proyectos />

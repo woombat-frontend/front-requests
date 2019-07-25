@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Icon } from 'antd';
+import { withRouter } from 'react-router-dom'
+import Context from '../../../GlobalState/context';
 
-const Header = () =>{
+const Header = props =>{
+
+    const {state, actions} = useContext(Context)
+
     return(
         <div className="container-landing-master">
             <div className="container-header-landing">
@@ -9,11 +14,11 @@ const Header = () =>{
                     <a href="#" className="icon-landing"><Icon type="bell" /></a>
                 </div>
                 <div>
-                    <h4 className="text-header-landing">Bienvenido, Usuario</h4>
+                    <h4 className="text-header-landing">{props.gender === "f" ? "Bienvenida" : "Bienvenido"}, {props.name}</h4>
                 </div>
                 <span className="bar-separator-landing"></span>
                 <div>
-                    <h4 className="text-header-landing-two"><Icon type="logout" className="icon-header-sign-out" /> Cerrar Sesión</h4>
+                    <h4 onClick={() => state.fire_init.auth().signOut().then(() => props.history.push("/"))} className="text-header-landing-two"><Icon type="logout" className="icon-header-sign-out" /> Cerrar Sesión</h4>
                 </div>
             </div>
         </div>
@@ -21,4 +26,4 @@ const Header = () =>{
 
 }
 
-export default Header;
+export default withRouter(Header);

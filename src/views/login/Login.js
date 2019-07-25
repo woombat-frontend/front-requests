@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import '../../Styles/login.css';
 import JustReact from '../../assets/LogoJustReact.svg';
 import WoombatLogo from '../../assets/LogoWoombat.svg';
-import { Input, Button, Icon } from 'antd';
+import { Input, Button, Icon, Form } from 'antd';
 import Ajax from '../../assets/Ajax.svg';
 import Background from '../../assets/bg.svg';
 import { withRouter } from 'react-router-dom'
@@ -25,7 +25,7 @@ const Login = props => {
         state.fire_init.auth().signInWithEmailAndPassword(data.user, data.password)
             .then(() => {
                 setShowLogin(false)
-                props.history.push('p_enpoint')
+                props.history.push('landing')
             })
             .catch(() => alert('Hubo un error, intente de nuevo'))
     }
@@ -36,7 +36,7 @@ const Login = props => {
 
             if (user) {
                 setUser(user)
-                props.history.push('p_enpoint')
+                props.history.push('landing')
 
             } else {
                 setShowLogin(true)
@@ -52,7 +52,7 @@ const Login = props => {
         <React.Fragment>
             {
                 showLogin ?
-                    <div className="container-master">
+                    <div onKeyDown={e => e.keyCode === 13 ? login() : console.log()} className="container-master">
                         <div className="background"><img src={Background}></img></div>
                         <div className="container-login">
                             <div className="login-modal">
@@ -79,14 +79,16 @@ const Login = props => {
                                         onChange={e => setData({ ...data, password: e.target.value })}
                                     />
                                 </div>
-                                <div className="input-container">
-                                    <Button
-                                        type="primary"
-                                        className="button-login"
-                                        onClick={login}
-                                    >
-                                        <Icon type="login" /> Iniciar Sesion</Button>
-                                </div>
+                                    <div className="input-container">
+                                        <Button
+                                            type="primary submit"
+                                            // type="submit"
+                                            className="button-login"
+                                            onClick={login}
+                                        >
+                                            <Icon type="login" /> Iniciar Sesion</Button>
+                                    </div>
+                                
                                 <div className="container-copyright">
                                     <p className="text-copyright">Producto de</p>
                                     <a href="http://woombatcg.com/" target="_blank"><img src={WoombatLogo} className="woombat-logo"></img></a>
@@ -95,7 +97,7 @@ const Login = props => {
                         </div>
                     </div>
                     :
-                    <Button onClick={() => state.fire_init.auth().signOut()} type="primary"> Cerrar Sesion </Button>
+                    <div/>
             }
         </React.Fragment>
     )
