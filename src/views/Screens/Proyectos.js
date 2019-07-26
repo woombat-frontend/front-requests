@@ -88,15 +88,10 @@ const Proyectos = () => {
         if (!Object.values(mandatoryData).includes("")) {
             return true
         }else {
-            Swal.fire({
-                titleText: 'Error',
-                type: 'error',
-                text: 'La información obligatoria no puede quedar vacía',
-                customClass: {
-                    title: "title-error",
-                },
-            }
-            )
+            Toast.fire({
+                type: 'warning',
+                title: 'Existen campos obligatorios vacios, intente de nuevo'
+            })
             return false
         }
         
