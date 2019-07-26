@@ -19,9 +19,9 @@ const LandingBody = () => {
  
     return (
         state.current_menu_option === "Crear Proyecto" ?
-            <Sweet></Sweet>
-        : state.current_menu_option === "Proyectos" ? 
             <Proyectos />
+        : state.current_menu_option === "Proyectos" ? 
+            <Empty />
         : state.current_menu_option === "Historial" ? 
             <Historial />
         : state.current_menu_option === "Solicitudes" ? 
