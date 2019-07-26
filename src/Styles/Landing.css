@@ -65,6 +65,7 @@
     display: grid;
     grid-template-rows: repeat(12,1fr);
     overflow: hidden;
+    position: relative;
 }
 .user-default-left-menu{
     width: 4rem;
@@ -387,3 +388,16 @@
     cursor: pointer;
 }
 
+.pikachu-container {
+    animation: show-pika 1500ms;
+    transform: scale(.3);
+    position: absolute;
+    right: -10%;
+    top: 50%;
+    z-index: 1000000;
+    transition: ease-in-out 600ms;
+}
+
+@keyframes show-pika {
+    25% { top: -50% }
+}
