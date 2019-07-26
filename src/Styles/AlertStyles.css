@@ -1,5 +1,10 @@
 /* Sweet Alerts Styles */
 
+.test{
+    display: flex;
+    flex-direction: column;
+}
+
 /* General Settings */
 
 .swal2-container:not(.swal2-top):not(.swal2-top-start):not(.swal2-top-end):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-start):not(.swal2-center-end):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-start):not(.swal2-bottom-end):not(.swal2-bottom-left):not(.swal2-bottom-right):not(.swal2-grow-fullscreen)>.swal2-modal{
@@ -85,4 +90,16 @@
 .button-cancel:focus{
     outline: 0;
     box-shadow: 0 0 0 2px #711414, 0 0 0 4px rgb(82, 17, 17);
+}
+
+/* Login Alert Successfully */
+
+.swal2-popup{
+    background-color: #444;
+}
+.swal2-title{
+    color: #fff;
+}
+.swal2-popup.swal2-toast{
+    box-shadow: 0px 0px 12px 0px;
 }
