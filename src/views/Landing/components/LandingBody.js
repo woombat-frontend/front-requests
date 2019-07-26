@@ -16,7 +16,7 @@ import Sweet from '../../SweetAlert';
 const LandingBody = () => {
 
     const {state, actions} = useContext(Context)
-
+ 
     return (
         state.current_menu_option === "Crear Proyecto" ?
             <Sweet></Sweet>
