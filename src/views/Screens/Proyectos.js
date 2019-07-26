@@ -7,6 +7,8 @@ import Lambda from '../../assets/brands/Lambda.svg';
 import { FilePond } from 'react-filepond';
 import firebase from 'firebase'
 import Context from '../../GlobalState/context';
+import Swal from 'sweetalert2';
+import '../../Styles/AlertStyles.css'
 
 const Proyectos = () => {
 
@@ -53,23 +55,30 @@ const Proyectos = () => {
           "Cloudera": false,
           "Lambda": false,
       })
-      const [files, setFiles] = useState([])
+    const [files, setFiles] = useState([])
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
 
-      const setName = e =>{
-        console.log(e)
-        otherTech  
-            ? setButtonsState({... buttonsState, [e]: !buttonsState[e]})
-            : console.log()
+    const setName = e =>{
+    console.log(e)
+    otherTech  
+        ? setButtonsState({... buttonsState, [e]: !buttonsState[e]})
+        : console.log()
 
-        !buttonsState[e] 
-            ? setTecnologias([... tecnologias, e])
-            : tecnologias.splice(tecnologias.indexOf(e), 1)
-      }
+    !buttonsState[e] 
+        ? setTecnologias([... tecnologias, e])
+        : tecnologias.splice(tecnologias.indexOf(e), 1)
+    }
 
-      const resetButtonsState = () => {
-          setOtherTech(!otherTech)
-          setButtonsState(false)
-      }
+    const resetButtonsState = () => {
+        setOtherTech(!otherTech)
+        setOptionalTech("")
+        // setButtonsState(false)
+    }
 
     const changeDate = (date, dateString) => {
         setMandatoryData({...mandatoryData, date: dateString})
@@ -79,17 +88,22 @@ const Proyectos = () => {
         if (!Object.values(mandatoryData).includes("")) {
             return true
         }else {
-            alert("Hay un error")
+            Swal.fire({
+                titleText: 'Error',
+                type: 'error',
+                text: 'La información obligatoria no puede quedar vacía',
+                customClass: {
+                    title: "title-error",
+                },
+            }
+            )
             return false
         }
         
     }
 
-    const sendData = () => {
-
-        if ( validateData() ) {
-            
-            db.doc(`users/${state.personal_info.uid}/projects/${mandatoryData.name}`)
+    const createProject = () => {
+        db.doc(`users/${state.personal_info.uid}/projects/${mandatoryData.name}`)
             .set({
                 nombre: mandatoryData.name,
                 description: mandatoryData.description,
@@ -100,17 +114,50 @@ const Proyectos = () => {
             .then(() => {
                 files.map(file =>
                     storage.ref(`users/${state.personal_info.uid}/${mandatoryData.name}/` + file.name).put(file)
-                    .then(() => console.log("%c Archivo Cargado"))
-                    .catch(err => console.log(err))
+                        .then(() => console.log("%c Archivo Cargado"))
+                        .catch(err => console.log(err))
                 )
             })
             .then(() => {
                 setFiles([])
             })
-            .then(() => alert("Proyecto Creado"))
+            .then(() => {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Tu proyecto se ha enviado correctamente'
+                })
+            })
+    }
 
 
+    const sendData = () => {
+
+        if ( validateData() ) {
+
+            if (!tecnologias.length && !optionalTech) {
+                Swal.fire({
+                    titleText: '¿Estas Seguro?',
+                    type: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: "SI",
+                    cancelButtonText: "NO",
+                    text: 'Estas seguro de que quieres enviar la solicitud del proyecto sin seleccionar alguna preferencia tecnica?',
+                    customClass: {
+                        title: "title-question",
+                        content: "question-wizard",
+                        cancelButton: "button-cancel",
+                    },
+                }).then((result) => {
+                    result.value ?
+                        createProject()
+                        :
+                        console.log()
+                })
+            }else {
+                createProject()
+            }
         }
+
     }
 
 
@@ -125,16 +172,16 @@ const Proyectos = () => {
                     </div>
                     <div className="container-master-descripcion-up">
                         <div className="container-title-descripcion">
-                            <p className="title-proyect-input"><Icon type="font-size" /> Titulo del Proyecto</p>
+                            <p className="title-proyect-input"><Icon type="font-size" /> Título del Proyecto <span style={{ color: 'red', fontWeight: 'bolder' }}> *</span></p>
                             <Input onChange={e => setMandatoryData({...mandatoryData, name: e.target.value})}/>
                         </div>
                         <div className="container-date-input">
-                            <p className="title-proyect-input"><Icon type="clock-circle" /> Estimado del Demo</p>
+                            <p className="title-proyect-input"><Icon type="clock-circle" /> Estimado del Demo <span style={{ color: 'red', fontWeight: 'bolder' }}> *</span> </p>
                             <DatePicker onChange={changeDate} placeholder="Seleccionar Fecha" className="input-proyectos-style-datepicker" />
                         </div>
                     </div>
                     <div className="container-master-descripcion">
-                        <p className="title-proyect-input"><Icon type="file-text" /> Descripcion del Proyecto</p>
+                        <p className="title-proyect-input"><Icon type="file-text" /> Descripcion del Proyecto <span style={{ color: 'red', fontWeight: 'bolder' }}> *</span> </p>
                         <TextArea onChange={e => setMandatoryData({...mandatoryData, description: e.target.value})} rows={4} className="text-area-resize" />
                     </div>
                 </div>
@@ -169,6 +216,7 @@ const Proyectos = () => {
                             onChange={e => setOptionalTech(e.target.value)}
                             disabled={otherTech}
                             rows={3} className="text-area-resize" 
+                            value={optionalTech}
                         />
                     </div>
                 </div>

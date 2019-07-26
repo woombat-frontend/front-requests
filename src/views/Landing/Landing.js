@@ -6,6 +6,9 @@ import LandingBody from './components/LandingBody';
 import firebase from 'firebase'
 import config from '../../FirebaseConfig/auth'
 import Context from '../../GlobalState/context'
+import Swal from 'sweetalert2';
+import '../../Styles/AlertStyles.css'
+
 
 const Landing = () => {
 
@@ -13,6 +16,12 @@ const Landing = () => {
     const user = state.fire_init.auth().currentUser
     const [show, setShow] = useState(false)
     const db = firebase.firestore()
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
 
 
     useEffect(() => {
@@ -32,6 +41,10 @@ const Landing = () => {
                                     uid: state.fire_init.auth().currentUser.uid
                                 }
                             }
+                        })
+                        Toast.fire({
+                            type: 'success',
+                            title: res.data().gender === "f" ? "Bienvenida" : "Bienvenido" + " " + res.data().name
                         })
                     })
 

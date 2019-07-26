@@ -236,7 +236,12 @@
     text-transform: uppercase;
     color: #020633;
     padding-bottom: 0.5rem;
+    font-size: .9em;
+    /* display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr; */
 }
+
 .container-master-descripcion-up{
     width: 100%;
     display: flex;

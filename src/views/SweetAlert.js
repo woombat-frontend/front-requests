@@ -28,19 +28,26 @@ const Sweet = () =>{
     }
 
     const WizardQuestion = () =>{
-        Swal.fire({
-            titleText: '¿Estas Seguro?',
-            type: 'question',
-            showCancelButton: true,
-            confirmButtonText: "SI",
-            cancelButtonText: "NO",
-            text: 'Estas seguro de que quieres enviar la solicitud del proyecto sin seleccionar alguna preferencia tecnica?',
-            customClass:{
-                title: "title-question",
-                content: "question-wizard",
-                cancelButton: "button-cancel",
-            },
-            }       
+        return (
+            Swal.fire({
+                titleText: '¿Estas Seguro?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: "SI",
+                cancelButtonText: "NO",
+                text: 'Estas seguro de que quieres enviar la solicitud del proyecto sin seleccionar alguna preferencia tecnica?',
+                customClass: {
+                    title: "title-question",
+                    content: "question-wizard",
+                    cancelButton: "button-cancel",
+                },
+            }).then((result) => {
+                if (result.value) {
+                    console.log("YES")
+                }else {
+                    console.log("NOPE")
+                }
+            })
         )
     }
       

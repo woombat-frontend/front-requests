@@ -10,6 +10,9 @@ import { withRouter } from 'react-router-dom'
 import firebase from 'firebase'
 import Context from '../../GlobalState/context';
 
+import Swal from 'sweetalert2';
+import '../../Styles/AlertStyles.css'
+
 const Login = props => {
 
     const {state, actions} = useContext(Context)
@@ -17,6 +20,12 @@ const Login = props => {
     const [user, setUser] = useState("")
     const [showLogin, setShowLogin] = useState(null)
     const db = firebase.firestore()
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
 
     useEffect(() => {
         authListener()
@@ -28,7 +37,12 @@ const Login = props => {
                 setShowLogin(false)
                 props.history.push('landing')
             })
-            .catch(() => alert('Hubo un error, intente de nuevo'))
+            .catch(() => {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Datos incorrectos, intente de nuevo'
+                })
+            })
 
         
     }

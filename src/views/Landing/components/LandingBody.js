@@ -27,7 +27,7 @@ const LandingBody = () => {
         : state.current_menu_option === "Solicitudes" ? 
             <Solicitudes />
         : state.current_menu_option === "Entregas" ? 
-            <Entregas />
+            <Sweet />
         :
         <div/>
     )
