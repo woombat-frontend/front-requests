@@ -6,12 +6,12 @@ import firebase from 'firebase'
 
 const InicioAdmin = () =>{
 
-    // const projects = [
-    //     { name: "Andres Cantor", gender: "m", notifications: "1", proyect: "OCR Davivienda" },
-    //     { name: "Yesica Chautá", gender: "f", notifications: null, proyect: "EagleView" },
-    //     { name: "Maria Jose Flechas", gender: "f", notifications: null, proyect: "Comercio" },
-    //     { name: "Camilo Hernandez", gender: "m", notifications: "2", proyect: "Banca Digital" }
-    // ]
+     const projects = [
+    { name: "Andres Cantor", gender: "m", notifications: "1", proyect: "OCR Davivienda" },
+    { name: "Yesica Chautá", gender: "f", notifications: null, proyect: "EagleView" },
+    { name: "Maria Jose Flechas", gender: "f", notifications: null, proyect: "Comercio" },
+    { name: "Camilo Hernandez", gender: "m", notifications: "2", proyect: "Banca Digital" }
+    ]
     const db = firebase.firestore()
     const [localUsers, setLocalUsers] = useState([])
     const [localUsersId, setLocalUsersId] = useState([])
