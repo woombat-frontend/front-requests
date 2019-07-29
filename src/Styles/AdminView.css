@@ -91,26 +91,25 @@
     justify-content: center;
 }
 .icon-user-admin{
-    width: 3rem;
+    width: 2rem;
     pointer-events: none;
 }
 .text-name-user-admin{
     margin: 0;
     font-size: 0.8rem;
     color: #fff;
-    padding-top: 0.8rem;
+    margin-left: 0.5rem;
 }
 .container-user-admin{
     background-color: #020633;
-    padding: 2rem;
+    padding: 0.5rem 1rem;
     border-radius: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     cursor: pointer;
+    height: fit-content;
     transition: 0.3s;
+    display: flex;
     position: relative;
-    text-align: center;
+    align-items: center;
 }
 .container-user-admin:not(:first-child){
     margin-left: 3rem;
@@ -120,7 +119,6 @@
 }
 .container-master-users-admin{
     display: flex;
-    align-items: center;
 }
 .span-notifications-user-admin{
     color: #02073a;
