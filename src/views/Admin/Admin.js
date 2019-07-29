@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react'
-import '../../Styles/Landing.css';
-import Header from './components/Header';
-import LeftMenu from './components/LeftMenu';
-import LandingBody from './components/LandingBody';
+import '../../Styles/AdminView.css';
 import firebase from 'firebase'
 import config from '../../FirebaseConfig/auth'
 import Context from '../../GlobalState/context'
 import Swal from 'sweetalert2';
 import '../../Styles/AlertStyles.css'
 import mp3 from '../../assets/pika.mp3'
+import HeaderAdmin from './components/HeaderAdmin';
+import LeftMenuAdmin from './components/LeftMenuAdmin';
+import BodyAdmin from './components/BodyAdmin';
 
 
 const Landing = () => {
@@ -85,11 +85,11 @@ const Landing = () => {
                         </div>
                     : <div/>
                 }
-                <Header />
+                <HeaderAdmin />
                 <div className="container-body-landing">
-                    <LeftMenu />
+                    <LeftMenuAdmin />
                     <div className="container-body-landing">
-                        <LandingBody />
+                        <BodyAdmin />
                     </div>
                 </div>
             </div>
