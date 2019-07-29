@@ -9,9 +9,10 @@ import Context from '../../GlobalState/context'
 import Swal from 'sweetalert2';
 import '../../Styles/AlertStyles.css'
 import mp3 from '../../assets/pika.mp3'
+import { withRouter } from 'react-router-dom'
 
 
-const Landing = () => {
+const Landing = props => {
 
     const { state, actions } = useContext(Context)
     const user = state.fire_init.auth().currentUser
@@ -33,22 +34,26 @@ const Landing = () => {
             if (user) {
                 db.doc(`users/${user.uid}/`).get()
                     .then(res => {
-                        actions({
-                            type: 'setState',
-                            payload: {
-                                ...state,
-                                personal_info: {
-                                    name: res.data().name,
-                                    gender: res.data().gender,
-                                    email: state.fire_init.auth().currentUser.email,
-                                    uid: state.fire_init.auth().currentUser.uid
+                        if (res.data().role === 'admin') { //Change This
+                            actions({
+                                type: 'setState',
+                                payload: {
+                                    ...state,
+                                    personal_info: {
+                                        name: res.data().name,
+                                        gender: res.data().gender,
+                                        email: state.fire_init.auth().currentUser.email,
+                                        uid: state.fire_init.auth().currentUser.uid
+                                    }
                                 }
-                            }
-                        })
-                        Toast.fire({
-                            type: 'success',
-                            title: res.data().gender === "f" ? "Bienvenida" : "Bienvenido" + " " + res.data().name
-                        })
+                            })
+                            Toast.fire({
+                                type: 'success',
+                                title: res.data().gender === "f" ? "Bienvenida" : "Bienvenido" + " " + res.data().name
+                            })
+                        }else {
+                            //props.history.push('admin')
+                        }
                     })
 
                     .then(() => setShow(true))
@@ -98,4 +103,4 @@ const Landing = () => {
     )
 }
 
-export default Landing
+export default withRouter(Landing)
