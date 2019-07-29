@@ -5,7 +5,8 @@ const State = {
     fire_init: null,
     current_menu_option: "Crear Proyecto",
     current_menu_option_admin: "Inicio",
-    personal_info: {name: "", gender: "", email: "", uid: ""}
+    personal_info: {name: "", gender: "", email: "", uid: ""},
+    single_project_view: ""
 }
 
 const useGlobalState = () => {
