@@ -6,7 +6,7 @@ import Context from '../../../GlobalState/context';
 // Import Screens Admin
 import InicioAdmin from '../../Screens/InicioAdmin';
 import ConfiguracionesAdmin from '../../Screens/ConfiguracionesAdmin';
-
+import UserProyectsAdmin from '../../Screens/UserProyectsAdmin';
 
 // Test SweetAlert
 import Sweet from '../../SweetAlert';
