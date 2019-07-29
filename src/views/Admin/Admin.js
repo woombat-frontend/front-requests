@@ -1,23 +1,23 @@
 import React, {useState, useEffect, useContext} from 'react'
-import '../../Styles/Landing.css';
-import Header from './components/Header';
-import LeftMenu from './components/LeftMenu';
-import LandingBody from './components/LandingBody';
+import '../../Styles/AdminView.css';
 import firebase from 'firebase'
 import config from '../../FirebaseConfig/auth'
 import Context from '../../GlobalState/context'
 import Swal from 'sweetalert2';
 import '../../Styles/AlertStyles.css'
 import mp3 from '../../assets/pika.mp3'
-import { withRouter } from 'react-router-dom'
+import HeaderAdmin from './components/HeaderAdmin';
+import LeftMenuAdmin from './components/LeftMenuAdmin';
+import BodyAdmin from './components/BodyAdmin';
 
 
-const Landing = props => {
+const Landing = () => {
 
     const { state, actions } = useContext(Context)
     const user = state.fire_init.auth().currentUser
     const [show, setShow] = useState(false)
     const db = firebase.firestore()
+    var playSound = new Audio(mp3);
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -34,26 +34,22 @@ const Landing = props => {
             if (user) {
                 db.doc(`users/${user.uid}/`).get()
                     .then(res => {
-                        if (res.data().role !== 'admin') { //Change This
-                            actions({
-                                type: 'setState',
-                                payload: {
-                                    ...state,
-                                    personal_info: {
-                                        name: res.data().name,
-                                        gender: res.data().gender,
-                                        email: state.fire_init.auth().currentUser.email,
-                                        uid: state.fire_init.auth().currentUser.uid
-                                    }
+                        actions({
+                            type: 'setState',
+                            payload: {
+                                ...state,
+                                personal_info: {
+                                    name: res.data().name,
+                                    gender: res.data().gender,
+                                    email: state.fire_init.auth().currentUser.email,
+                                    uid: state.fire_init.auth().currentUser.uid
                                 }
-                            })
-                            Toast.fire({
-                                type: 'success',
-                                title: res.data().gender === "f" ? "Bienvenida" : "Bienvenido" + " " + res.data().name
-                            })
-                        }else {
-                            props.history.push('admin')
-                        }
+                            }
+                        })
+                        Toast.fire({
+                            type: 'success',
+                            title: res.data().gender === "f" ? "Bienvenida" : "Bienvenido" + " " + res.data().name
+                        })
                     })
 
                     .then(() => setShow(true))
@@ -70,7 +66,7 @@ const Landing = props => {
             setPikachu(true)
             setTimeout(() => setPikachu(false), 1500)
             
-            var playSound = new Audio(mp3);
+            
             playSound.play()
         }
             
@@ -90,11 +86,11 @@ const Landing = props => {
                         </div>
                     : <div/>
                 }
-                <Header />
+                <HeaderAdmin />
                 <div className="container-body-landing">
-                    <LeftMenu />
+                    <LeftMenuAdmin />
                     <div className="container-body-landing">
-                        <LandingBody />
+                        <BodyAdmin />
                     </div>
                 </div>
             </div>
@@ -103,4 +99,4 @@ const Landing = props => {
     )
 }
 
-export default withRouter(Landing)
+export default Landing
