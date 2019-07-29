@@ -60,21 +60,25 @@ const InicioAdmin = props =>{
                 !UsersSearch.length ? 
                 localUsers.map(user =>{
                     return(
+                        user.role !== 'admin' ?
                         <div className="container-user-admin">
                             {user.gender === "m" ? <img src={User_male} className="icon-user-admin"/> : <img src={User_female} className="icon-user-admin"/>}
                             <p className="text-name-user-admin">{user.name}</p>
                             {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
                         </div>
+                        : console.log()
                     )
                 })
                 :
                 UsersFinals.map(user =>{
                     return(
+                        user.role !== 'admin' ?
                         <div className="container-user-admin">
                             {user.gender === "m" ? <img src={User_male} className="icon-user-admin"/> : <img src={User_female} className="icon-user-admin"/>}
                             <p className="text-name-user-admin">{user.name}</p>
                             {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
                         </div>
+                        : console.log()
                     )
                 })
                 }

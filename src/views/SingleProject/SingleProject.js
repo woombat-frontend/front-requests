@@ -6,12 +6,12 @@ const SingleProject = props => {
 
     const {state, actions} = useContext(Context)
     
-    useEffect(() => {
-        state.single_project_view === "" 
-        ?   props.history.push('admin')
-        :   console.log("HELLO")
+    // useEffect(() => {
+    //     state.single_project_view === "" 
+    //     ?   props.history.push('admin')
+    //     :   console.log("HELLO")
     
-    }, [])
+    // }, [])
 
     return (
         <div className=''>
