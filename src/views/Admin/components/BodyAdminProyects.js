@@ -42,6 +42,7 @@ const BodyAdminProyects = () => {
     const [LogicaComponentes, setLogicaComponentes] = useState("")
     const [ArquitecturaComponentes, setArquitecturaComponentes] = useState("")
     const [Produccion, setProduccion] = useState("")
+    const [renderOption, setRenderOption] = useState("general")
 
     let diseñofinal = parseInt(DiseñoVisual.replace("%",""));
     let logicafinal = parseInt(LogicaComponentes.replace("%",""));
@@ -118,36 +119,49 @@ const BodyAdminProyects = () => {
                     </div>
                 </div>
                 <span className="span-separator-proyect-admin"></span>
-                <div className="container-master-pychart-module">
-                    <div className="container-pychart-module">
-                        <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del Pychart:</p>
-                    </div>
-                    <div className="container-pychart-apartado">
-                        <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
-                        <Input className="input-description-pychart" value={DiseñoVisual} onBlur={() => Diseñofilter(DiseñoVisual)} onFocus={() => setDiseñoVisual(DiseñoVisual.replace("%", ""))} onChange={e => setDiseñoVisual(e.target.value)} />
-                    </div>
-                    <div className="container-pychart-apartado">
-                        <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
-                        <Input className="input-description-pychart" value={LogicaComponentes} onBlur={() => Logicafilter(LogicaComponentes)} onFocus={() => setLogicaComponentes(LogicaComponentes.replace("%", ""))} onChange={e => setLogicaComponentes(e.target.value)} />
-                    </div>
-                    <div className="container-pychart-apartado">
-                        <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
-                        <Input className="input-description-pychart" value={ArquitecturaComponentes} onBlur={() => Arquitecturafilter(ArquitecturaComponentes)} onFocus={() => setArquitecturaComponentes(ArquitecturaComponentes.replace("%", ""))} onChange={e => setArquitecturaComponentes(e.target.value)} />
-                    </div>
-                    <div className="container-pychart-apartado">
-                        <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
-                        <Input className="input-description-pychart" value={Produccion} onBlur={() => Produccionfilter(Produccion)} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
-                    </div>
-                    <div className="buttom-save-pychart-data" onClick={ButtomFinal}>
-                        <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
-                    </div>
-                </div>
+                {
+                    renderOption === 'general' ? 
+                        <div className="container-master-pychart-module">
+                            <div className="container-pychart-module">
+                                <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del Pychart:</p>
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
+                                <Input className="input-description-pychart" value={DiseñoVisual} onBlur={() => Diseñofilter(DiseñoVisual)} onFocus={() => setDiseñoVisual(DiseñoVisual.replace("%", ""))} onChange={e => setDiseñoVisual(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
+                                <Input className="input-description-pychart" value={LogicaComponentes} onBlur={() => Logicafilter(LogicaComponentes)} onFocus={() => setLogicaComponentes(LogicaComponentes.replace("%", ""))} onChange={e => setLogicaComponentes(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
+                                <Input className="input-description-pychart" value={ArquitecturaComponentes} onBlur={() => Arquitecturafilter(ArquitecturaComponentes)} onFocus={() => setArquitecturaComponentes(ArquitecturaComponentes.replace("%", ""))} onChange={e => setArquitecturaComponentes(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
+                                <Input className="input-description-pychart" value={Produccion} onBlur={() => Produccionfilter(Produccion)} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
+                            </div>
+                            <div className="buttom-save-pychart-data" onClick={ButtomFinal}>
+                                <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
+                            </div>
+                        </div>
+
+                    : renderOption === 'archivos' ? 
+                        <h2>Archivos</h2>
+                    : renderOption === 'actualizaciones' ? 
+                        <h2>Actualizaciones</h2>
+                    : renderOption === 'entregables' ? 
+                        <h2>Entregables</h2>
+                    : renderOption === 'solicitudes' ? 
+                        <h2>Solicitudes</h2>
+                    : <div/>
+                }
             </div>
             <div className="container-master-admin-proyect-right">
                 <div className="container-master-buttoms-proyect-admin">
                     {Menus.map(buttom => {
                         return (
-                            <div className="buttom-options-proyect-admin">
+                            <div onClick={() => setRenderOption(buttom.action)} className="buttom-options-proyect-admin">
                                 <p className="text-buttom-options">{buttom.title}</p>
                                 <span className="span-buttom-notifications-proyect-admin">5</span>
                             </div>
