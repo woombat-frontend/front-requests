@@ -7,6 +7,7 @@ import Context from '../../../GlobalState/context';
 import InicioAdmin from '../../Screens/InicioAdmin';
 import ConfiguracionesAdmin from '../../Screens/ConfiguracionesAdmin';
 import UserProyectsAdmin from '../../Screens/UserProyectsAdmin';
+import SingleProjectList from '../../Screens/SingleProjectList'
 
 // Test SweetAlert
 import Sweet from '../../SweetAlert';
@@ -20,8 +21,10 @@ const BodyAdmin = () => {
             <InicioAdmin />
         : state.current_menu_option_admin === "Configuraciones" ? 
             <ConfiguracionesAdmin />
-        :
-        <div/>
+        : state.current_menu_option_admin === "Proyectos" ?
+            <SingleProjectList />
+        
+        : <div/>
     )
 }
 
