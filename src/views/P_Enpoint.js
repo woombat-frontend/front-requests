@@ -7,6 +7,9 @@ import firebase from 'firebase'
 import { Upload, message, Button, Input, Icon } from 'antd'
 import Context from '../GlobalState/context';
 import { FilePond } from 'react-filepond';
+import Axios from 'axios';
+import { Doughnut, Bar } from 'react-chartjs-2'
+import '../Styles/provisional.css'
 
 
 
@@ -15,83 +18,148 @@ const P_Enpoint = props => {
     const {state, actions} = useContext(Context)
     const [localData, setLocalData] = useState({})
     const [projectData, setProjectData] = useState({name: "", description: ""})
-    const [option, setOption] = useState('metadata')
+    const [option, setOption] = useState('donnut')
     const [files, setFiles] = useState([])
     const db = firebase.firestore()
     const user = state.fire_init.auth().currentUser;
     const { TextArea } = Input
     const storage = firebase.storage()
+    const [chartData, setChartData] = useState({
+        data: [300, 50, 100, 25],
+        colors: [
+            '#006cf1',
+            '#38C0FF',
+            '#ba43ae', 
+            '#7000f1'
+        ],
+        labels: [
+            'Diseño Visual',
+            'Logica de Componentes',
+            'Arquitectura de Conexiones',
+            'Despliegue en producción'
+        ]
+    })
 
-    
-    
-    useEffect(() => {
-        // const user = state.fire_init.auth().currentUser
+    const [options, setOptions] = useState({
+        title: {
+            display: true,
+            text: 'Tiempo dedicado en tareas',
+            position: 'top',
+            fontColor: 'cyan',
+            fontSize: '20',
+            fontFamily: "Montserrat"
+        },
+        legend: {
+            display: true,
+            position: 'right',
+            labels: {
+                fontColor: 'white',
+                fontStyle: 'bolder',
+                fontFamily: "Montserrat"
+            }
+        },
+    })
+    const [barOptions, setBarOptions] = useState({
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Porcentaje Total',
+            fontColor: 'cyan',
+            fontSize: '20',
+            fontFamily: "Montserrat"
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: true,
+                    color: '#606060'
+                },
+                ticks: {
+                    fontColor: "#CCC", // this here
+                },
+            }],
+            yAxes: [{
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function (value, index, values) {
+                        return value + "% ";
+                    }
+                },
+                display: true,
+                gridLines: {
+                    display: true,
+                    color: '#606060'
+                },
+            }],
+        }
+    })
 
-        // user ? 
-        //     db.doc(`users/${user.uid}/`)
-        //     .get().then(res => {
-        //         console.log(res.data())
-        //         setLocalData(res.data())
-        //     })
-        // :
-        //     props.history.push('login')
-    }, [])
+    const data = {
+        labels: chartData.labels,
+        datasets: [{
+            data: chartData.data,
+            borderColor: "#323232",
+            pointRadius: 3,
+            display: false,
+            backgroundColor: chartData.colors,
+            hoverBackgroundColor: chartData.colors
+        }],
+        text: '23%'
+    };
 
-    const setProject = () => {
-        db.doc(`users/${user.uid}/projects/${projectData.name}/`).set({
-            name: projectData.name,
-            description: projectData.description
-        })
-        .then(() => console.log("%c El Proyecto ha sido creado exitosamente", "color: green; font-weight: bolder"))
-        .catch(err => console.log(err))
+    const barData = {
+        labels: chartData.labels,
+        datasets: [
+            {
+                label: "Porcentaje",
+                backgroundColor: chartData.colors,
+                data: [100, 50, 45, 65, 80]
+            }
+        ] 
     }
 
-    const upload = e => {
-        files.map(file => 
-            storage.ref('prueba/' + file.name).put(file)
-                .then(() => setFiles([]))
-                .catch(err => console.log(err))
-        )
-        
+    const containerStyles = {
+        width: '50%',
+        background: '#323232',
+        padding: '2em'
     }
+
+    const change = () => {
+        let randomArray = [Math.random() * 10, Math.random() * 10, Math.random() * 10, Math.random() * 10]
+        setChartData(randomArray)
+    }
+
 
     return (
         <div>
-            <section>
-                {
-                    option === 'metadata' ? 
-                        <div style={{ width: '30%' }}>
-                            <h2>Nombre del Proyecto</h2>
-                            <Input onChange={e => setProjectData({ ...projectData, name: e.target.value })} />
-                            <h2>Descripción del Proyecto</h2>
-                            <TextArea onChange={e => setProjectData({ ...projectData, description: e.target.value })} />
+            {
+                option === 'donnut' ?
+                    <div style={containerStyles}>
+                        <Doughnut
+                            data={data}
+                            options={options}
+                        />
 
-                            <Button type="primary" onClick={() => state.fire_init.auth().signOut()} > Cerrar Sesion </Button>
-                            <Button type="primary" onClick={setProject} > Data </Button>
-                        </div>
-                    :
-                        <div style={{padding: '4em'}}>
-                            <FilePond 
-                                labelIdle = "Arrastra los archivos que desees o dale click acá para buscar"
-                                allowMultiple={true}
-                                files = {files}
-                                maxFiles={5}
-                                onupdatefiles={e => {
-                                    setFiles(e.map(single_file => single_file.file))
-                                }}
-                            />
-                        </div>
-                }
-            </section>
-
-            <Button style={{position: 'absolute', top: '5%', right: '25%'}} onClick={() => setOption('metadata')}>Metadata</Button>
-            <Button style={{ position: 'absolute', top: '5%', right: '10%' }} onClick={() => setOption('files')}>Files</Button>
-            <Button style={{ position: 'absolute', top: '5%', right: '40%' }} onClick={upload}>Upload</Button>
-            <Button style={{position: 'absolute', top: '5%', right: '55%'}} onClick={() => console.log(files)}>Check Files</Button>
-
+                        <Button type="primary" onClick={change}> Change </Button>
+                    </div>
+                :
+                    <div style={containerStyles}>
+                        <Bar
+                            data={barData}
+                            width={100}
+                            height={50}
+                            options={barOptions}
+                        />
+                        {/* <Button type="primary" onClick={changeLines}> Change </Button> */}
+                    </div>
+            }
+            
+            
+            <Button type="primary" onClick={() => setOption('bar')}> Bar </Button>
+            <Button type="primary" onClick={() => setOption('donnut')}> Donnut </Button>
         </div>
         
-    )
+    )   
 }
 
 export default withRouter(P_Enpoint)
