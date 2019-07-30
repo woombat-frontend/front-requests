@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import Context from '../../GlobalState/context';
 import '../../Styles/SingleProjectList.css'
 import firebase from 'firebase'
-// import BodyAdminProyects from '../'
+import BodyAdminProyects from '../../views/Admin/components/BodyAdminProyects'
 
 import { Button } from 'antd'
 
@@ -24,7 +24,7 @@ const SingleProjectList = () => {
     return (
         !showProjet ?
             <div className='main-project-list-container'>
-                {/* <Button onClick={() => console.log(localProjectsData)}>Check</Button> */}
+                <Button onClick={() => setShowProject(true)}>Check</Button>
                 <section className="accepted-projects-mapper-container">
                     {
                         localProjectsData.map((project, i) => 
@@ -37,8 +37,8 @@ const SingleProjectList = () => {
                     }
                 </section>
             </div>
-        : <div />
-            // <BodyAdminProyects />
+        : 
+            <BodyAdminProyects />
     )
 }
 
