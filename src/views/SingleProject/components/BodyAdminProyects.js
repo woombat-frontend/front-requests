@@ -2,11 +2,7 @@ import React, { useState, useCallback, useContext } from 'react';
 import People from '../../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import Context from '../../../GlobalState/context';
-
-// import '../../../Styles/SingleProjectView.css';
-
-// Test SweetAlert
-import Sweet from '../../SweetAlert';
+import Swal from 'sweetalert2';
 
 import UserMale from '../../../assets/User-icon.svg';
 import UserFemale from '../../../assets/User-icon-girl.svg';
@@ -19,10 +15,87 @@ const Menus = [
     { title: "Solicitudes", action: "solicitudes" }
 ]
 
+
 const BodyAdminProyects = () => {
 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        });
+
+    const FailedInputs = () =>{
+        Toast.fire({
+            type: 'error',
+            title: 'Existe algun campo vacio, intente de nuevo'
+            })
+        }
+
     const { state, actions } = useContext(Context)
-    const [percent, setPercent] = useState("")
+
+    const [DiseñoVisual, setDiseñoVisual] = useState("")
+    const [LogicaComponentes, setLogicaComponentes] = useState("")
+    const [ArquitecturaComponentes, setArquitecturaComponentes] = useState("")
+    const [Produccion, setProduccion] = useState("")
+
+    let diseñofinal = parseInt(DiseñoVisual.replace("%",""));
+    let logicafinal = parseInt(LogicaComponentes.replace("%",""));
+    let arquitecturafinal = parseInt(ArquitecturaComponentes.replace("%",""));
+    let produccionfinal = parseInt(Produccion.replace("%",""));
+    
+    
+    let finalsum = diseñofinal + logicafinal + arquitecturafinal + produccionfinal;
+
+    let allfullinputs = false;
+
+    const Diseñofilter = (value) =>{
+        if (!value) {
+            setDiseñoVisual(value); 
+        }
+        else{
+            setDiseñoVisual(value + "%");
+        }
+    }
+
+    const Logicafilter = (value) =>{
+        if (!value) {
+            setLogicaComponentes(value); 
+        }
+        else{
+            setLogicaComponentes(value + "%");
+        }
+    }
+
+    const Arquitecturafilter = (value) =>{
+        if (!value) {
+            setArquitecturaComponentes(value); 
+        }
+        else{
+            setArquitecturaComponentes(value + "%");
+        }
+    }
+
+    const Produccionfilter = (value) =>{
+        if (!value) {
+            setProduccion(value); 
+        }
+        else{
+            setProduccion(value + "%");
+        }
+    }
+
+    const ButtomFinal = () =>{
+        !DiseñoVisual || !LogicaComponentes || !ArquitecturaComponentes || !Produccion
+        ? 
+        FailedInputs()
+        : 
+        allfullinputs = true;
+
+        if (allfullinputs === true && finalsum === 100) {
+            alert("SIRVEEEE")
+        }
+    }
 
     return (
         <div className="container-master-proyects-admin">
@@ -47,21 +120,21 @@ const BodyAdminProyects = () => {
                     </div>
                     <div className="container-pychart-apartado">
                         <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
-                        <Input className="input-description-pychart" />
+                        <Input className="input-description-pychart" value={DiseñoVisual} onBlur={() => Diseñofilter(DiseñoVisual)} onFocus={() => setDiseñoVisual(DiseñoVisual.replace("%", ""))} onChange={e => setDiseñoVisual(e.target.value)} />
                     </div>
                     <div className="container-pychart-apartado">
                         <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
-                        <Input className="input-description-pychart" />
+                        <Input className="input-description-pychart" value={LogicaComponentes} onBlur={() => Logicafilter(LogicaComponentes)} onFocus={() => setLogicaComponentes(LogicaComponentes.replace("%", ""))} onChange={e => setLogicaComponentes(e.target.value)} />
                     </div>
                     <div className="container-pychart-apartado">
                         <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
-                        <Input className="input-description-pychart" />
+                        <Input className="input-description-pychart" value={ArquitecturaComponentes} onBlur={() => Arquitecturafilter(ArquitecturaComponentes)} onFocus={() => setArquitecturaComponentes(ArquitecturaComponentes.replace("%", ""))} onChange={e => setArquitecturaComponentes(e.target.value)} />
                     </div>
                     <div className="container-pychart-apartado">
                         <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
-                        <Input className="input-description-pychart" value={percent} onBlur={() => setPercent(percent + "%")} onFocus={() => setPercent(percent.replace("%", ""))} onChange={e => setPercent(e.target.value)} />
+                        <Input className="input-description-pychart" value={Produccion} onBlur={() => Produccionfilter(Produccion)} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
                     </div>
-                    <div className="buttom-save-pychart-data">
+                    <div className="buttom-save-pychart-data" onClick={ButtomFinal}>
                         <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
                     </div>
                 </div>
