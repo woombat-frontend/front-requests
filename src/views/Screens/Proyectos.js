@@ -100,11 +100,11 @@ const Proyectos = () => {
     const createProject = () => {
         db.doc(`users/${state.personal_info.uid}/projects/${mandatoryData.name}`)
             .set({
-                nombre: mandatoryData.name,
+                name: mandatoryData.name,
                 description: mandatoryData.description,
-                fecha_demo: mandatoryData.date,
-                tegnologias: tecnologias,
-                preferencias: optionalTech
+                demo_date: mandatoryData.date,
+                technologies: tecnologias,
+                preferences: optionalTech
             })
             .then(() => {
                 files.map(file =>
