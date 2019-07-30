@@ -2,14 +2,18 @@ import React, { useState, useCallback, useContext } from 'react';
 import People from '../../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import Context from '../../../GlobalState/context';
-
-// Test SweetAlert
-
 import Swal from 'sweetalert2';
-
 
 import UserMale from '../../../assets/User-icon.svg';
 import UserFemale from '../../../assets/User-icon-girl.svg';
+
+/* Subs Screens */
+
+import General from '../components/SubScreens/General';
+import Archivos from '../components/SubScreens/Archivos';
+import Actualizaciones from '../components/SubScreens/Actualizaciones';
+import Entregables from '../components/SubScreens/Entregables';
+import Solicitudes from '../components/SubScreens/Solicitudes';
 
 const Menus = [
     { title: "Informe General", action: "general" },
@@ -18,6 +22,7 @@ const Menus = [
     { title: "Entregables", action: "entregables" },
     { title: "Solicitudes", action: "solicitudes" }
 ]
+
 
 
 const BodyAdminProyects = () => {
@@ -35,6 +40,26 @@ const BodyAdminProyects = () => {
             title: 'Existe algun campo vacio, intente de nuevo'
             })
         }
+    const FailedSum = (sum) =>{
+        Toast.fire({
+            type: 'error',
+            title: `Suma ${sum}% para completar, intente de nuevo`
+            })
+        }
+
+    const FailedSumExtra = (sum) =>{
+        Toast.fire({
+            type: 'error',
+            title: `Debes eliminar ${sum}% de los porcentajes, intente de nuevo`
+            })
+        }
+
+    const SuccessAlert = () =>{
+        Toast.fire({
+            type: 'success',
+            title: 'Los datos han sido guardados'
+            })
+        }
 
     const { state, actions } = useContext(Context)
 
@@ -50,55 +75,54 @@ const BodyAdminProyects = () => {
     let produccionfinal = parseInt(Produccion.replace("%",""));
     
     
-    let finalsum = diseñofinal + logicafinal + arquitecturafinal + produccionfinal;
+    let finalsum = diseñofinal + logicafinal + arquitecturafinal + produccionfinal
 
-    let allfullinputs = false;
+    let allfullinputs = false
 
-    const Diseñofilter = (value) =>{
-        if (!value) {
-            setDiseñoVisual(value); 
-        }
-        else{
-            setDiseñoVisual(value + "%");
-        }
+    let testinput = false
+
+    const Diseñofilter = value =>{
+        !value ? setDiseñoVisual(value) : setDiseñoVisual(value + "%")
     }
 
-    const Logicafilter = (value) =>{
-        if (!value) {
-            setLogicaComponentes(value); 
-        }
-        else{
-            setLogicaComponentes(value + "%");
-        }
+    const Logicafilter = value =>{
+        !value ? setLogicaComponentes(value) : setLogicaComponentes(value + "%")
     }
 
-    const Arquitecturafilter = (value) =>{
-        if (!value) {
-            setArquitecturaComponentes(value); 
-        }
-        else{
-            setArquitecturaComponentes(value + "%");
-        }
+    const Arquitecturafilter = value =>{
+        !value ? setArquitecturaComponentes(value) : setArquitecturaComponentes(value + "%")
     }
 
-    const Produccionfilter = (value) =>{
-        if (!value) {
-            setProduccion(value); 
-        }
-        else{
-            setProduccion(value + "%");
-        }
+    const Produccionfilter = value =>{
+        !value ? setProduccion(value) : setProduccion(value + "%")
+    }
+
+    const diff = sumafinal =>{
+        return Math.abs(sumafinal - 100);
     }
 
     const ButtomFinal = () =>{
+
+        if (!DiseñoVisual) {
+            testinput = true
+        }
+
         !DiseñoVisual || !LogicaComponentes || !ArquitecturaComponentes || !Produccion
         ? 
         FailedInputs()
         : 
         allfullinputs = true;
 
-        if (allfullinputs === true && finalsum === 100) {
-            alert("SIRVEEEE")
+        if (allfullinputs && finalsum !== 100) {
+            FailedSum(diff(finalsum))
+        }
+
+        if (allfullinputs && finalsum > 100) {
+            FailedSumExtra(diff(finalsum))
+        }
+
+        if (allfullinputs && finalsum === 100) {
+            SuccessAlert()
         }
     }
 
@@ -160,8 +184,10 @@ const BodyAdminProyects = () => {
             <div className="container-master-admin-proyect-right">
                 <div className="container-master-buttoms-proyect-admin">
                     {Menus.map(buttom => {
+                        let active = false;
+                        buttom.action === renderOption ? active = true : active = false
                         return (
-                            <div onClick={() => setRenderOption(buttom.action)} className="buttom-options-proyect-admin">
+                            <div onClick={() => setRenderOption(buttom.action)} className={`buttom-options-proyect-admin ${active ? "buttom-active": ""}`}>
                                 <p className="text-buttom-options">{buttom.title}</p>
                                 <span className="span-buttom-notifications-proyect-admin">5</span>
                             </div>
@@ -169,7 +195,19 @@ const BodyAdminProyects = () => {
                     })}
                 </div>
                 <div>
-
+                    {
+                        renderOption === 'general' ? 
+                            <General />
+                        : renderOption === 'archivos' ? 
+                            <Archivos />
+                        : renderOption === 'actualizaciones' ? 
+                            <Actualizaciones />
+                        : renderOption === 'entregables' ? 
+                            <Entregables />
+                        : renderOption === 'solicitudes' ? 
+                            <Solicitudes />
+                        : <div/>
+                    }
                 </div>
             </div>
         </div>
