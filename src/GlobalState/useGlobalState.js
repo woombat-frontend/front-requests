@@ -6,7 +6,8 @@ const State = {
     current_menu_option: "Crear Proyecto",
     current_menu_option_admin: "Inicio",
     personal_info: {name: "", gender: "", email: "", uid: ""},
-    single_project_view: ""
+    single_project_view: "",
+    single_user_projects: []
 }
 
 const useGlobalState = () => {

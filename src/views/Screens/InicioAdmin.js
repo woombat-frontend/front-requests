@@ -1,18 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import User_male from '../../assets/User-icon.svg';
 import User_female from '../../assets/User-icon-girl.svg';
 import { Input , Icon, Empty } from 'antd';
 import firebase from 'firebase';
 import Robots from '../../assets/Robots.svg';
+import Context from '../../GlobalState/context';
+import { withRouter } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import '../../Styles/AlertStyles.css'
+import { Button } from 'antd'
 
-const InicioAdmin = () =>{
+import Amazon from '../../assets/brands/Amazon.svg';
+import Azure from '../../assets/brands/Azure.svg';
+import Cloudera from '../../assets/brands/Cloudera.svg';
+import Lambda from '../../assets/brands/Lambda.svg';
 
-     const projects = [
-         
-    ]
+const InicioAdmin = props =>{
+
+    const {state, actions} = useContext(Context)
     const db = firebase.firestore()
     const [localUsers, setLocalUsers] = useState([])
     const [localUsersId, setLocalUsersId] = useState([])
+    const [UsersSearch, setUsersSearch] = useState("");
+    const [UsersFinals, setUsersFinals] = useState([])
+    const [projectList, setProjectList] = useState([])
+    const [detailProject, setDetailProject] = useState([])
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+    const technologies = {
+        "Amazon": Amazon,
+        "Azure": Azure,
+        "Cloudera": Cloudera,
+        "Lambda": Lambda
+    }
 
     useEffect(() => {
         db.collection('users').get().then(querySnapshot => {
@@ -20,10 +45,6 @@ const InicioAdmin = () =>{
             setLocalUsersId(querySnapshot.docs.map(doc => doc.id))
         })
     }, [])
-
-    const [UsersSearch, setUsersSearch] = useState("");
-    const [UsersFinals, setUsersFinals] = useState([])
-
 
 
     const search = value => {
@@ -33,58 +54,132 @@ const InicioAdmin = () =>{
     }
 
 
-    console.log(UsersFinals)
+    const checkProjectDetails = option => {
+        db.collection(`users/${localUsersId[option]}/projects`).get().then(querySnapshot => {
+            if (querySnapshot.docs.length) 
+                setProjectList(querySnapshot.docs.map(doc => doc.data()))
+            else
+                Toast.fire({
+                    type: 'error',
+                    title: 'Este usuario no tiene proyectos recientes'
+                })
+        })
+    }
 
+    const selectProject = option => {
+        setDetailProject(projectList[option])
+    }
+
+    const takeProject = () => {
+
+    }
 
     return(
-        <div className="container-master-inicio-admin">
-            <div className="container-row-admin-proyects">
-                <div className="input-search-admin">
-                    <Icon type="search" className="icon-admin-search" /><Input placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value) } />
+        !projectList.length ? 
+            <div className="container-master-inicio-admin">
+                
+                <div className="container-row-admin-proyects">
+                    <div className="input-search-admin">
+                        <Icon onClick={() => console.log(state.single_user_projects)} type="search" className="icon-admin-search" /><Input placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value)} />
+                    </div>
                 </div>
-            </div>
-            <span className="border-span-admin"></span>
-            <div className="container-row-admin-users">
-                <div className="container-master-users-admin">
-                    {!UsersSearch.length ? 
-                    localUsers.map(user =>{
-                        return(
-                            user.role !== 'admin' ? 
-                            <div className="container-user-admin">
-                                {user.gender === "m" ? <img src={User_male} className="icon-user-admin"/> : <img src={User_female} className="icon-user-admin"/>}
-                                <p className="text-name-user-admin">{user.name}</p>
-                                {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
-                            </div>
-                            : null
-                        )
-                    })
-                    :
-                    UsersFinals.map(user =>{
-                        
-                        return(
-                            user.role !== 'admin' ? 
-                            <div className="container-user-admin">
-                                {user.gender === "m" ? <img src={User_male} className="icon-user-admin"/> : <img src={User_female} className="icon-user-admin"/>}
-                                <p className="text-name-user-admin">{user.name}</p>
-                                {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
-                            </div>
-                            : null
-                        )              
-                    })
+                <span className="border-span-admin"></span>
+                <div className="container-row-admin-users">
+                    <div className="container-master-users-admin">
+                        {!UsersSearch.length ?
+                            localUsers.map((user, i) => {
+                                return (
+                                    user.role !== 'admin' ?
+                                        <div onClick={() => checkProjectDetails(i)} className="container-user-admin">
+                                            {user.gender === "m" ? <img src={User_male} className="icon-user-admin" /> : <img src={User_female} className="icon-user-admin" />}
+                                            <p className="text-name-user-admin">{user.name}</p>
+                                            {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
+                                        </div>
+                                        : null
+                                )
+                            })
+                            :
+                            UsersFinals.map((user, i) => {
+
+                                return (
+                                    user.role !== 'admin' ?
+                                        <div onClick={() => checkProjectDetails(i)} className="container-user-admin">
+                                            {user.gender === "m" ? <img src={User_male} className="icon-user-admin" /> : <img src={User_female} className="icon-user-admin" />}
+                                            <p className="text-name-user-admin">{user.name}</p>
+                                            {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
+                                        </div>
+                                        : null
+                                )
+                            })
+                        }
+                    </div>
+                    {!UsersFinals.length && UsersSearch.length ?
+                        <div className="container-empty-user">
+                            <img src={Robots} className="robots-empty-img" />
+                            <h3>No se ha encontrado ningun usuario, intenta de nuevo...</h3>
+                        </div>
+                        :
+                        null
+
                     }
                 </div>
-                {!UsersFinals.length && UsersSearch.length ?
-                <div className="container-empty-user">
-                    <img src={Robots} className="robots-empty-img" />
-                    <h3>No se ha encontrado ningun usuario, intenta de nuevo...</h3>
-                </div>
-                :
-                null
+            </div>
+        : 
+            <div className='project-list-container'>
+                <Button 
+                    className="btn-back" 
+                    type="primary" 
+                    onClick={() => {setProjectList([]); setDetailProject({})}}>Volver</Button>
+                <section className="project-mapper">
+                    {
+                        projectList.map((project, i) => 
+                            <div onClick={() => selectProject(i)} className="single-project-container">
+                                <h3> {project.name} </h3>
+                                <h4> {project.demo_date} </h4>
+                            </div>
+                        )
+                    }
+                </section>
 
+                {
+                    Object.keys(detailProject).length ? 
+                        <section className="rendered-project-details">
+                            <div className="grid-description">
+                                <h3>Descripción del Proyecto</h3>
+                                <p className="project-description">{detailProject.description}</p>
+                            </div>
+
+                            <div className="grid-tech">
+                                <h3>Requerimientos Técnicos</h3>
+                                <div className="project-tech-container">
+                                    {
+                                        detailProject.technologies.map(x =>
+
+                                            <img className="container-checkbox-technologies-admin" src={technologies[x]} alt={x} />
+
+                                        )
+                                    }
+                                </div>
+                            </div>
+
+                            <div className="grid-observations">
+                                <h3>Obervaciones Técnicas</h3>
+                                <p className="technical-observations"> {detailProject.preferences} </p>
+                            </div>
+                            
+                            <div className="grid-date">
+                                <h3> Fecha para entrega del Demo </h3>
+                                <p className="demo-date"> {detailProject.demo_date} </p>
+                            </div>
+
+                            <Button type="primary" className="accept-btn" onClick={takeProject}>Empezar</Button>
+                        </section>
+                    :
+                        <div/>
                 }
             </div>
-        </div>
+
     )
 }
 
-export default InicioAdmin;
+export default withRouter(InicioAdmin);
