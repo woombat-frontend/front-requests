@@ -3,8 +3,6 @@ import People from '../../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import Context from '../../../GlobalState/context';
 
-// import '../../../Styles/SingleProjectView.css';
-
 // Test SweetAlert
 import Sweet from '../../SweetAlert';
 

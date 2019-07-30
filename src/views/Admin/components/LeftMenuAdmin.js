@@ -16,11 +16,10 @@ const LeftMenuAdmin = props => {
     const titulos = [
         { Nombre: "Inicio", url: "inicio", icon: "home" },
         { Nombre: "Proyectos", url: "proyectos", icon: "project" },
-        {Nombre: "Configuraciones", url: "configuraciones", icon: "tool"}
+        { Nombre: "Configuraciones", url: "configuraciones", icon: "tool"}
     ]
 
     const changeCurrentMenuOption = option => {
-        console.log(option)
         actions({type: "setState", payload: {...state, current_menu_option_admin: option }})
     }
 

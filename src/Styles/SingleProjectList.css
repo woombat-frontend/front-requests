@@ -1,3 +1,52 @@
 .main-project-list-container {
-    
+    width: 100%;
+    /* display: grid;
+    grid-template-columns: repeat(4, 1fr); */
+    padding: 2em 2em 2em 3em;
+}
+
+.accepted-projects-mapper-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2em;
+}
+
+.projects-mapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr 1fr;
+
+    background: #404040;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px gray;
+    padding: 1em 1em 0 1em;
+    cursor: pointer;
+    transition: ease-in-out 200ms;
+}
+.projects-mapper:hover {
+    background: #006370;
+    box-shadow: 0 5px 15px rgb(0, 40, 78);
+}
+.project-date, .project-incharge, .project-name {
+    color: white;
+    font-size: .9em;
+}
+
+.project-name {
+    grid-column: 1/7;
+}
+
+.project-date {
+    grid-column: 5/7;
+    grid-row: 2/3;
+    margin: 0;
+    align-self: center;
+}
+
+.project-incharge {
+    grid-column: 1/5;
+    margin-top: .5em;
+    color: cyan;
 }

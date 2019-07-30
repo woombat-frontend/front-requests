@@ -74,8 +74,13 @@ const InicioAdmin = props =>{
 
     const takeProject = async () => {
         
-        await db.doc(`users/${localUsersId[userIndex]}/responses/${detailProject.name}`)
+        await db.doc(`responses/${detailProject.name}`)
             .set({
+                metadata: {
+                    in_charge: localUsers[userIndex],
+                    user_uid: localUsersId[userIndex],
+                    demo_date: detailProject.demo_date
+                },
                 task: [],
                 piechart_categories: [],
                 requirements: []

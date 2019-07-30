@@ -15,7 +15,7 @@ import Sweet from '../../SweetAlert';
 const BodyAdmin = () => {
 
     const {state, actions} = useContext(Context)
- 
+    
     return (
         state.current_menu_option_admin === "Inicio" ?
             <InicioAdmin />
