@@ -25,6 +25,7 @@ const InicioAdmin = props =>{
     const [UsersFinals, setUsersFinals] = useState([])
     const [projectList, setProjectList] = useState([])
     const [detailProject, setDetailProject] = useState([])
+    const [userIndex, setUserIndex] = useState(0)
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -55,6 +56,7 @@ const InicioAdmin = props =>{
 
 
     const checkProjectDetails = option => {
+        setUserIndex(option)
         db.collection(`users/${localUsersId[option]}/projects`).get().then(querySnapshot => {
             if (querySnapshot.docs.length) 
                 setProjectList(querySnapshot.docs.map(doc => doc.data()))
@@ -70,8 +72,27 @@ const InicioAdmin = props =>{
         setDetailProject(projectList[option])
     }
 
-    const takeProject = () => {
+    const takeProject = async () => {
+        
+        await db.doc(`users/${localUsersId[userIndex]}/responses/${detailProject.name}`)
+            .set({
+                task: [],
+                piechart_categories: [],
+                requirements: []
+            })
+        await db.doc(`users/${localUsersId[userIndex]}/projects/${detailProject.name}`)
+                .set({state: 'iniciado'}, {merge: true})
+                .then(() => {
+                    setProjectList([])
+                    setDetailProject({})
+                })
 
+        await Toast.fire({
+            type: 'success',
+            title: 'El proyecto ha sido iniciado'
+        })
+
+        
     }
 
     return(
@@ -130,15 +151,25 @@ const InicioAdmin = props =>{
                     className="btn-back" 
                     type="primary" 
                     onClick={() => {setProjectList([]); setDetailProject({})}}>Volver</Button>
-                <section className="project-mapper">
+                <section className="project-mapper">         
                     {
                         projectList.map((project, i) => 
                             <div onClick={() => selectProject(i)} className="single-project-container">
                                 <h3> {project.name} </h3>
                                 <h4> {project.demo_date} </h4>
+                                {
+                                    project.state === 'espera'
+                                    ? <div className="circle">
+                                            <img className="state-img" src="https://i.imgur.com/ZSNBBk1.png" alt="state" />
+                                      </div>
+                                    : 
+                                    <div className="aproved">
+                                        <img className="state-img" src="https://i.imgur.com/WzEDtH8.png" alt="state" />
+                                    </div>
+                                }
                             </div>
                         )
-                    }
+                    }     
                 </section>
 
                 {

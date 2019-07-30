@@ -104,7 +104,8 @@ const Proyectos = () => {
                 description: mandatoryData.description,
                 demo_date: mandatoryData.date,
                 technologies: tecnologias,
-                preferences: optionalTech
+                preferences: optionalTech,
+                state: "espera"
             })
             .then(() => {
                 files.map(file =>
