@@ -15,6 +15,7 @@ const LeftMenuAdmin = props => {
 
     const titulos = [
         { Nombre: "Inicio", url: "inicio", icon: "home" },
+        { Nombre: "Proyectos", url: "proyectos", icon: "project" },
         {Nombre: "Configuraciones", url: "configuraciones", icon: "tool"}
     ]
 

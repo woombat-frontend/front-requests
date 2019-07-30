@@ -1,7 +1,9 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import People from '../../../assets/People-asking.svg';
-import { Icon } from 'antd';
+import { Icon, Input } from 'antd';
 import Context from '../../../GlobalState/context';
+
+// import '../../../Styles/SingleProjectView.css';
 
 // Test SweetAlert
 import Sweet from '../../SweetAlert';
@@ -10,17 +12,18 @@ import UserMale from '../../../assets/User-icon.svg';
 import UserFemale from '../../../assets/User-icon-girl.svg';
 
 const Menus = [
-    {title: "Informe General", action: "general"},
-    {title: "Lista de Tareas", action: "tareas"},
-    {title: "Actualizaciones", action: "actualizaciones"},
-    {title: "Entregables", action: "entregables"},
-    {title: "Solicitudes", action: "solicitudes"}
+    { title: "Informe General", action: "general" },
+    { title: "Archivos", action: "archivos" },
+    { title: "Actualizaciones", action: "actualizaciones" },
+    { title: "Entregables", action: "entregables" },
+    { title: "Solicitudes", action: "solicitudes" }
 ]
 
 const BodyAdminProyects = () => {
 
-    const {state, actions} = useContext(Context)
- 
+    const { state, actions } = useContext(Context)
+    const [percent, setPercent] = useState("")
+
     return (
         <div className="container-master-proyects-admin">
             <div className="container-master-admin-proyect-left">
@@ -38,18 +41,39 @@ const BodyAdminProyects = () => {
                     </div>
                 </div>
                 <span className="span-separator-proyect-admin"></span>
-                <div>
-
+                <div className="container-master-pychart-module">
+                    <div className="container-pychart-module">
+                        <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del Pychart:</p>
+                    </div>
+                    <div className="container-pychart-apartado">
+                        <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
+                        <Input className="input-description-pychart" />
+                    </div>
+                    <div className="container-pychart-apartado">
+                        <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
+                        <Input className="input-description-pychart" />
+                    </div>
+                    <div className="container-pychart-apartado">
+                        <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
+                        <Input className="input-description-pychart" />
+                    </div>
+                    <div className="container-pychart-apartado">
+                        <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
+                        <Input className="input-description-pychart" value={percent} onBlur={() => setPercent(percent + "%")} onFocus={() => setPercent(percent.replace("%", ""))} onChange={e => setPercent(e.target.value)} />
+                    </div>
+                    <div className="buttom-save-pychart-data">
+                        <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
+                    </div>
                 </div>
             </div>
             <div className="container-master-admin-proyect-right">
                 <div className="container-master-buttoms-proyect-admin">
-                    {Menus.map(buttom =>{
-                        return(
-                        <div className="buttom-options-proyect-admin">
-                            <p className="text-buttom-options">{buttom.title}</p>
-                            <span className="span-buttom-notifications-proyect-admin">5</span>
-                        </div>
+                    {Menus.map(buttom => {
+                        return (
+                            <div className="buttom-options-proyect-admin">
+                                <p className="text-buttom-options">{buttom.title}</p>
+                                <span className="span-buttom-notifications-proyect-admin">5</span>
+                            </div>
                         )
                     })}
                 </div>

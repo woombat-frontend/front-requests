@@ -158,6 +158,20 @@
     width: 20rem;
     pointer-events: none;
 }
+ 
+
+
+
+
+
+
+
+
+
+
+
+/*  Project Mapper  */
+
 
 .btn-back {
     position: absolute !important;
@@ -212,7 +226,6 @@
     margin-top: 1em;
     width: 100%;
     padding: .5em 1em;
-    /* border: 4px solid rgb(0, 205, 219); */
     background: rgba(0, 0, 0, .8);
     box-shadow: 0 4px 10px gray;
     border-radius: 10px;
@@ -294,20 +307,23 @@
 .accept-btn {
     grid-row: 12/13;
     grid-column: 11/13;
-    /* margin-top: 2em; */
+    margin-top: 2em; 
 }
 
 @keyframes appear {
     from { opacity: 0 }
     to { opacity: 1 }
-}
-/* Single Project View */
+} 
+
+
+
+/* SINGLE PROJECT VIEW */
 
 .container-master-proyects-admin{
     width: 100%;
     display: grid;
     grid-template-columns: 30% 1fr;
-    padding: 2rem;
+    padding: 2rem 3rem;
     grid-gap: 1rem;
 }
 .container-master-admin-proyect-left{
@@ -403,5 +419,53 @@
     font-size: 0.6875rem;
     padding: 0rem 0.3rem;
 }
-
-
+.title-edit-pychart-admin-proyect{
+    margin: 0;
+    font-size: 1.1rem;
+    color: #02073a;
+}
+.pychart-icon{
+    font-size: 1.7rem;
+    color: #02073a !important;
+}
+.container-pychart-module{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.title-description-pychart{
+    margin: 0;
+}
+.title-description-pychart{
+    margin: 0;
+}
+.container-pychart-apartado{
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    justify-content: space-between;
+}
+.input-description-pychart{
+    width: 20% !important;
+}
+.buttom-save-pychart-data{
+    background-color: #062C59;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.buttom-save-pychart-data:hover{
+    background-color: #041e3e;
+}
+.text-buttom-save-pychart-data{
+    margin: 0;
+    color: #fff;
+    text-transform: uppercase;
+}
+.container-master-pychart-module{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
