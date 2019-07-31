@@ -60,8 +60,10 @@ const Actualizaciones = () =>{
                 <div className="container-separator-body">
                     <div className="separator-chat-body"></div>
                 </div>
-                <div>
-                    <p>hola</p>
+                <div className="container-master-body-messages">
+                    <div className="container-master-balloon-client">
+                        <p className="message-client-body">Holaaaa</p>
+                    </div>
                 </div>
                 <div className="container-separator-body">
                     <div className="separator-chat-body"></div>

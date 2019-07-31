@@ -776,6 +776,26 @@
 .container-master-about{
     display: flex;
     align-items: center;
+    color: #831193;
+}
+
+.message-client-body{
+    margin: 0;
+}
+
+.container-master-body-messages{
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.container-master-balloon-client{
+    background-color: #e6e6e6;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 13px;
+    position: absolute;
 }
 
 .test-class{
