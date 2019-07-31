@@ -17,7 +17,9 @@ const SingleProjectList = () => {
     
 
     useEffect(() => {
-        db.collection('responses').get().then(querySnapshot => {
+        
+        db.collection('responses').onSnapshot(querySnapshot => {
+            console.log("%c HEEY", "color: green; font-weight: bolder")
             setLocalProjectsName(querySnapshot.docs.map(doc => doc.id))
             setLocalProjectsData(querySnapshot.docs.map(doc => doc.data()))
         })
@@ -31,7 +33,7 @@ const SingleProjectList = () => {
     return (
         !showProjet ?
             <div className='main-project-list-container'>
-                <Button onClick={() => setShowProject(true)}>Check</Button>
+                {/* <Button onClick={() => setShowProject(true)}>Check</Button> */}
                 <section className="accepted-projects-mapper-container">
                     {
                         localProjectsData.map((project, i) => 

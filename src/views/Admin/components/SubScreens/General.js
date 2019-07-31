@@ -6,14 +6,10 @@ import '../../../../Styles/General.css'
 import Context from '../../../../GlobalState/context';
 
 
-const General = () => {
+const General = props => {
 
     const {state, actions} = useContext(Context)
-
-    useEffect(() => {
-
-    }, [])
-
+    const db = firebase.firestore()
     const [chartData, setChartData] = useState({
         data: [25, 25, 25, 25],
         colors: [
@@ -31,10 +27,19 @@ const General = () => {
         backgroundColor: "#323232",
         size: '65%'
     })
+
+    useEffect(() => {
+        db.doc(`responses/${props.path}`).onSnapshot(res => {
+            setChartData({ ...chartData, data: res.data().piechart_categories})
+        })
+    }, [])
+
+    
     const [icons, setIcons] = useState(['highlight', 'interaction', 'apartment', 'cloud-upload'])
 
     return(
         <div className="main-general-container">
+
             <DonnutChart data={chartData}/>
 
             <section className="categories-container">

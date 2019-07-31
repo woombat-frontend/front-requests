@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import People from '../../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import Context from '../../../GlobalState/context';
 import Swal from 'sweetalert2';
+import firebase from 'firebase'
 
 import UserMale from '../../../assets/User-icon.svg';
 import UserFemale from '../../../assets/User-icon-girl.svg';
@@ -14,6 +15,7 @@ import Archivos from '../components/SubScreens/Archivos';
 import Actualizaciones from '../components/SubScreens/Actualizaciones';
 import Entregables from '../components/SubScreens/Entregables';
 import Solicitudes from '../components/SubScreens/Solicitudes';
+import { send } from 'q';
 
 const Menus = [
     { title: "Informe General", action: "general" },
@@ -25,105 +27,86 @@ const Menus = [
 
 
 
-const BodyAdminProyects = () => {
+const BodyAdminProyects = props => {
 
+    const { state, actions } = useContext(Context)
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
-        });
-
-    const FailedInputs = () =>{
-        Toast.fire({
-            type: 'error',
-            title: 'Existe algun campo vacio, intente de nuevo'
-            })
-        }
-    const FailedSum = (sum) =>{
-        Toast.fire({
-            type: 'error',
-            title: `Suma ${sum}% para completar, intente de nuevo`
-            })
-        }
-
-    const FailedSumExtra = (sum) =>{
-        Toast.fire({
-            type: 'error',
-            title: `Debes eliminar ${sum}% de los porcentajes, intente de nuevo`
-            })
-        }
-
-    const SuccessAlert = () =>{
-        Toast.fire({
-            type: 'success',
-            title: 'Los datos han sido guardados'
-            })
-        }
-
-    const { state, actions } = useContext(Context)
-
-    const [DiseñoVisual, setDiseñoVisual] = useState("")
-    const [LogicaComponentes, setLogicaComponentes] = useState("")
-    const [ArquitecturaComponentes, setArquitecturaComponentes] = useState("")
-    const [Produccion, setProduccion] = useState("")
+    });
+    const [DiseñoVisual, setDiseñoVisual] = useState('25%')
+    const [LogicaComponentes, setLogicaComponentes] = useState("25%")
+    const [ArquitecturaComponentes, setArquitecturaComponentes] = useState("25%")
+    const [Produccion, setProduccion] = useState("25%")
     const [renderOption, setRenderOption] = useState("general")
+    const db = firebase.firestore()
 
-    let diseñofinal = parseInt(DiseñoVisual.replace("%",""));
-    let logicafinal = parseInt(LogicaComponentes.replace("%",""));
-    let arquitecturafinal = parseInt(ArquitecturaComponentes.replace("%",""));
-    let produccionfinal = parseInt(Produccion.replace("%",""));
-    
-    
-    let finalsum = diseñofinal + logicafinal + arquitecturafinal + produccionfinal
 
-    let allfullinputs = false
+    useEffect(() => {
+        let arr = props.info.piechart_categories
+        console.log(props.info)
+        setDiseñoVisual(arr[0] + '%')
+        setLogicaComponentes(arr[1] + "%")
+        setArquitecturaComponentes(arr[2] + "%")
+        setProduccion(arr[3] + "%")
+    }, [])
 
-    let testinput = false
-
-    const Diseñofilter = value =>{
-        !value ? setDiseñoVisual(value) : setDiseñoVisual(value + "%")
+    const validate = () => {
+        let aproved = ''
+        let sum =
+            parseInt(DiseñoVisual.replace("%", "")) +
+            parseInt(LogicaComponentes.replace("%", "")) +
+            parseInt(ArquitecturaComponentes.replace("%", "")) +
+            parseInt(Produccion.replace("%", ""))
+        DiseñoVisual.length &&
+        LogicaComponentes.length &&
+        ArquitecturaComponentes.length &&
+        Produccion.length 
+        ?   
+            sum
+            === 100 ? aproved = 'complete' : 
+            sum < 100  
+            ? aproved = `Falta un ${100 - sum}%`
+            : aproved = `Hay un excedente de un ${sum - 100}%`
+        :
+            aproved = 'empty'
+        return aproved
     }
 
-    const Logicafilter = value =>{
-        !value ? setLogicaComponentes(value) : setLogicaComponentes(value + "%")
-    }
-
-    const Arquitecturafilter = value =>{
-        !value ? setArquitecturaComponentes(value) : setArquitecturaComponentes(value + "%")
-    }
-
-    const Produccionfilter = value =>{
-        !value ? setProduccion(value) : setProduccion(value + "%")
-    }
-
-    const diff = sumafinal =>{
-        return Math.abs(sumafinal - 100);
-    }
-
-    const ButtomFinal = () =>{
-
-        if (!DiseñoVisual) {
-            testinput = true
-        }
-
-        !DiseñoVisual || !LogicaComponentes || !ArquitecturaComponentes || !Produccion
-        ? 
-        FailedInputs()
+    const changePercent = () => {
+        let validation = validate()
+        validation === 'complete' ? 
+            sendPercent()
         : 
-        allfullinputs = true;
+            validation === 'empty' 
+            ?    Toast.fire({
+                    type: 'error',
+                    title: 'No se pueden dejar campos vacíos' 
+                })
+            :   Toast.fire({
+                    type: 'error',
+                    title: validation
+                })
+    }
 
-        if (allfullinputs && finalsum !== 100) {
-            FailedSum(diff(finalsum))
-        }
+    const sendPercent = () => {
+        let newPercent =
+        [ parseInt(DiseñoVisual.replace("%", "")),
+          parseInt(LogicaComponentes.replace("%", "")),
+          parseInt(ArquitecturaComponentes.replace("%", "")),
+          parseInt(Produccion.replace("%", ""))  ]
 
-        if (allfullinputs && finalsum > 100) {
-            FailedSumExtra(diff(finalsum))
-        }
-
-        if (allfullinputs && finalsum === 100) {
-            SuccessAlert()
-        }
+        db.doc(`responses/${props.name}`).set({
+            piechart_categories: newPercent
+        }, {merge: true})
+        .then(() =>
+            Toast.fire({
+                type: 'success',
+                title: 'Datos Enviados'
+            })
+        )
     }
 
     return (
@@ -132,12 +115,12 @@ const BodyAdminProyects = () => {
                 <div className="container-user-and-proyect">
                     <div className="container-user-data-1">
                         <img src={UserMale} className="img-gender-proyects-admin" />
-                        <p className="text-gender-proyects-admin">Ronald Prato</p>
+                        <p className="text-gender-proyects-admin">{props.info.metadata.in_charge.name}</p>
                     </div>
                     <div>
-                        <span className="span-title-proyect-admin">Davivienda</span>
+                        <span className="span-title-proyect-admin">{props.name}</span>
                         <div className="container-status-proyect-admin">
-                            <p className="status-proyect-admin">Estado: APROBADO</p>
+                            <p className="status-proyect-admin">Estado: Iniciado</p>
                             <p className="change-status-text-proyect-admin">Cambiar estado</p>
                         </div>
                     </div>
@@ -151,21 +134,21 @@ const BodyAdminProyects = () => {
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
-                                <Input className="input-description-pychart" value={DiseñoVisual} onBlur={() => Diseñofilter(DiseñoVisual)} onFocus={() => setDiseñoVisual(DiseñoVisual.replace("%", ""))} onChange={e => setDiseñoVisual(e.target.value)} />
+                                <Input className="input-description-pychart" value={DiseñoVisual} onBlur={() => { !DiseñoVisual.length ? setDiseñoVisual("") : setDiseñoVisual(DiseñoVisual + "%")}} onFocus={() => setDiseñoVisual(DiseñoVisual.replace("%", ""))} onChange={e => setDiseñoVisual(e.target.value)} />
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
-                                <Input className="input-description-pychart" value={LogicaComponentes} onBlur={() => Logicafilter(LogicaComponentes)} onFocus={() => setLogicaComponentes(LogicaComponentes.replace("%", ""))} onChange={e => setLogicaComponentes(e.target.value)} />
+                                <Input className="input-description-pychart" value={LogicaComponentes} onBlur={() => { !LogicaComponentes.length ? setLogicaComponentes("") : setLogicaComponentes(LogicaComponentes + "%") }} onFocus={() => setLogicaComponentes(LogicaComponentes.replace("%", ""))} onChange={e => setLogicaComponentes(e.target.value)} />
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
-                                <Input className="input-description-pychart" value={ArquitecturaComponentes} onBlur={() => Arquitecturafilter(ArquitecturaComponentes)} onFocus={() => setArquitecturaComponentes(ArquitecturaComponentes.replace("%", ""))} onChange={e => setArquitecturaComponentes(e.target.value)} />
+                                <Input className="input-description-pychart" value={ArquitecturaComponentes} onBlur={() => { !ArquitecturaComponentes.length ? setArquitecturaComponentes("") : setArquitecturaComponentes(ArquitecturaComponentes + "%") }} onFocus={() => setArquitecturaComponentes(ArquitecturaComponentes.replace("%", ""))} onChange={e => setArquitecturaComponentes(e.target.value)} />
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
-                                <Input className="input-description-pychart" value={Produccion} onBlur={() => Produccionfilter(Produccion)} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
+                                <Input className="input-description-pychart" value={Produccion} onBlur={() => { !Produccion.length ? setProduccion("") : setProduccion(Produccion + "%") }} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
                             </div>
-                            <div className="buttom-save-pychart-data" onClick={ButtomFinal}>
+                            <div className="buttom-save-pychart-data" onClick={changePercent}>
                                 <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
                             </div>
                         </div>
@@ -197,7 +180,7 @@ const BodyAdminProyects = () => {
                 <div>
                     {
                         renderOption === 'general' ? 
-                            <General />
+                            <General path={props.name}/>
                         : renderOption === 'archivos' ? 
                             <Archivos />
                         : renderOption === 'actualizaciones' ? 
