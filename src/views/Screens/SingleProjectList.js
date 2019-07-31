@@ -12,7 +12,9 @@ const SingleProjectList = () => {
     const db = firebase.firestore()
     const [localProjectsData, setLocalProjectsData] = useState([])
     const [localProjectsName, setLocalProjectsName] = useState([])
+    const [projectIndex, setProjectIndex] = useState(null)
     const [showProjet, setShowProject] = useState(false)
+    
 
     useEffect(() => {
         db.collection('responses').get().then(querySnapshot => {
@@ -21,6 +23,11 @@ const SingleProjectList = () => {
         })
     }, [])
 
+    const getIntoProject = async index => {
+        await setProjectIndex(index)
+        await setShowProject(true)
+    }   
+
     return (
         !showProjet ?
             <div className='main-project-list-container'>
@@ -28,7 +35,7 @@ const SingleProjectList = () => {
                 <section className="accepted-projects-mapper-container">
                     {
                         localProjectsData.map((project, i) => 
-                            <div className="projects-mapper">
+                            <div onClick={() => getIntoProject(i)} className="projects-mapper">
                                 <h4 className="project-name" >{localProjectsName[i]}</h4>
                                 <h4 className="project-date" >{project.metadata.demo_date}</h4>
                                 <h4 className="project-incharge" >{project.metadata.in_charge.name}</h4>
@@ -38,7 +45,10 @@ const SingleProjectList = () => {
                 </section>
             </div>
         : 
-            <BodyAdminProyects />
+            <BodyAdminProyects 
+                info={localProjectsData[projectIndex]} 
+                name={localProjectsName[projectIndex]}
+            />
     )
 }
 

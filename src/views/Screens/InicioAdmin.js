@@ -82,7 +82,7 @@ const InicioAdmin = props =>{
                     demo_date: detailProject.demo_date
                 },
                 task: [],
-                piechart_categories: [],
+                piechart_categories: [25, 25, 25, 25],
                 requirements: []
             })
         await db.doc(`users/${localUsersId[userIndex]}/projects/${detailProject.name}`)
