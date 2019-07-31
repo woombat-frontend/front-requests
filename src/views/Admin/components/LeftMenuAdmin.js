@@ -35,7 +35,7 @@ const LeftMenuAdmin = props => {
                         {titulos.map((titulo, i)=>{
                             return( 
                                 titulo.Nombre === state.current_menu_option_admin ?
-                                    <div className="text-container-left-menu-singled">
+                                    <div className="text-container-left-menu-singled-admin">
                                         <div className="container-span-left-menu-singled">
                                             <span className="span-left-menu-admin"><Icon type={titulo.icon} className="icon-span-plus" /> {titulo.Nombre}</span>
                                             <span className="mark-left-menu"></span>
