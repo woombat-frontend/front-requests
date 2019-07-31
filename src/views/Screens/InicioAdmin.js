@@ -41,7 +41,7 @@ const InicioAdmin = props =>{
     }
 
     useEffect(() => {
-        db.collection('users').get().then(querySnapshot => {
+        db.collection('users').onSnapshot(querySnapshot => {
             setLocalUsers(querySnapshot.docs.map(doc => doc.data()))
             setLocalUsersId(querySnapshot.docs.map(doc => doc.id))
         })
@@ -57,7 +57,7 @@ const InicioAdmin = props =>{
 
     const checkProjectDetails = option => {
         setUserIndex(option)
-        db.collection(`users/${localUsersId[option]}/projects`).get().then(querySnapshot => {
+        db.collection(`users/${localUsersId[option]}/projects`).onSnapshot(querySnapshot => {
             if (querySnapshot.docs.length) 
                 setProjectList(querySnapshot.docs.map(doc => doc.data()))
             else

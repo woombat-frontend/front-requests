@@ -14,7 +14,7 @@ const DonnutChart = props => {
         setChartData({
             labels: props.data.labels,
             datasets: [{
-                data: state.chart_data.length ? state.chart_data : props.data.data,
+                data: props.data.data,
                 borderColor: props.data.backgroundColor,
                 backgroundColor: props.data.colors,
                 hoverBackgroundColor: props.data.colors

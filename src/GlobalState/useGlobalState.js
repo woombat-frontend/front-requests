@@ -8,7 +8,8 @@ const State = {
     personal_info: {name: "", gender: "", email: "", uid: ""},
     single_project_view: "",
     single_user_projects: [],
-    chart_data: []
+    chart_data: [],
+    total_time: []
 }
 
 const useGlobalState = () => {

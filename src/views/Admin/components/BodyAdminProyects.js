@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import People from '../../../assets/People-asking.svg';
-import { Icon, Input } from 'antd';
+import { Icon, Input, Button } from 'antd';
 import Context from '../../../GlobalState/context';
 import Swal from 'sweetalert2';
 import firebase from 'firebase'
@@ -16,6 +16,7 @@ import Actualizaciones from '../components/SubScreens/Actualizaciones';
 import Entregables from '../components/SubScreens/Entregables';
 import Solicitudes from '../components/SubScreens/Solicitudes';
 import { send } from 'q';
+import TiempoTotal from './SubScreens/TiempoTotal';
 
 const Menus = [
     { title: "Informe General", action: "general" },
@@ -30,27 +31,52 @@ const Menus = [
 const BodyAdminProyects = props => {
 
     const { state, actions } = useContext(Context)
+    const db = firebase.firestore()
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
     });
+    const [completeProgress, setCompleteProgress] = useState(0)
+    const [renderOption, setRenderOption] = useState("general")
+
     const [DiseñoVisual, setDiseñoVisual] = useState('25%')
     const [LogicaComponentes, setLogicaComponentes] = useState("25%")
     const [ArquitecturaComponentes, setArquitecturaComponentes] = useState("25%")
     const [Produccion, setProduccion] = useState("25%")
-    const [renderOption, setRenderOption] = useState("general")
-    const db = firebase.firestore()
-
+    
+    const [DiseñoVisualTotal, setDiseñoVisualTotal] = useState('0%')
+    const [LogicaComponentesTotal, setLogicaComponentesTotal] = useState("0%")
+    const [ArquitecturaComponentesTotal, setArquitecturaComponentesTotal] = useState("0%")
+    const [ProduccionTotal, setProduccionTotal] = useState("0%")
+    
 
     useEffect(() => {
-        let arr = props.info.piechart_categories
-        console.log(props.info)
-        setDiseñoVisual(arr[0] + '%')
-        setLogicaComponentes(arr[1] + "%")
-        setArquitecturaComponentes(arr[2] + "%")
-        setProduccion(arr[3] + "%")
+        let pie = props.info.piechart_categories
+        let bar = props.info.total_time
+        let inputs = [bar[0], bar[1], bar[2], bar[3]]
+        let finalArr = []
+
+        setDiseñoVisual(pie[0] + '%')
+        setLogicaComponentes(pie[1] + "%")
+        setArquitecturaComponentes(pie[2] + "%")
+        setProduccion(pie[3] + "%")
+
+        setDiseñoVisualTotal(bar[0] + '%')
+        setLogicaComponentesTotal(bar[1] + "%")
+        setArquitecturaComponentesTotal(bar[2] + "%")
+        setProduccionTotal(bar[3] + "%")
+        console.log(inputs)
+        
+        inputs.map(x => finalArr.push((x * 25) / 100))
+        console.log(finalArr)
+        setCompleteProgress(
+            finalArr.reduce((x, y) => x + y) % 1 !== 0 ? 
+                Math.ceil(finalArr.reduce((x, y) => x + y))
+                : finalArr.reduce((x, y) => x + y)
+        )
+        // actions({ type: 'setState', payload: { ...state, total_time: [bar[0], bar[1], bar[2], bar[3]] }})
     }, [])
 
     const validate = () => {
@@ -89,6 +115,81 @@ const BodyAdminProyects = props => {
                     type: 'error',
                     title: validation
                 })
+
+        
+    }
+
+    const validateTotal = () => {
+        let aproved =  ''
+
+        DiseñoVisualTotal.length &&
+        LogicaComponentesTotal.length &&
+        ArquitecturaComponentesTotal.length &&
+        ProduccionTotal.length
+        ? 
+            parseInt(DiseñoVisualTotal.replace("%", "")) <= 100 &&
+            parseInt(LogicaComponentesTotal.replace("%", "")) <= 100 &&
+            parseInt(ArquitecturaComponentesTotal.replace("%", "")) <= 100 &&
+            parseInt(ProduccionTotal.replace("%", "")) <= 100
+            ? aproved = 'complete'
+            : aproved = 'exeed'
+        : 
+            aproved = 'empty'
+
+        return aproved
+    }
+
+    const changeTotal = () => {
+        let validation = validateTotal()
+        console.log(validation)
+        validation === 'complete' ?
+            sendTotal()
+        : 
+            validation === 'empty' 
+                ? Toast.fire({
+                    type: 'error',
+                    title: 'No se pueden dejar campos vacíos'
+                })
+            : validation === 'exeed'
+            ?   Toast.fire({
+                    type: 'error',
+                    title: 'Ningún campo puede exceder el 100%'
+                })
+            : Toast.fire({
+                type: 'error',
+                title: 'Error del servidor'
+            })
+
+        let inputs = [
+            parseInt(DiseñoVisualTotal.replace("%", "")),
+            parseInt(LogicaComponentesTotal.replace("%", "")),
+            parseInt(ArquitecturaComponentesTotal.replace("%", "")),
+            parseInt(ProduccionTotal.replace("%", ""))
+        ]
+        
+    }
+
+    const sendTotal = async () => {
+        let newTotal =
+            [parseInt(DiseñoVisualTotal.replace("%", "")),
+            parseInt(LogicaComponentesTotal.replace("%", "")),
+            parseInt(ArquitecturaComponentesTotal.replace("%", "")),
+            parseInt(ProduccionTotal.replace("%", ""))],
+            aux = []
+        
+        db.doc(`responses/${props.name}`).set({
+            total_time: newTotal
+        }, { merge: true })
+            .then(() => Toast.fire({
+                type: 'success',
+                title: 'Datos Enviados'
+            })
+        )
+        
+        newTotal.map(x => aux.push((x * 25) / 100))
+        setCompleteProgress(
+            aux.reduce((x, y) => x + y)
+        )
     }
 
     const sendPercent = async () => {
@@ -116,13 +217,13 @@ const BodyAdminProyects = props => {
                     </div>
 
                     <div className="container-status-info-profile-admin">
-                        <span className="span-title-proyect-admin">50% Completado</span>
+                        <span className="span-title-proyect-admin">{completeProgress}% Completado</span>
                     </div>
                     <div className="container-proyect-title">
                         <p className="change-status-text-proyect-admin">Proyecto:</p>
                     </div>
                     <div className="container-proyect-text">
-                        <p className="change-status-text-proyect-admin">Davivienda</p>
+                        <p className="change-status-text-proyect-admin">{props.name}</p>
 
                     </div>
                 </div>
@@ -131,7 +232,9 @@ const BodyAdminProyects = props => {
                     renderOption === 'general' ? 
                         <div className="container-master-pychart-module">
                             <div className="container-pychart-module">
-                                <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del grafico:</p>
+                                <div className="graph-icon"><Icon type="pie-chart" className="pychart-icon" /></div>
+                                <Button onClick={() => setRenderOption('general')} className="graph-btn1" type="primary"> Tiempo dedicado </Button>
+                                <Button onClick={()=> setRenderOption('tiempo_total')} className="graph-btn2" type="primary"> Total </Button>
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
@@ -150,6 +253,35 @@ const BodyAdminProyects = props => {
                                 <Input className="input-description-pychart" value={Produccion} onBlur={() => { !Produccion.length ? setProduccion("") : setProduccion(Produccion + "%") }} onFocus={() => setProduccion(Produccion.replace("%", ""))} onChange={e => setProduccion(e.target.value)} />
                             </div>
                             <div className="buttom-save-pychart-data" onClick={changePercent}>
+                                <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
+                            </div>
+                        </div>
+
+                    : renderOption === 'tiempo_total' ?
+
+                        <div className="container-master-pychart-module">
+                            <div className="container-pychart-module">
+                                <div className="graph-icon"><Icon type="pie-chart" className="pychart-icon" /></div>
+                                <Button onClick={() => setRenderOption('general')} className="graph-btn1" type="primary"> Tiempo dedicado </Button>
+                                <Button onClick={() => setRenderOption('tiempo_total')} className="graph-btn2" type="primary"> Total </Button>
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
+                                    <Input className="input-description-pychart" value={DiseñoVisualTotal} onBlur={() => { !DiseñoVisualTotal.length ? setDiseñoVisualTotal("") : setDiseñoVisualTotal(DiseñoVisualTotal + "%") }} onFocus={() => setDiseñoVisualTotal(DiseñoVisualTotal.replace("%", ""))} onChange={e => setDiseñoVisualTotal(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="interaction" /> Logica de los componentes:</p>
+                                <Input className="input-description-pychart" value={LogicaComponentesTotal} onBlur={() => { !LogicaComponentesTotal.length ? setLogicaComponentesTotal("") : setLogicaComponentesTotal(LogicaComponentesTotal + "%") }} onFocus={() => setLogicaComponentesTotal(LogicaComponentesTotal.replace("%", ""))} onChange={e => setLogicaComponentesTotal(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="apartment" /> Arquitectura de las conexiones:</p>
+                                <Input className="input-description-pychart" value={ArquitecturaComponentesTotal} onBlur={() => { !ArquitecturaComponentesTotal.length ? setArquitecturaComponentesTotal("") : setArquitecturaComponentesTotal(ArquitecturaComponentesTotal + "%") }} onFocus={() => setArquitecturaComponentesTotal(ArquitecturaComponentesTotal.replace("%", ""))} onChange={e => setArquitecturaComponentesTotal(e.target.value)} />
+                            </div>
+                            <div className="container-pychart-apartado">
+                                <p className="title-description-pychart"><Icon type="cloud-upload" /> Despliegue en Producción:</p>
+                                <Input className="input-description-pychart" value={ProduccionTotal} onBlur={() => { !ProduccionTotal.length ? setProduccionTotal("") : setProduccionTotal(ProduccionTotal + "%") }} onFocus={() => setProduccionTotal(ProduccionTotal.replace("%", ""))} onChange={e => setProduccionTotal(e.target.value)} />
+                            </div>
+                            <div className="buttom-save-pychart-data" onClick={changeTotal}>
                                 <p className="text-buttom-save-pychart-data"><Icon type="save" /> Guardar</p>
                             </div>
                         </div>
@@ -182,6 +314,8 @@ const BodyAdminProyects = props => {
                     {
                         renderOption === 'general' ? 
                             <General path={props.name}/>
+                        : renderOption === 'tiempo_total' ? 
+                            <TiempoTotal path={props.name}/>
                         : renderOption === 'archivos' ? 
                             <Archivos />
                         : renderOption === 'actualizaciones' ? 

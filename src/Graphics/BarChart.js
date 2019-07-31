@@ -1,42 +1,72 @@
 import React, {useState, useEffect, useContext} from 'react' 
 import '../Styles/Graphics.css'
 import { Bar } from 'react-chartjs-2'
+import firebase from 'firebase'
 
 const BarChart = props => {
 
     const [chartData, setChartData] = useState({})
     const [options, setOptions] = useState({})
+    const db = firebase.firestore()
 
     useEffect(() => {
-        
-        setChartData({
-            labels: props.data.labels,
-            datasets: [{
-                data: props.data.data,
-                borderColor: props.data.backgroundColor,
-                backgroundColor: props.data.colors,
-                hoverBackgroundColor: props.data.colors
-            }],
-            text: '30%'
-        });
+
+        db.doc(`responses/${props.path}`).onSnapshot(res => {
+            console.log(res.data())
+            setChartData({
+                labels: props.data.labels,
+                datasets: [
+                    {
+                        label: "Porcentaje",
+                        backgroundColor: props.data.colors,
+                        data: res.data().total_time
+                    }
+                ]
+            });
+        })
 
         setOptions({
+            legend: { 
+                display: false,
+                labels: {
+                    display: false
+                }
+            },
+            
             title: {
                 display: true,
-                text: 'Tiempo dedicado en tareas',
-                position: 'top',
+                text: 'Porcentaje Total',
                 fontColor: 'cyan',
                 fontSize: '20',
                 fontFamily: "Montserrat"
             },
-            legend: {
-                display: true,
-                position: 'right',
-                labels: {
-                    fontColor: 'white',
-                    fontStyle: 'bolder',
-                    fontFamily: "Montserrat"
-                }
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: true,
+                        color: '#606060',
+                    },
+                    ticks: {
+                        display: false
+                        
+                    },
+                }],
+                yAxes: [{
+                    ticks: {
+                        // Include a dollar sign in the ticks
+                        callback: function (value, index, values) {
+                            return value + "% " + " ";
+                        },
+                        min: 0,
+                        max: 100,
+                        fontSize: '14'
+                    },
+                    display: true,
+                    gridLines: {
+                        display: true,
+                        color: '#606060'
+                    }
+                }],
             }
         })
     }, [])
@@ -44,10 +74,10 @@ const BarChart = props => {
     return (
         <div className='main-barchart-container'>
             <Bar
-                data={barData}
-                width={100}
-                height={50}
-                options={barOptions}
+                data={chartData}
+                width={80}
+                height={40}
+                options={options}
             />
         </div>
     )
