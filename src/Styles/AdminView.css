@@ -1,4 +1,29 @@
+/* Variables */
+
+:root {
+    --spacemenu: 20%; 
+    --spacebar: 100%;
+  }
+
 /* Admin Panel */
+
+.container-left-menu-admin{
+    width: 20%;
+    height: 100vh;
+    display: flex;
+    background-color: #020633;
+    align-items: center;
+    padding: 3rem 0;
+    flex-direction: column;
+    z-index: 5;
+}
+
+.text-container-left-menu-singled-admin {
+    padding: 0.5rem 0;
+    text-align: center;
+    width: calc(var(--spacebar) + 29px);
+    left: 0;
+}
 
 .container-master-admin-view{
     display: grid;
@@ -22,16 +47,6 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-}
-.container-left-menu-admin{
-    width: 20%;
-    height: 100vh;
-    display: flex;
-    background-color: #020633;
-    align-items: center;
-    padding: 3rem 0;
-    flex-direction: column;
-    z-index: 5;
 }
 .container-buttom-session-admin{
     background-color: #093a6b;
@@ -62,7 +77,6 @@
     color: #ffffff !important;
 }
 .span-left-menu-admin{
-    width: 110%;
     background-color: #162a3e;
     left: 0%;
     padding: 0.4rem 0;
@@ -477,14 +491,6 @@
 .container-master-entregables{
     height: 100%;
 }
-.filepond--root .filepond--drop-label{
-    min-height: 13rem !important;
-}
-.filepond--drop-label.filepond--drop-label label{
-    height: 13rem !important;
-    display: flex !important;
-    align-items: center !important;
-}
 .container-master-file-buttom-entregable{
     display: flex;
     flex-direction: column;
@@ -620,4 +626,39 @@
     display: flex;
     height: 100%;
     align-items: center;
+}
+
+
+/* Actualizaciones View */
+
+.container-master-actualizaciones{
+    height: 100%;
+}
+.container-show-data-actualizaciones{
+
+}
+.container-data-actualizaciones{
+    border: 0.1rem solid #0fb2a680;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 30% 50% 1fr;
+}
+.text-actualizaciones{
+    margin: 0;
+    font-size: 0.6875rem;
+}
+.text-buttom-actualizaciones{
+    margin: 0;
+    color: #fff;
+}
+.container-buttom-actualizaciones{
+    background-color: #07756e;
+}
+.container-date-actualizaciones{
+    display: flex;
+    line-height: 0;
+    align-items: center;
+}
+.icon-date-actualizaciones{
+    margin-right: 0.5rem;
 }
