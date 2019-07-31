@@ -134,20 +134,22 @@ const BodyAdminProyects = () => {
                         <img src={UserMale} className="img-gender-proyects-admin" />
                         <p className="text-gender-proyects-admin">Ronald Prato</p>
                     </div>
-                    <div>
-                        <span className="span-title-proyect-admin">Davivienda</span>
-                        <div className="container-status-proyect-admin">
-                            <p className="status-proyect-admin">Estado: APROBADO</p>
-                            <p className="change-status-text-proyect-admin">Cambiar estado</p>
-                        </div>
+                    <div className="container-status-info-profile-admin">
+                        <span className="span-title-proyect-admin">50% Completado</span>
+                    </div>
+                    <div className="container-proyect-title">
+                        <p className="change-status-text-proyect-admin">Proyecto:</p>
+                    </div>
+                    <div className="container-proyect-text">
+                        <p className="change-status-text-proyect-admin">Davivienda</p>
                     </div>
                 </div>
-                <span className="span-separator-proyect-admin"></span>
+                <div className="container-span-separator-admin"><span className="span-separator-proyect-admin"></span></div>
                 {
                     renderOption === 'general' ? 
                         <div className="container-master-pychart-module">
                             <div className="container-pychart-module">
-                                <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del Pychart:</p>
+                                <Icon type="pie-chart" className="pychart-icon" /><p className="title-edit-pychart-admin-proyect">Edicion del grafico:</p>
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
