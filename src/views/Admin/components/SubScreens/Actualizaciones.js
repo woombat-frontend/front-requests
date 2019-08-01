@@ -1,7 +1,22 @@
 import React, { useState, useContext } from 'react';
 import { Icon, Input} from 'antd';
 import Context from '../../../../GlobalState/context';
+import Swal from 'sweetalert2';
 
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  });
+
+const EmptyMessage = () =>{
+    Toast.fire({
+        type: 'error',
+        title: 'Ingrese un mensaje'
+    })
+}
 
 const datatest =[
     {date: "2019-07-20", message: "Necesitamos el flujo de los mockups para el dia martes porque si no no se presenta el proyecto,Necesitamos el flujo de los mockups para el dia martes porque si no no se presenta el proyecto.,Necesitamos el flujo de los mockups para el dia martes porque si no no se presenta el proyecto."},
@@ -62,16 +77,24 @@ const conversation = [
     }
 ]
 
-console.log(conversation)
-
-
 const Actualizaciones = () =>{
 
     const {state, actions} = useContext(Context)
-
     const [chat,setChat] = useState(false);
+    const [Message, setMessage] = useState("");
 
+    const CheckKey = (event) =>{
+        if (event.keyCode == 13) {
+            SendMessage()
+        }
+    }
 
+    const SendMessage = () =>{
+        if (!Message) {
+            EmptyMessage()
+        }
+    }
+    
     return(
         <div className="container-master-actualizaciones">
             <div className={`container-show-data-actualizaciones ${chat ? "hide-component" : ""}`}>
@@ -132,9 +155,9 @@ const Actualizaciones = () =>{
                     <div className="separator-chat-body"></div>
                 </div>
                 <div className="container-send-message-chat">
-                    <Input placeholder="Ingrese un mensaje..." />
+                    <Input placeholder="Ingrese un mensaje..." onChange={e => setMessage(e.target.value)} onKeyDown={CheckKey} />
                     <span className="span-chat-separator" />
-                    <div className="container-master-buttom-actualizaciones">
+                    <div className="container-master-buttom-actualizaciones" onClick={SendMessage}>
                         <div className="container-buttom-send-chat">
                             <Icon type="message"/><p className="text-buttom-actualizaciones">Enviar</p>
                         </div>
