@@ -9,6 +9,7 @@ import Context from '../../../../GlobalState/context';
 const General = props => {
 
     const {state, actions} = useContext(Context)
+    const [animation, setAnimation] = useState({})
     const db = firebase.firestore()
     const [chartData, setChartData] = useState({
         data: [25, 25, 25, 25],
@@ -40,13 +41,15 @@ const General = props => {
     return( 
         <div className="main-general-container">
 
-            <DonnutChart data={chartData}/>
+            <div onClick={() => setAnimation({transform: 'translateX(-100%)'})}>
+                <DonnutChart data={chartData} />
+            </div>
 
             <section className="categories-container">
                 {
                     !state.chart_data.length ? 
                         chartData.labels.map((cat, i) =>
-                            <div style={{ background: chartData.colors[i] }} className={`cat_${i + 1} single-cat`}>
+                            <div style={{background: chartData.colors[i]}} className={`cat_${i + 1} single-cat`}>
                                 <Icon className="cat-icon" type={icons[i]} />
                                 <h4 className="cat-name">{cat}</h4>
                                 <h4 className="cat-percent">{chartData.data[i]}%</h4>
@@ -54,7 +57,7 @@ const General = props => {
                         )
                     :
                         chartData.labels.map((cat, i) =>
-                            <div style={{ background: chartData.colors[i] }} className={`cat_${i + 1} single-cat`}>
+                            <div style={{ background: chartData.colors[i]}} className={`cat_${i + 1} single-cat`}>
                                 <Icon className="cat-icon" type={icons[i]} />
                                 <h4 className="cat-name">{cat}</h4>
                                 <h4 className="cat-percent">{state.chart_data[i]}%</h4>

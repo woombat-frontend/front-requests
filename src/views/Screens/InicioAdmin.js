@@ -26,6 +26,8 @@ const InicioAdmin = props =>{
     const [projectList, setProjectList] = useState([])
     const [detailProject, setDetailProject] = useState([])
     const [userIndex, setUserIndex] = useState(0)
+    const [localNames, setLocalNames] = useState([])
+    let userPair = {}
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -43,6 +45,7 @@ const InicioAdmin = props =>{
     useEffect(() => {
         db.collection('users').onSnapshot(querySnapshot => {
             setLocalUsers(querySnapshot.docs.map(doc => doc.data()))
+            setLocalNames(querySnapshot.docs.map(doc => doc.data().name))
             setLocalUsersId(querySnapshot.docs.map(doc => doc.id))
         })
     }, [])
@@ -56,8 +59,10 @@ const InicioAdmin = props =>{
 
 
     const checkProjectDetails = option => {
-        setUserIndex(option)
-        db.collection(`users/${localUsersId[option]}/projects`).onSnapshot(querySnapshot => {
+        let localIndex = localNames.indexOf(option)
+        setUserIndex(localIndex)
+
+        db.collection(`users/${localUsersId[localIndex]}/projects`).onSnapshot(querySnapshot => {
             if (querySnapshot.docs.length) 
                 setProjectList(querySnapshot.docs.map(doc => doc.data()))
             else
@@ -73,6 +78,12 @@ const InicioAdmin = props =>{
     }
 
     const takeProject = async () => {
+        await db.doc(`users/${localUsersId[userIndex]}/projects/${detailProject.name}`)
+            .set({ state: 'iniciado' }, { merge: true })
+            .then(() => {
+                setProjectList([])
+                setDetailProject({})
+            })
         
         await db.doc(`responses/${detailProject.name}`)
             .set({
@@ -83,14 +94,9 @@ const InicioAdmin = props =>{
                 },
                 task: [],
                 piechart_categories: [25, 25, 25, 25],
+                total_time: [0, 0, 0, 0],
                 requirements: []
             })
-        await db.doc(`users/${localUsersId[userIndex]}/projects/${detailProject.name}`)
-                .set({state: 'iniciado'}, {merge: true})
-                .then(() => {
-                    setProjectList([])
-                    setDetailProject({})
-                })
 
         await Toast.fire({
             type: 'success',
@@ -106,7 +112,7 @@ const InicioAdmin = props =>{
                 
                 <div className="container-row-admin-proyects">
                     <div className="input-search-admin">
-                        <Icon onClick={() => console.log(state.single_user_projects)} type="search" className="icon-admin-search" /><Input placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value)} />
+                        <Icon onClick={() => console.log(userPair)} type="search" className="icon-admin-search" /><Input value={UsersSearch} placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value)} />
                     </div>
                 </div>
                 <span className="border-span-admin"></span>
@@ -116,7 +122,7 @@ const InicioAdmin = props =>{
                             localUsers.map((user, i) => {
                                 return (
                                     user.role !== 'admin' ?
-                                        <div onClick={() => checkProjectDetails(i)} className="container-user-admin">
+                                        <div onClick={() => checkProjectDetails(user.name)} className="container-user-admin">
                                             {user.gender === "m" ? <img src={User_male} className="icon-user-admin" /> : <img src={User_female} className="icon-user-admin" />}
                                             <p className="text-name-user-admin">{user.name}</p>
                                             {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
@@ -129,7 +135,7 @@ const InicioAdmin = props =>{
 
                                 return (
                                     user.role !== 'admin' ?
-                                        <div onClick={() => checkProjectDetails(i)} className="container-user-admin">
+                                        <div onClick={() => checkProjectDetails(user.name)} className="container-user-admin">
                                             {user.gender === "m" ? <img src={User_male} className="icon-user-admin" /> : <img src={User_female} className="icon-user-admin" />}
                                             <p className="text-name-user-admin">{user.name}</p>
                                             {/* {user.notifications === null ? <div/> :<span className="span-notifications-user-admin">{user.notifications}</span>} */}
@@ -155,7 +161,7 @@ const InicioAdmin = props =>{
                 <Button 
                     className="btn-back" 
                     type="primary" 
-                    onClick={() => {setProjectList([]); setDetailProject({})}}>Volver</Button>
+                    onClick={() => { setProjectList([]); setDetailProject({});}}>Volver</Button>
                 <section className="project-mapper">         
                     {
                         projectList.map((project, i) => 

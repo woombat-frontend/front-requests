@@ -1,0 +1,49 @@
+.project-unique-container {
+    width: 100%;
+    padding: 1em 3em 1em 4em;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+}
+
+hr {
+    width: 100% !important;
+    height: 1px !important;
+    border: none !important;
+    background: #1b245b;
+}
+
+.title {
+    /* font-size: 1.2em; */
+    color: #1b245b;
+}
+
+.unique-project-name {
+    grid-column: 1/3;
+    grid-row: 1/2;
+    color: #1b245b;
+}
+.progress-bar {
+    grid-column: 5/13;
+    grid-row: 1/2;
+}
+.informe-general {
+    margin-top: 1em;
+    grid-column: 1/6;
+    grid-row: 2/6;
+}
+.panel-actualizaciones {
+    margin-top: 1em;
+    grid-column: 7/13;
+    grid-row: 2/6;
+}
+.informe-especifico {
+    margin-top: 1em;
+    grid-column: 1/6;
+    grid-row: 7/13;
+}
+.zona-carga {
+    margin-top: 1em;
+    grid-column: 7/13;
+    grid-row: 7/13;
+}

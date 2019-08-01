@@ -1,0 +1,45 @@
+.created-main-container {
+    width: 100%;
+    padding: 1em 1em 1em 3em;
+}
+
+.user-project-mapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+}
+
+.single-user-project {
+    background: #323232;
+    width: 100%;
+    height: 14vh;
+    padding: 1em 1em 0 1em;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr 1fr;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px gray;
+    cursor: pointer;
+    transition: ease-in-out 250ms;
+}
+.single-user-project:hover {
+    background: #042b4b;
+}
+.user-project-name {
+    grid-column: 1/13;
+    grid-row: 1/2;
+    margin: 0;
+    color: white;
+}
+.user-project-demo-date {
+    grid-column: 1/8;
+    grid-row: 2/3;
+    margin: 0;
+    color: white;
+}
+.user-project-state {
+    grid-column: 9/13;
+    grid-row: 2/3;
+    margin: 0;
+    
+}

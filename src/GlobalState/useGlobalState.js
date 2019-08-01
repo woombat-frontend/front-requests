@@ -9,7 +9,8 @@ const State = {
     single_project_view: "",
     single_user_projects: [],
     chart_data: [],
-    total_time: []
+    total_time: [],
+    uniqueProjectName: ""
 }
 
 const useGlobalState = () => {

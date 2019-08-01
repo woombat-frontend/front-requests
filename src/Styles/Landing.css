@@ -192,36 +192,6 @@
 .icon-title-menu-left{
     color: #9ec7c6 !important;
 }
-.container-body-empty{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-.body-empty-text{
-    color: #000;
-    margin: 0;
-    padding: 1rem 0;
-}
-.img-empty-body{
-    width: 14rem;
-    pointer-events: none;
-}
-.text-buttom-create-proyect{
-    color: #fff;
-    margin: 0;
-    text-transform: uppercase;
-}
-.buttom-create-proyect{
-    background-color: #020633;
-    padding: 0.3rem 3rem;
-    border-radius: 0.7rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.buttom-create-proyect:hover{
-    background-color: #01031a;
-}
 
 .text-buttom-proyectos{
     margin: 0;

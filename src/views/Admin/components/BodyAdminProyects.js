@@ -192,17 +192,17 @@ const BodyAdminProyects = props => {
         )
     }
 
-    const sendPercent = async () => {
+    const sendPercent = () => {
         let newPercent =
         [ parseInt(DiseñoVisual.replace("%", "")),
           parseInt(LogicaComponentes.replace("%", "")),
           parseInt(ArquitecturaComponentes.replace("%", "")),
           parseInt(Produccion.replace("%", ""))  ]
-        await Toast.fire({
+        Toast.fire({
             type: 'success',
             title: 'Datos Enviados'
         })
-        await db.doc(`responses/${props.name}`).set({
+        db.doc(`responses/${props.name}`).set({
             piechart_categories: newPercent
         }, {merge: true})
     }

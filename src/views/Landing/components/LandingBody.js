@@ -4,7 +4,7 @@ import { Icon } from 'antd';
 import Context from '../../../GlobalState/context';
 
 // Import Screens
-import Empty from '../../Screens/Empty'
+import ProyectosCreados from '../../Screens/ProyectosCreados'
 import Proyectos from '../../Screens/Proyectos'
 import Historial from '../../Screens/Historial'
 import Solicitudes from '../../Screens/Solicitudes'
@@ -21,7 +21,7 @@ const LandingBody = () => {
         state.current_menu_option === "Crear Proyecto" ?
             <Proyectos />
         : state.current_menu_option === "Proyectos" ? 
-            <Empty />
+            <ProyectosCreados />
         : state.current_menu_option === "Historial" ? 
             <Historial />
         : state.current_menu_option === "Solicitudes" ? 

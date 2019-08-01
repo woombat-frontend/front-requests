@@ -19,7 +19,6 @@ const SingleProjectList = () => {
     useEffect(() => {
         
         db.collection('responses').onSnapshot(querySnapshot => {
-            console.log("%c HEEY", "color: green; font-weight: bolder")
             setLocalProjectsName(querySnapshot.docs.map(doc => doc.id))
             setLocalProjectsData(querySnapshot.docs.map(doc => doc.data()))
         })
@@ -28,7 +27,9 @@ const SingleProjectList = () => {
     const getIntoProject = async index => {
         await setProjectIndex(index)
         await setShowProject(true)
-    }   
+    }
+
+    
 
     return (
         !showProjet ?
@@ -55,3 +56,5 @@ const SingleProjectList = () => {
 }
 
 export default SingleProjectList
+
+
