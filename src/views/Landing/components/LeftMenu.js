@@ -17,7 +17,7 @@ const LeftMenu = props => {
         { Nombre: "Crear Proyecto", url: "crear", icon: "plus" },
         {Nombre: "Proyectos", url: "proyectos", icon: "folder-open"},
         {Nombre: "Historial", url: "historial", icon: "file-search"},
-        // {Nombre: "Solicitudes", url: "solicitudes", icon: "plus-circle"}
+        {Nombre: "Solicitudes", url: "solicitudes", icon: "plus-circle"},
         {Nombre: "Entregas", url: "entregas", icon: "file-done"} 
     ]
 
