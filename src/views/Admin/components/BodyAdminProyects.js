@@ -76,6 +76,8 @@ const BodyAdminProyects = props => {
                 Math.ceil(finalArr.reduce((x, y) => x + y))
                 : finalArr.reduce((x, y) => x + y)
         )
+
+
         // actions({ type: 'setState', payload: { ...state, total_time: [bar[0], bar[1], bar[2], bar[3]] }})
     }, [])
 
@@ -319,11 +321,11 @@ const BodyAdminProyects = props => {
                         : renderOption === 'archivos' ? 
                             <Archivos />
                         : renderOption === 'actualizaciones' ? 
-                            <Actualizaciones />
+                            <Actualizaciones name={props.name} subjects={props.subjects}/>
                         : renderOption === 'entregables' ? 
                             <Entregables />
                         : renderOption === 'solicitudes' ? 
-                            <Solicitudes />
+                            <Solicitudes name={props.name}/>
                         : <div/>
                     }
                 </div>

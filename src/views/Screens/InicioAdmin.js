@@ -85,12 +85,12 @@ const InicioAdmin = props =>{
                 setDetailProject({})
             })
         
-        await db.doc(`responses/${detailProject.name}`)
+        await db.doc(`/${detailProject.name}`)
             .set({
                 metadata: {
                     in_charge: localUsers[userIndex],
                     user_uid: localUsersId[userIndex],
-                    demo_date: detailProject.demo_date
+                    demo_dresponsesate: detailProject.demo_date
                 },
                 task: [],
                 piechart_categories: [25, 25, 25, 25],

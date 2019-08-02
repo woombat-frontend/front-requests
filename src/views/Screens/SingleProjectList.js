@@ -14,6 +14,7 @@ const SingleProjectList = () => {
     const [localProjectsName, setLocalProjectsName] = useState([])
     const [projectIndex, setProjectIndex] = useState(null)
     const [showProjet, setShowProject] = useState(false)
+    const [subjects, setSubjects] = useState([])
     
 
     useEffect(() => {
@@ -21,7 +22,9 @@ const SingleProjectList = () => {
         db.collection('responses').onSnapshot(querySnapshot => {
             setLocalProjectsName(querySnapshot.docs.map(doc => doc.id))
             setLocalProjectsData(querySnapshot.docs.map(doc => doc.data()))
+            setSubjects(querySnapshot.docs.map(s => s.data().subjects))
         })
+
     }, [])
 
     const getIntoProject = async index => {
@@ -34,7 +37,7 @@ const SingleProjectList = () => {
     return (
         !showProjet ?
             <div className='main-project-list-container'>
-                {/* <Button onClick={() => setShowProject(true)}>Check</Button> */}
+                <Button onClick={() => console.log(localProjectsData)}>Check</Button>
                 <section className="accepted-projects-mapper-container">
                     {
                         localProjectsData.map((project, i) => 
@@ -51,6 +54,7 @@ const SingleProjectList = () => {
             <BodyAdminProyects 
                 info={localProjectsData[projectIndex]} 
                 name={localProjectsName[projectIndex]}
+                subjects={subjects[projectIndex]}
             />
     )
 }

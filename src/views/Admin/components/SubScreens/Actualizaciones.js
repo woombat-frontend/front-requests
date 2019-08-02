@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Icon, Input} from 'antd';
 import Context from '../../../../GlobalState/context';
 import Swal from 'sweetalert2';
+import firebase from 'firebase'
 
 
 const Toast = Swal.mixin({
@@ -24,91 +25,113 @@ const datatest =[
     {date: "2019-98-01", message: "No me sirve la funcion de ver los radicados."}
 ]
 
-const conversation = [
-    {
-        message: 'El servidor tuvo un error inesperado',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Ush... Qué pasó ahora?',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'No lo sé. estaba bien y se cayó :v',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pero se cayó todo o fue solo oozie?',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Fue solo oozie',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pues aja... Es imposible que se caiga oozie solo',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pero entonces por qué pasó?',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Porque eres medio marico wn...',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Nojoda, gracias por la ayuda',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: '( ._.)(._. )',
-        role: 'admin',
-        timestamp: new Date()
-    }
-]
 
-const Actualizaciones = () =>{
+
+
+
+const Actualizaciones = props =>{
 
     const {state, actions} = useContext(Context)
     const [chat,setChat] = useState(false);
     const [Message, setMessage] = useState("");
+    const [conversation, setConversation] = useState([])
+    const [messagesId, setMessagesId] = useState([])
+    const [localSubject, setLocalSubject] = useState("")
+    const db = firebase.firestore()
 
-    const CheckKey = (event) =>{
+    useEffect(() => {
+        // db.collection(`chats/${props.name}/`).onSnapshot(querySnapshot => {
+        //     console.log("NOMBRE DEL PROYECTO: ", querySnapshot.docs)
+        //     querySnapshot.docs.map(x => console.log(x.id))
+        //     // console.log(querySnapshot.data())
+        // }onClick={putData} 
+    }, [])
+
+    const loadConversation = subject => {
+
+        setLocalSubject(subject)
+        db.collection(`chats/${props.name}/${subject}`).orderBy('date').onSnapshot(res => {
+            
+            setConversation(res.docs.map(x => x.data()))
+            ScrollBottom()
+        })
+        setChat(true)
+    }
+
+    const put = async ()  => {
+        let messages = []
+        await db.collection(`chats/Eagle View/graficas/`).get().then(x => {
+            x.docs.map(i => messages.push(i.id))
+        }) 
+
+        !messages.length ? 
+            await db.doc(`chats/Eagle View/graficas/1`).set({
+                message: "hola tu",
+                from: 'camila',
+                date: '2019-02-16'
+            })
+            : await db.doc(`chats/Eagle View/graficas/${parseInt(messages[messages.length - 1]) + 1}`).set({
+                message: "hola tu",
+                from: 'camila',
+                date: '2019-02-16'
+            })
+    }
+
+    const CheckKey = (event) => {
         if (event.keyCode == 13) {
+            CheckMessage()
+        }
+    }
+
+    const CheckMessage = () => {
+        ScrollBottom()
+        if (!Message) {
+            EmptyMessage()
+        }else {
             SendMessage()
         }
     }
 
-    const SendMessage = () =>{
-        if (!Message) {
-            EmptyMessage()
+    const ScrollBottom = () => {
+        document.getElementById('scrolled').scrollTop = document.getElementById('scrolled').scrollHeight
+    }
+
+    const makeid = length => {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
+        return result;
+    }
+
+    const SendMessage = async () => {
+        alert(localSubject)
+        let aux = Message;
+        setMessage("")
+        await db.doc(`chats/${props.name}/${localSubject}/${makeid(20)}`).set({
+            message: aux,
+            from: 'user',
+            role: 'user',
+            date: new Date()
+        })
     }
     
     return(
         <div className="container-master-actualizaciones">
             <div className={`container-show-data-actualizaciones ${chat ? "hide-component" : ""}`}>
-                {datatest.map(update =>{
-                    return(
+                {props.subjects.map((sub, i) => {
+                    return (
                     <div className="container-data-actualizaciones">
                         <div className="container-date-actualizaciones">
-                            <Icon type="clock-circle" className="icon-date-actualizaciones" /><p className="text-actualizaciones">{update.date}</p>
+                            <Icon type="clock-circle" className="icon-date-actualizaciones" /><p className="text-actualizaciones">2019-04-13</p>
                         </div>
-                        <div className="container-body-actualizaciones">
-                            <Icon type="info-circle" /><p className="text-actualizaciones">{update.message}</p>
+                            <div onClick={() => console.log(conversation)} className="container-body-actualizaciones">
+                            <Icon type="info-circle" /><p className="text-actualizaciones">{sub}</p>
                         </div>
                         <div className="container-master-buttom-actualizaciones">
-                            <div className="container-buttom-actualizaciones" onClick={() => setChat(true)}>
+                                <div className="container-buttom-actualizaciones" onClick={() => loadConversation(sub)}>
                                 <Icon type="message"/><p className="text-buttom-actualizaciones">Abrir Chat</p>
                             </div>
                         </div>
@@ -116,7 +139,7 @@ const Actualizaciones = () =>{
                     )
                 })}
             </div>
-            <div className={`container-master-chat-actualizaciones ${chat ? "show-container" : ""}`}>
+            <div  className={`container-master-chat-actualizaciones ${chat ? "show-container" : ""}`}>
                 <div className="container-master-text-header-chat">
                     <div className="container-text-header-chat">
                         <Icon type="message" />
@@ -132,7 +155,7 @@ const Actualizaciones = () =>{
                     <div className="separator-chat-body"></div>
                 </div>
                 <div className="container-master-body-messages">
-                    <div className="container-body-chat">
+                    <div id="scrolled" className="container-body-chat">
                         {conversation.map(mensaje =>{
                             return(
                             mensaje.role === 'user' ?
@@ -155,9 +178,9 @@ const Actualizaciones = () =>{
                     <div className="separator-chat-body"></div>
                 </div>
                 <div className="container-send-message-chat">
-                    <Input placeholder="Ingrese un mensaje..." onChange={e => setMessage(e.target.value)} onKeyDown={CheckKey} />
+                    <Input value={Message} placeholder="Ingrese un mensaje..." onChange={e => setMessage(e.target.value)} onKeyDown={CheckKey} />
                     <span className="span-chat-separator" />
-                    <div className="container-master-buttom-actualizaciones" onClick={SendMessage}>
+                    <div className="container-master-buttom-actualizaciones" onClick={CheckMessage}>
                         <div className="container-buttom-send-chat">
                             <Icon type="message"/><p className="text-buttom-actualizaciones">Enviar</p>
                         </div>

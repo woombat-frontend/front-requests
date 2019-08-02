@@ -74,7 +74,7 @@ const Solicitudes = () =>{
                             </div>
                         </div>
                         )
-                    })}
+                    })} 
                     <div className="container-master-solicitud-new">
                         <div className="container-text-new" onClick={() => setshowModal(true)}>
                             <div className="container-icon-solicitudes-new">
