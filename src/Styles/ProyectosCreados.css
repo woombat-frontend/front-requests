@@ -6,7 +6,7 @@
 .user-project-mapper {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-
+    grid-gap: 1rem;
 }
 
 .single-user-project {
@@ -41,5 +41,4 @@
     grid-column: 9/13;
     grid-row: 2/3;
     margin: 0;
-    
 }
