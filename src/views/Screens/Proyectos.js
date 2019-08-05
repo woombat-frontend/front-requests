@@ -122,6 +122,7 @@ const Proyectos = () => {
                     type: 'success',
                     title: 'Tu proyecto se ha enviado correctamente'
                 })
+                resetInputs()
             })
     }
 
@@ -153,7 +154,7 @@ const Proyectos = () => {
                 createProject()
             }
         }
-        resetInputs()
+        
 
     }
 
