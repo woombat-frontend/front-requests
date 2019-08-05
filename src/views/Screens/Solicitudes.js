@@ -122,7 +122,7 @@ const Solicitudes = props =>{
         }else {
             let aux = Message;
             setMessage("")
-            await db.doc(`chats/${props.path}/${singleLocalSubject.subject}/${makeid(20)}`).set({
+            await db.doc(`chats/${props.path}/${singleLocalSubject}/${makeid(20)}`).set({
                 message: aux,
                 from: 'user',
                 role: 'user',
@@ -137,7 +137,6 @@ const Solicitudes = props =>{
 
     const LoadMessages = subject => {
         setSingleLocalSubject(subject)
-        alert(subject)
         db.collection(`chats/${props.path}/${subject}`).orderBy('date').onSnapshot(res => {
             setConversation(res.docs.map(x => x.data()))
             ScrollBottom()

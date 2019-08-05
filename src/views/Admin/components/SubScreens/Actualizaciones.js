@@ -130,7 +130,7 @@ const Actualizaciones = props =>{
                             <Icon type="info-circle" /><p className="text-actualizaciones">{sub.subject}</p>
                         </div>
                         <div className="container-master-buttom-actualizaciones">
-                                <div className="container-buttom-actualizaciones" onClick={() => loadConversation(sub)}>
+                                <div className="container-buttom-actualizaciones" onClick={() => loadConversation(sub.subject)}>
                                 <Icon type="message"/><p className="text-buttom-actualizaciones">Abrir Chat</p>
                             </div>
                         </div>
