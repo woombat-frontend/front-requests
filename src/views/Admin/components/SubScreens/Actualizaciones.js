@@ -111,8 +111,8 @@ const Actualizaciones = props =>{
         setMessage("")
         await db.doc(`chats/${props.name}/${localSubject}/${makeid(20)}`).set({
             message: aux,
-            from: 'user',
-            role: 'user',
+            from: 'admin',
+            role: 'admin',
             date: new Date()
         })
     }
