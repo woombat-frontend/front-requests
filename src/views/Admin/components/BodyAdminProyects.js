@@ -58,6 +58,8 @@ const BodyAdminProyects = props => {
         let inputs = [bar[0], bar[1], bar[2], bar[3]]
         let finalArr = []
 
+        console.log("SUUUUBJECTs => ", props.subjects)
+
         setDiseñoVisual(pie[0] + '%')
         setLogicaComponentes(pie[1] + "%")
         setArquitecturaComponentes(pie[2] + "%")

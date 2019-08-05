@@ -124,10 +124,10 @@ const Actualizaciones = props =>{
                     return (
                     <div className="container-data-actualizaciones">
                         <div className="container-date-actualizaciones">
-                            <Icon type="clock-circle" className="icon-date-actualizaciones" /><p className="text-actualizaciones">2019-04-13</p>
+                            <Icon type="clock-circle" className="icon-date-actualizaciones" /><p className="text-actualizaciones">{sub.date}</p>
                         </div>
                             <div onClick={() => console.log(conversation)} className="container-body-actualizaciones">
-                            <Icon type="info-circle" /><p className="text-actualizaciones">{sub}</p>
+                            <Icon type="info-circle" /><p className="text-actualizaciones">{sub.subject}</p>
                         </div>
                         <div className="container-master-buttom-actualizaciones">
                                 <div className="container-buttom-actualizaciones" onClick={() => loadConversation(sub)}>
