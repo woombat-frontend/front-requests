@@ -91,6 +91,7 @@ const Solicitudes = props =>{
     const [localSubjets, setLocalSubjects] = useState([])
     const [singleLocalSubject, setSingleLocalSubject] = useState("")
     const [conversation, setConversation] = useState([])
+    const [asunto, setAsunto] = useState("")
     const db = firebase.firestore();
 
     useEffect(() => {
@@ -147,11 +148,24 @@ const Solicitudes = props =>{
         document.getElementById('scrolled').scrollTop = document.getElementById('scrolled').scrollHeight
     }
 
+    const createNewRequest = async () => {
+        let asuntos_aux = []
+        await setAsunto('')
+        await db.doc(`responses/${props.path}`).get()
+            .then(res => asuntos_aux = res.data().subjects)
+        let date = await new Date().toISOString().slice(0, 10)
+        await asuntos_aux.push({ subject: asunto, date: date})
+
+        await db.doc(`responses/${props.path}`).set({
+            subjects: asuntos_aux
+        }, {merge: true})
+    }
+
     return(
         <div className="container-master-solicitudes-view">
             <div className="container-solicitudes">
                 <div className="container-left-solicitudes-view">
-                    <div className="container-text-new-solicitud" onClick={GetIntoProjectRequirements} /*onClick={() => SetnewReq(true)}*/>
+                    <div className="container-text-new-solicitud"onClick={() => SetnewReq(true)}>
                         <p className="text-new-solicitud-view"><Icon type="plus" /> Nuevo Requerimiento</p>
                     </div>
                     <div className="container-all-master-solicitudes-view">
@@ -161,11 +175,11 @@ const Solicitudes = props =>{
                             <div className="container-master-title-solicitudes-view">
                                 <div className="container-text-solicitudes-view">
                                     <Icon type="info-circle" />
-                                        <p className="text-description-solicitudes-view">{subject}</p>
+                                        <p className="text-description-solicitudes-view">{subject.subject}</p>
                                 </div>
                                 <div className="container-date-solicitudes-view">
                                     <Icon type="clock-circle" />
-                                    <p className="date-description-solicitudes-view">Fecha: 2019-07-01</p>
+                                    <p className="date-description-solicitudes-view">Fecha: {subject.date}</p>
                                 </div>
                                 <div >  
                                         <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
@@ -190,12 +204,12 @@ const Solicitudes = props =>{
                             <hr></hr>
                         </div>
                         <div className="container-master-solicitud-modal-new">
-                            <div className="container-master-input-new-solicitud">
-                                <TextArea rows={4} placeholder="Ingrese el asunto de la solicitud" />
+                                <div className="container-master-input-new-solicitud">
+                                    <TextArea onChange={e => setAsunto(e.target.value)} value={asunto} rows={1} placeholder="Ingrese el asunto de la solicitud" />
                             </div>
                             <span className="span-solicitud-new-modal"></span>
                             <div className="container-master-last-div-modal-new-solicitud">
-                                <div className="buttom-solicitud-body-new">
+                                <div onClick={createNewRequest} className="buttom-solicitud-body-new">
                                     <Icon type="check-circle"/><p className="text-buttom-solicitud-body">Crear Solicitud</p>
                                 </div>
                             </div>
