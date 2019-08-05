@@ -9,12 +9,6 @@ import firebase from 'firebase'
 
 const { TextArea } = Input;
 
-const datatest=[
-    {title: "Arreglo de Botones en OCR", date: "23/07/19"},
-    {title: "Problema con AWS en general", date: "23/07/19"},
-    {title: "se ha retradaso todo el proyecto", date: "23/07/19"},
-]
-
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -28,62 +22,21 @@ const EmptyMessage = () =>{
         title: 'Ingrese un mensaje'
     })
 }
-
-const conversation = [
-    {
-        message: 'El servidor tuvo un error inesperado',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Ush... Qué pasó ahora?',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'No lo sé. estaba bien y se cayó :v',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pero se cayó todo o fue solo oozie?',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Fue solo oozie',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pues aja... Es imposible que se caiga oozie solo',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Pero entonces por qué pasó?',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: 'Porque eres medio marico wn...',
-        role: 'admin',
-        timestamp: new Date()
-    },
-    {
-        message: 'Nojoda, gracias por la ayuda',
-        role: 'user',
-        timestamp: new Date()
-    },
-    {
-        message: '( ._.)(._. )',
-        role: 'admin',
-        timestamp: new Date()
-    }
-]
-
+const EmptySolicitud = () =>{
+    Toast.fire({
+        type: 'error',
+        title: 'Ingrese el asunto de la solicitud'
+    })
+}
+const SuccessSendSolicitud = () =>{
+    Toast.fire({
+        type: 'success',
+        title: 'Solicitud enviada'
+    })
+}
 
 const Solicitudes = props =>{
+    
 
     const [newReq, SetnewReq] = useState(false);
     const [chat,setChat] = useState(false);
@@ -141,7 +94,8 @@ const Solicitudes = props =>{
             setConversation(res.docs.map(x => x.data()))
             ScrollBottom()
         })
-        setChat(true) 
+        setChat(true)
+        SetnewReq(false)
     }
 
     const ScrollBottom = () => {
@@ -149,27 +103,33 @@ const Solicitudes = props =>{
     }
 
     const createNewRequest = async () => {
-        let asuntos_aux = []
-        await setAsunto('')
-        await db.doc(`responses/${props.path}`).get()
-            .then(res => asuntos_aux = res.data().subjects)
-        let date = await new Date().toISOString().slice(0, 10)
-        await asuntos_aux.push({ subject: asunto, date: date})
+        if (!asunto) {
+            EmptySolicitud() 
+        } 
+        else {
+            SuccessSendSolicitud()
+            let asuntos_aux = []
+            await setAsunto('')
+            await db.doc(`responses/${props.path}`).get()
+                .then(res => asuntos_aux = res.data().subjects)
+            let date = await new Date().toISOString().slice(0, 10)
+            await asuntos_aux.push({ subject: asunto, date: date})
 
-        await db.doc(`responses/${props.path}`).set({
-            subjects: asuntos_aux
-        }, {merge: true})
+            await db.doc(`responses/${props.path}`).set({
+                subjects: asuntos_aux
+            }, {merge: true})
+        }
     }
 
     return(
         <div className="container-master-solicitudes-view">
-            <div className="container-textname-solicitud-single">
-                <p className="textname-project-single">Requerimientos de: {props.path}</p>
-            </div>
             <div className="container-solicitudes">
                 <div className="container-left-solicitudes-view">
-                    <div className="container-text-new-solicitud"onClick={() => SetnewReq(true)}>
-                        <p className="text-new-solicitud-view"><Icon type="plus" /> Nuevo Requerimiento</p>
+                    <div className="container-textname-solicitud-single">
+                        <p className="textname-project-single"><Icon type="solution" /> Solicitudes de: {props.path}</p>
+                    </div>
+                    <div className="container-text-new-solicitud"onClick={() => (SetnewReq(true), setChat(false))}>
+                        <p className="text-new-solicitud-view"><Icon type="plus" /> Nueva Solicitud</p>
                     </div>
                     <div className="container-all-master-solicitudes-view">
                         {localSubjets != 0 ? 
@@ -218,7 +178,7 @@ const Solicitudes = props =>{
                             </div>
                         </div>
                     </div>
-                    <div className={`container-master-chat-solicitudes-view ${chat ? "show" : "hide"}`}>
+                    <div className={`container-master-chat-solicitudes-view ${chat ? "show-chat" : "hide-chat"}`}>
                         <div className="container-master-text-header-chat">
                             <div className="container-text-header-chat">
                                 <Icon type="message" />

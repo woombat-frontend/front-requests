@@ -29,7 +29,20 @@ const ProyectosCreados = () => {
         await setRenderOption('project_unique')
     }
 
+    const changeCurrentMenuOption = () => {
+        actions({type: "setState", payload: {...state, current_menu_option: "Crear Proyecto" }})
+    }
+
     return(
+        userProjects.length === 0 ?
+        <div className="container-master-empty-proyects-mapper">
+            <img src={People} className="people-asking"></img>
+            <p className="text-empty-proyects-mapper">Al parecer no tienes ningún proyecto aún</p>
+            <div className="buttom-create-project" onClick={changeCurrentMenuOption}>
+                <p className="buttom-text-create-project"><Icon type="plus-circle" /> Crear Proyecto</p>
+            </div>
+        </div>
+        :
         renderOption === 'projects_list' ?
             <div className="created-main-container">
                 {/* <Button onClick={() => console.log(userProjects)}> Projects </Button> */}
