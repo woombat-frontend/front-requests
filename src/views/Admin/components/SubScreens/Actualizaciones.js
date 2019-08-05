@@ -3,6 +3,7 @@ import { Icon, Input} from 'antd';
 import Context from '../../../../GlobalState/context';
 import Swal from 'sweetalert2';
 import firebase from 'firebase'
+import robots from '../../../../assets/Robots.svg'
 
 
 const Toast = Swal.mixin({
@@ -33,6 +34,7 @@ const Actualizaciones = props =>{
 
     const {state, actions} = useContext(Context)
     const [chat,setChat] = useState(false);
+    const [Case,setCase] = useState("");
     const [Message, setMessage] = useState("");
     const [conversation, setConversation] = useState([])
     const [messagesId, setMessagesId] = useState([])
@@ -56,6 +58,7 @@ const Actualizaciones = props =>{
             ScrollBottom()
         })
         setChat(true)
+        setCase(subject)
     }
 
     const put = async ()  => {
@@ -118,6 +121,12 @@ const Actualizaciones = props =>{
     }
     
     return(
+        props.subjects.length === 0 ?
+        <div className="empty-solicitudes-admin-view">
+            <img src={robots} className="robots-empty" />
+            <p className="empty-text-solicitudes-admin-view"><Icon type="warning" className="icon-empty-solicitudes-admin-view" /> no existen solicitudes al momento.</p>
+        </div>
+        :
         <div className="container-master-actualizaciones">
             <div className={`container-show-data-actualizaciones ${chat ? "hide-component" : ""}`}>
                 {props.subjects.map((sub, i) => {
@@ -147,7 +156,7 @@ const Actualizaciones = props =>{
                         </div>
                     </div>
                     <div className="container-master-about">
-                        <p className="header-chat-about">Acerca del mensaje:</p><p className="header-chat-about-body">Necesito una fecha de entrega del demo</p>
+                        <p className="header-chat-about">Acerca del mensaje:</p><p className="header-chat-about-body">{Case}</p>
                     </div>
                 </div>
                 <div className="container-separator-body">

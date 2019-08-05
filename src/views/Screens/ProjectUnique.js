@@ -23,6 +23,13 @@ const ProjectUnique = props => {
 
     const {state, actions} = useContext(Context)
     const [animation, setAnimation] = useState({})
+
+    const [completeProgress, setCompleteProgress] = useState(0)
+
+    const [Percents, setPercents] = useState({
+        data: [0, 0, 0, 0]
+    })
+
     const [donnutData, setDonnutData] = useState({
         data: [25, 25, 25, 25],
         colors: [
@@ -77,6 +84,10 @@ const ProjectUnique = props => {
                 ...donnutData,
                 data: res.data().piechart_categories,
             })
+            setPercents({
+                ...setPercents,
+                data: res.data().total_time
+            })
         })
         db.doc(`responses/${state.uniqueProjectName}`).onSnapshot(querySnapshot => {
             setProject({
@@ -85,6 +96,16 @@ const ProjectUnique = props => {
             })
         })
     }, [])
+
+    useEffect(() =>{
+        let finalArr = []
+        Percents.data.map(x => finalArr.push((x * 25) / 100))
+        setCompleteProgress(
+            finalArr.reduce((x, y) => x + y) % 1 !== 0 ? 
+                Math.ceil(finalArr.reduce((x, y) => x + y))
+                : finalArr.reduce((x, y) => x + y)
+        )
+    })
 
     return (
         <div className='project-unique-container'>
@@ -97,12 +118,17 @@ const ProjectUnique = props => {
             </section>
             <section className="section-text-status">
                 <div className="container-text-state">
-                    <p className="text-state-project">Estado: En proceso</p>
+                    <p className="text-state-project">Estado:</p>
+                    {completeProgress >=100 ?
+                        <p className="text-state-project-complete">Finalizado</p>
+                        :
+                        <p className="text-state-project-proccess">En proceso</p>    
+                    }
                 </div>
             </section>
             <section className="container-master-progress-bar">
                 <div className="container-progress-bar">
-                    <Progress percent={50} />
+                    <Progress percent={completeProgress} />
                 </div>
             </section>
             <section className="container-changebuttoms">

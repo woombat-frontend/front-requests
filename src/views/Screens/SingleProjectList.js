@@ -45,6 +45,7 @@ const SingleProjectList = () => {
         <div style={{width: '100%'}}>
             {
                 !showProjet ?
+                    <React.Fragment>
                     <div style={{ paddingTop: '2em', width: '100%' }}>
                         <div style={{ marginBottom: '1em' }} className="container-row-admin-proyects">
                             <div className="input-search-admin">
@@ -52,6 +53,8 @@ const SingleProjectList = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="hr-project" />
+                    </React.Fragment>
                     : <div />
             }
             {
@@ -93,7 +96,7 @@ const SingleProjectList = () => {
                         </div>
                     
                 : !filterList.length && filterText.length ?
-                <div style={{marginTop: '10%'}} className="container-empty-user">
+                <div className="container-empty-user">
                     <img src={Robots} className="robots-empty-img" />
                     <h3>No se ha encontrado ningun proyecto, intenta de nuevo...</h3>
                 </div>

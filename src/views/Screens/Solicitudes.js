@@ -38,8 +38,20 @@ const SuccessSendSolicitud = () =>{
 const Solicitudes = props =>{
     
 
-    const [newReq, SetnewReq] = useState(false);
+    const [newReq, setnewReq] = useState(false);
     const [chat,setChat] = useState(false);
+    const [Fade,setFade] = useState(false);
+    const [Issue, setIssue] = useState("");
+
+    const clean = () =>{
+        setFade(false)
+    }
+
+    const FadeSet = () =>{
+        setFade(true)
+        setTimeout(clean, 1000);
+    }
+
     const [Message, setMessage] = useState("");
     const [localSubjets, setLocalSubjects] = useState([])
     const [singleLocalSubject, setSingleLocalSubject] = useState("")
@@ -95,7 +107,8 @@ const Solicitudes = props =>{
             ScrollBottom()
         })
         setChat(true)
-        SetnewReq(false)
+        setnewReq(false)
+        setIssue(subject)
     }
 
     const ScrollBottom = () => {
@@ -108,6 +121,7 @@ const Solicitudes = props =>{
         } 
         else {
             SuccessSendSolicitud()
+            setnewReq(false)
             let asuntos_aux = []
             await setAsunto('')
             await db.doc(`responses/${props.path}`).get()
@@ -128,7 +142,7 @@ const Solicitudes = props =>{
                     <div className="container-textname-solicitud-single">
                         <p className="textname-project-single"><Icon type="solution" /> Solicitudes de: {props.path}</p>
                     </div>
-                    <div className="container-text-new-solicitud"onClick={() => (SetnewReq(true), setChat(false))}>
+                    <div className="container-text-new-solicitud"onClick={() => (setnewReq(true), setChat(false))}>
                         <p className="text-new-solicitud-view"><Icon type="plus" /> Nueva Solicitud</p>
                     </div>
                     <div className="container-all-master-solicitudes-view">
@@ -145,7 +159,7 @@ const Solicitudes = props =>{
                                     <p className="date-description-solicitudes-view">Fecha: {subject.date}</p>
                                 </div>
                                 <div >  
-                                    <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject.subject)}>
+                                    <div className="container-buttom-solicitudes-view" onClick={() => (LoadMessages(subject.subject), FadeSet())}>
                                     <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
                                 </div>
@@ -179,7 +193,7 @@ const Solicitudes = props =>{
                         </div>
                     </div>
                     <div className={`container-master-chat-solicitudes-view ${chat ? "show-chat" : "hide-chat"}`}>
-                        <div className="container-master-text-header-chat">
+                        <div className={`container-master-text-header-chat ${Fade ? "fade" : ""}`}>
                             <div className="container-text-header-chat">
                                 <Icon type="message" />
                                 <div className="container-master-title-header">
@@ -187,14 +201,14 @@ const Solicitudes = props =>{
                                 </div>
                             </div>
                             <div className="container-master-about">
-                                <p className="header-chat-about">Acerca del mensaje:</p><p className="header-chat-about-body">Necesito una fecha de entrega del demo</p>
+                                <p className="header-chat-about">Acerca de la solicitud:</p><p className="header-chat-about-body">{Issue}</p>
                             </div>
                         </div>
                         <div className="container-separator-body">
                             <div className="separator-chat-body"></div>
                         </div>
                         <div className="container-master-body-messages">
-                            <div id='scrolled' className="container-body-chat-solicitudes-view">
+                            <div id='scrolled' className={`container-body-chat-solicitudes-view ${Fade ? "fade" : ""}`}>
                                 {conversation.map(mensaje =>{
                                     return(
                                     mensaje.role === 'admin' ?

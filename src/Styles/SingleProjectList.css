@@ -2,7 +2,7 @@
     width: 100%;
     /* display: grid;
     grid-template-columns: repeat(4, 1fr); */
-    padding: 2em 2em 2em 3em;
+    padding: 2rem 3rem;
 }
 
 .accepted-projects-mapper-container {

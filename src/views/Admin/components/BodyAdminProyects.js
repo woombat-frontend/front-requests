@@ -213,8 +213,9 @@ const BodyAdminProyects = props => {
 
     return (
         <div className="container-master-proyects-admin">
-            <Button style={{transform: 'scale(.9)', position: 'absolute', right: '3%', top: '10%'}} 
-            onClick={() => props.back()} type="primary">Volver</Button>
+            <div className="buttom-goback-admin" onClick={() => props.back()}>
+                <p className="text-buttom-goback-admin"><Icon type="arrow-left" /> Volver Atras</p>
+            </div>
             <div className="container-master-admin-proyect-left">
                 <div className="container-user-and-proyect">
                     <div className="container-user-data-1">
@@ -239,8 +240,12 @@ const BodyAdminProyects = props => {
                         <div className="container-master-pychart-module">
                             <div className="container-pychart-module">
                                 <div className="graph-icon"><Icon type="pie-chart" className="pychart-icon" /></div>
-                                <Button onClick={() => setRenderOption('general')} className="graph-btn1" type="primary"> Tiempo dedicado </Button>
-                                <Button onClick={()=> setRenderOption('tiempo_total')} className="graph-btn2" type="primary"> Total </Button>
+                                <div className={`buttom-show-graph ${renderOption === "general" ? "buttom-active" : ""}`} onClick={() => setRenderOption('general')}>
+                                    <p className="title-buttom-show-graph">Tiempo dedicado</p>
+                                </div>
+                                <div className={`buttom-show-graph ${renderOption === "tiempo_total" ? "buttom-active" : ""}`} onClick={() => setRenderOption('tiempo_total')}>
+                                    <p className="title-buttom-show-graph">Total</p>
+                                </div>
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
@@ -268,8 +273,12 @@ const BodyAdminProyects = props => {
                         <div className="container-master-pychart-module">
                             <div className="container-pychart-module">
                                 <div className="graph-icon"><Icon type="pie-chart" className="pychart-icon" /></div>
-                                <Button onClick={() => setRenderOption('general')} className="graph-btn1" type="primary"> Tiempo dedicado </Button>
-                                <Button onClick={() => setRenderOption('tiempo_total')} className="graph-btn2" type="primary"> Total </Button>
+                                <div className={`buttom-show-graph ${renderOption === "general" ? "buttom-active" : ""}`} onClick={() => setRenderOption('general')}>
+                                    <p className="title-buttom-show-graph">Tiempo dedicado</p>
+                                </div>
+                                <div className={`buttom-show-graph ${renderOption === "tiempo_total" ? "buttom-active" : ""}`} onClick={() => setRenderOption('tiempo_total')}>
+                                    <p className="title-buttom-show-graph">Total</p>
+                                </div>
                             </div>
                             <div className="container-pychart-apartado">
                                 <p className="title-description-pychart"><Icon type="highlight" /> Diseño Visual:</p>
