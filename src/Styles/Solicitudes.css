@@ -2,6 +2,9 @@
     width: 100%;
     height: 100%;
     padding: 2rem 3rem;
+    display: grid;
+    grid-template-rows: 10% 1fr;
+    grid-template-columns: 1fr;
 }
 .container-solicitudes{
     display: grid;
@@ -176,4 +179,17 @@
     color: #e40000 !important;
     font-size: 4rem;
     margin-bottom: 1rem;
+}
+.container-textname-solicitud-single{
+    background-color: #831193;
+    padding: 0.5rem 2rem;
+    width: fit-content;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    height: fit-content;
+}
+.textname-project-single{
+    margin: 0;
 }

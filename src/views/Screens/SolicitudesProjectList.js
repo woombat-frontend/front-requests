@@ -30,17 +30,15 @@ const SolicitudesProjectList = () => {
                 <div className="user-project-mapper">
                     {
                         userProjects.map((project, i) => 
+                            project.state === 'iniciado' ?
                             <div onClick={() => getIntoUniqueProject(project.name)} key={i} className="single-user-project">
                                 <h4 className="user-project-name">{project.name}</h4>
                                 <h4 className="user-project-demo-date">{project.demo_date}</h4>
                                 <h4 className="user-project-state">
-                                    {
-                                        project.state === 'espera' 
-                                        ? <h4 style={{ color: 'rgb(190, 190, 3)'}}>Espera</h4> 
-                                        : <h4 style={{color: 'cyan'}}>Iniciado</h4>
-                                    }
                                 </h4>
                             </div>
+                            :
+                            console.log("nada")
                         )
                     }
                 </div>

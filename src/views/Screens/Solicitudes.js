@@ -163,6 +163,9 @@ const Solicitudes = props =>{
 
     return(
         <div className="container-master-solicitudes-view">
+            <div className="container-textname-solicitud-single">
+                <p className="textname-project-single">Requerimientos de: {props.path}</p>
+            </div>
             <div className="container-solicitudes">
                 <div className="container-left-solicitudes-view">
                     <div className="container-text-new-solicitud"onClick={() => SetnewReq(true)}>
@@ -182,8 +185,8 @@ const Solicitudes = props =>{
                                     <p className="date-description-solicitudes-view">Fecha: {subject.date}</p>
                                 </div>
                                 <div >  
-                                        <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
-                                        <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
+                                    <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
+                                    <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
                                 </div>
                             </div>
