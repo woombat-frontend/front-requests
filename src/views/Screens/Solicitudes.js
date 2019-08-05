@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import People from '../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import '../../Styles/Solicitudes.css';
@@ -83,7 +83,7 @@ const conversation = [
 ]
 
 
-const Solicitudes = () =>{
+const Solicitudes = props =>{
 
     const [newReq, SetnewReq] = useState(false);
     const [chat,setChat] = useState(false);
@@ -92,6 +92,12 @@ const Solicitudes = () =>{
     const [singleLocalSubject, setSingleLocalSubject] = useState("")
     const [conversation, setConversation] = useState([])
     const db = firebase.firestore();
+
+    useEffect(() => {
+        db.doc(`responses/${props.path}`).onSnapshot(res => {
+            setLocalSubjects(res.data().subjects)
+        })
+    }, [])
 
     const CheckKey = (event) =>{
         if (event.keyCode == 13) {
@@ -115,7 +121,7 @@ const Solicitudes = () =>{
         }else {
             let aux = Message;
             setMessage("")
-            await db.doc(`chats/Eagle View/${singleLocalSubject}/${makeid(20)}`).set({
+            await db.doc(`chats/${props.path}/${singleLocalSubject}/${makeid(20)}`).set({
                 message: aux,
                 from: 'user',
                 role: 'user',
@@ -125,18 +131,16 @@ const Solicitudes = () =>{
     }
 
     const GetIntoProjectRequirements = () => {
-        db.doc(`responses/Eagle View`).onSnapshot(res => {
-            setLocalSubjects(res.data().subjects)
-        })
+        
     }
 
     const LoadMessages = subject => {
         setSingleLocalSubject(subject)
-        db.collection(`chats/Eagle View/${subject}`).orderBy('date').onSnapshot(res => {
+        db.collection(`chats/${props.path}/${subject}`).orderBy('date').onSnapshot(res => {
             setConversation(res.docs.map(x => x.data()))
             ScrollBottom()
         })
-        setChat(true)
+        setChat(true) 
     }
 
     const ScrollBottom = () => {
@@ -145,6 +149,9 @@ const Solicitudes = () =>{
 
     return(
         <div className="container-master-solicitudes-view">
+            <div className="container-textname-solicitud-single">
+                <p className="textname-project-single">Requerimientos de: {props.path}</p>
+            </div>
             <div className="container-solicitudes">
                 <div className="container-left-solicitudes-view">
                     <div className="container-text-new-solicitud" onClick={GetIntoProjectRequirements} /*onClick={() => SetnewReq(true)}*/>
@@ -161,9 +168,9 @@ const Solicitudes = () =>{
                                 </div>
                                 <div className="container-date-solicitudes-view">
                                     <Icon type="clock-circle" />
-                                    <p c lassName="date-description-solicitudes-view">Fecha: 2019-07-01</p>
+                                    <p className="date-description-solicitudes-view">Fecha: 2019-07-01</p>
                                 </div>
-                                <div>
+                                <div >  
                                     <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
                                     <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
