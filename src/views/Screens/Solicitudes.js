@@ -122,7 +122,7 @@ const Solicitudes = props =>{
         }else {
             let aux = Message;
             setMessage("")
-            await db.doc(`chats/${props.path}/${singleLocalSubject}/${makeid(20)}`).set({
+            await db.doc(`chats/${props.path}/${singleLocalSubject.subject}/${makeid(20)}`).set({
                 message: aux,
                 from: 'user',
                 role: 'user',
@@ -137,6 +137,7 @@ const Solicitudes = props =>{
 
     const LoadMessages = subject => {
         setSingleLocalSubject(subject)
+        alert(subject)
         db.collection(`chats/${props.path}/${subject}`).orderBy('date').onSnapshot(res => {
             setConversation(res.docs.map(x => x.data()))
             ScrollBottom()
@@ -185,7 +186,7 @@ const Solicitudes = props =>{
                                     <p className="date-description-solicitudes-view">Fecha: {subject.date}</p>
                                 </div>
                                 <div >  
-                                    <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
+                                    <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject.subject)}>
                                     <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
                                 </div>
