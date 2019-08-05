@@ -136,6 +136,8 @@
     box-shadow: 0px 0px 18px 0px #00000036;
     display: grid;
     grid-template-rows: 1fr 5% 70% 5% 1fr;
+    opacity: 0;
+    transition: 0.3s;
 }
 .container-body-chat-solicitudes-view{
     overflow-y: scroll;
@@ -149,4 +151,10 @@
 .container-body-chat-solicitudes-view::-webkit-scrollbar-thumb {
     background-color: #0fb2a6;
     margin-right: 1rem;
+}
+.hide{
+    opacity: 0;
+}
+.show{
+    opacity: 1;
 }

@@ -3,6 +3,7 @@ import People from '../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import '../../Styles/Solicitudes.css';
 import RobotEmpty from '../../assets/Robots.svg';
+import Swal from 'sweetalert2';
 
 
 const { TextArea } = Input;
@@ -13,6 +14,19 @@ const datatest=[
     {title: "se ha retradaso todo el proyecto", date: "23/07/19"},
 ]
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  });
+
+const EmptyMessage = () =>{
+    Toast.fire({
+        type: 'error',
+        title: 'Ingrese un mensaje'
+    })
+}
 
 const conversation = [
     {
@@ -82,7 +96,7 @@ const Solicitudes = () =>{
     
     const SendMessage = () =>{
         if (!Message) {
-            /* EmptyMessage() */
+            EmptyMessage()
         }
     }
     return(
@@ -106,7 +120,7 @@ const Solicitudes = () =>{
                                     <p className="date-description-solicitudes-view">Fecha: {data.date}</p>
                                 </div>
                                 <div>
-                                    <div className="container-buttom-solicitudes-view">
+                                    <div className="container-buttom-solicitudes-view" onClick={() => setChat(true)}>
                                         <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
                                 </div>
@@ -122,12 +136,11 @@ const Solicitudes = () =>{
                     </div>
                 </div>
                 <div className="container-right-solicitudes-view">
-                    <div className="container-create-new-solicitud-view">
-                        <p className="text-create-new-solicitud-view"><Icon type="plus-circle" /> Crear Requerimiento</p>
-                        <hr></hr>
-                    </div>
-                    {newReq ? 
-                    <div className={`container-new-solicitudes-view`}>
+                    <div className={`container-new-solicitudes-view ${newReq ? "" : "hide"}`}>
+                        <div className="container-create-new-solicitud-view">
+                            <p className="text-create-new-solicitud-view"><Icon type="plus-circle" /> Crear Requerimiento</p>
+                            <hr></hr>
+                        </div>
                         <div className="container-master-solicitud-modal-new">
                             <div className="container-master-input-new-solicitud">
                                 <TextArea rows={4} placeholder="Ingrese el asunto del requerimiento" />
@@ -140,8 +153,7 @@ const Solicitudes = () =>{
                             </div>
                         </div>
                     </div>
-                    :
-                    <div className={`container-master-chat-solicitudes-view`}>
+                    <div className={`container-master-chat-solicitudes-view ${chat ? "show" : ""}`}>
                         <div className="container-master-text-header-chat">
                             <div className="container-text-header-chat">
                                 <Icon type="message" />
@@ -189,7 +201,9 @@ const Solicitudes = () =>{
                             </div>
                         </div>
                     </div>
-                    }
+                    <div>
+                        <p>holi</p>
+                    </div>
                 </div>
             </div>
         </div>
