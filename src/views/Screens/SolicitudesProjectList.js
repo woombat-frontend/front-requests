@@ -48,8 +48,8 @@ const SolicitudesProjectList = () => {
                         userProjects.map((project, i) => 
                             project.state === 'iniciado' ?
                             <div onClick={() => getIntoUniqueProject(project.name)} key={i} className="single-user-project">
-                                <h4 className="user-project-name"><Icon type="info-circle" /> {project.name}</h4>
-                                <h4 className="user-project-demo-date"><Icon type="clock-circle" /> {project.demo_date}</h4>
+                                <h4 className="user-project-name">{project.name}</h4>
+                                <h4 className="user-project-demo-date">{project.demo_date}</h4>
                                 <h4 className="user-project-state">
                                 </h4>
                             </div>

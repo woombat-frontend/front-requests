@@ -108,6 +108,7 @@ const Solicitudes = props =>{
         } 
         else {
             SuccessSendSolicitud()
+            SetnewReq(false)
             let asuntos_aux = []
             await setAsunto('')
             await db.doc(`responses/${props.path}`).get()

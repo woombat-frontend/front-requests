@@ -73,6 +73,16 @@ hr {
     margin: 0;
     color: #062c59;
 }
+.text-state-project-proccess{
+    margin: 0;
+    color: #062c59;
+    margin-left: 0.3rem;
+}
+.text-state-project-complete{
+    margin: 0;
+    color: #1ea50f;
+    margin-left: 0.3rem;
+}
 .container-text-state{
     height: 100%;
     display: flex;
