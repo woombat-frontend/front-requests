@@ -4,6 +4,7 @@ import { Icon, Input } from 'antd';
 import '../../Styles/Solicitudes.css';
 import RobotEmpty from '../../assets/Robots.svg';
 import Swal from 'sweetalert2';
+import firebase from 'firebase'
 
 
 const { TextArea } = Input;
@@ -87,40 +88,83 @@ const Solicitudes = () =>{
     const [newReq, SetnewReq] = useState(false);
     const [chat,setChat] = useState(false);
     const [Message, setMessage] = useState("");
+    const [localSubjets, setLocalSubjects] = useState([])
+    const [singleLocalSubject, setSingleLocalSubject] = useState("")
+    const [conversation, setConversation] = useState([])
+    const db = firebase.firestore();
 
     const CheckKey = (event) =>{
         if (event.keyCode == 13) {
             SendMessage()
         }
     }
+
+    const makeid = length => {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
     
-    const SendMessage = () =>{
+    const SendMessage = async () =>{
         if (!Message) {
             EmptyMessage()
+        }else {
+            let aux = Message;
+            setMessage("")
+            await db.doc(`chats/Eagle View/${singleLocalSubject}/${makeid(20)}`).set({
+                message: aux,
+                from: 'user',
+                role: 'user',
+                date: new Date()
+            })
         }
     }
+
+    const GetIntoProjectRequirements = () => {
+        db.doc(`responses/Eagle View`).onSnapshot(res => {
+            setLocalSubjects(res.data().subjects)
+        })
+    }
+
+    const LoadMessages = subject => {
+        setSingleLocalSubject(subject)
+        db.collection(`chats/Eagle View/${subject}`).orderBy('date').onSnapshot(res => {
+            setConversation(res.docs.map(x => x.data()))
+            ScrollBottom()
+        })
+        setChat(true)
+    }
+
+    const ScrollBottom = () => {
+        document.getElementById('scrolled').scrollTop = document.getElementById('scrolled').scrollHeight
+    }
+
     return(
         <div className="container-master-solicitudes-view">
             <div className="container-solicitudes">
                 <div className="container-left-solicitudes-view">
-                    <div className="container-text-new-solicitud" onClick={() => SetnewReq(true)}>
+                    <div className="container-text-new-solicitud" onClick={GetIntoProjectRequirements} /*onClick={() => SetnewReq(true)}*/>
                         <p className="text-new-solicitud-view"><Icon type="plus" /> Nuevo Requerimiento</p>
                     </div>
                     <div className="container-all-master-solicitudes-view">
-                        {datatest.length != 0 ? 
-                        datatest.map(data =>{
+                        {localSubjets != 0 ? 
+                        localSubjets.map((subject, i) =>{
                             return(
                             <div className="container-master-title-solicitudes-view">
                                 <div className="container-text-solicitudes-view">
                                     <Icon type="info-circle" />
-                                    <p className="text-description-solicitudes-view">{data.title}</p>
+                                        <p className="text-description-solicitudes-view">{subject}</p>
                                 </div>
                                 <div className="container-date-solicitudes-view">
                                     <Icon type="clock-circle" />
-                                    <p className="date-description-solicitudes-view">Fecha: {data.date}</p>
+                                    <p c lassName="date-description-solicitudes-view">Fecha: 2019-07-01</p>
                                 </div>
                                 <div>
-                                    <div className="container-buttom-solicitudes-view" onClick={() => setChat(true)}>
+                                        <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
                                         <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
                                 </div>
@@ -169,10 +213,10 @@ const Solicitudes = () =>{
                             <div className="separator-chat-body"></div>
                         </div>
                         <div className="container-master-body-messages">
-                            <div className="container-body-chat-solicitudes-view">
+                            <div id='scrolled' className="container-body-chat-solicitudes-view">
                                 {conversation.map(mensaje =>{
                                     return(
-                                    mensaje.role === 'user' ?
+                                    mensaje.role === 'admin' ?
                                     <div className="container-balloon-emisor">
                                         <div className="container-master-balloon-emisor">
                                             <p className="message-client-body">{mensaje.message}</p>
@@ -192,7 +236,7 @@ const Solicitudes = () =>{
                             <div className="separator-chat-body"></div>
                         </div>
                         <div className="container-send-message-chat">
-                            <Input placeholder="Ingrese un mensaje..." onChange={e => setMessage(e.target.value)} onKeyDown={CheckKey} />
+                            <Input placeholder="Ingrese un mensaje..." value={Message} onChange={e => setMessage(e.target.value)} onKeyDown={CheckKey} />
                             <span className="span-chat-separator" />
                             <div className="container-master-buttom-actualizaciones" onClick={SendMessage}>
                                 <div className="container-buttom-send-chat">
