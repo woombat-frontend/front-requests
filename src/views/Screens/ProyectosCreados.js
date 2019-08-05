@@ -14,6 +14,7 @@ const ProyectosCreados = () => {
     const {state, actions} = useContext(Context)
     const [userProjects, setUserProjects] = useState([])
     const [renderOption, setRenderOption] = useState('projects_list')
+    const [responseName, setResponseName] = useState("")
     const db = firebase.firestore()
 
     useEffect(() => {
@@ -23,6 +24,7 @@ const ProyectosCreados = () => {
     }, [])
     
     const getIntoUniqueProject = async name => {
+        await setResponseName(name)
         await actions({type: 'setState', payload: {...state, uniqueProjectName: name}})
         await setRenderOption('project_unique')
     }
@@ -50,7 +52,7 @@ const ProyectosCreados = () => {
                 </div>
             </div>
         :
-            <ProjectUnique/>
+            <ProjectUnique path={responseName}/>
     )
 }
 

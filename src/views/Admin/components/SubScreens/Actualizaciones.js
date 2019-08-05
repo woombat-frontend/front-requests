@@ -107,7 +107,6 @@ const Actualizaciones = props =>{
     }
 
     const SendMessage = async () => {
-        alert(localSubject)
         let aux = Message;
         setMessage("")
         await db.doc(`chats/${props.name}/${localSubject}/${makeid(20)}`).set({

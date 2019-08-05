@@ -3,7 +3,7 @@ import '../Styles/Graphics.css'
 import { Bar } from 'react-chartjs-2'
 import firebase from 'firebase'
 
-const BarChart = props => {
+const BarChart = props => { 
 
     const [chartData, setChartData] = useState({})
     const [options, setOptions] = useState({})

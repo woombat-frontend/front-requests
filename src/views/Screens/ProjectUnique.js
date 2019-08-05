@@ -15,7 +15,7 @@ const datatest=[
     {message: "se ha retradaso todo el proyecto", date: "23/07/19"},
     {message: "se ha retradaso todo el proyecto", date: "23/07/19"}
 ]
-
+ 
 
 const ProjectUnique = props => {
 
@@ -23,7 +23,7 @@ const ProjectUnique = props => {
 
     const {state, actions} = useContext(Context)
     const [animation, setAnimation] = useState({})
-    const [chartData, setChartData] = useState({
+    const [donnutData, setDonnutData] = useState({
         data: [25, 25, 25, 25],
         colors: [
             '#006cf1',
@@ -40,6 +40,24 @@ const ProjectUnique = props => {
         backgroundColor: "#323232",
         size: '65%'
     })
+    const [barData, setBarData] = useState({
+        data: [],
+        colors: [
+            '#006cf1',
+            '#38C0FF',
+            '#ba43ae',
+            '#7000f1'
+        ],
+        labels: [
+            'Diseño Visual',
+            'Logica de Componentes',
+            'Arquitectura de Conexiones',
+            'Despliegue en producción'
+        ],
+        backgroundColor: "#323232",
+        size: '65%'
+    })
+
 
     const [icons, setIcons] = useState(['highlight', 'interaction', 'apartment', 'cloud-upload'])
 
@@ -54,6 +72,12 @@ const ProjectUnique = props => {
     ]
 
     useEffect(() => {
+        db.doc(`responses/${props.path}`).onSnapshot(res => {
+            setDonnutData({
+                ...donnutData,
+                data: res.data().piechart_categories,
+            })
+        })
         db.doc(`responses/${state.uniqueProjectName}`).onSnapshot(querySnapshot => {
             setProject({
                 name: querySnapshot.id,
@@ -99,20 +123,20 @@ const ProjectUnique = props => {
                     <hr/>
                     <div className="container-master-chart">
                         <div className="container-chart" onClick={() => setAnimation({transform: 'translateX(-100%)'})}>
-                            <DonnutChart data={chartData} />
+                            <DonnutChart data={donnutData} />
                             <section className="categories-container-project-unique">
                                 {
                                     !state.chart_data.length ? 
-                                        chartData.labels.map((cat, i) =>
-                                            <div style={{background: chartData.colors[i]}} className={`cat_${i + 1} single-cat-project-unique`}>
+                                        donnutData.labels.map((cat, i) =>
+                                            <div style={{background: donnutData.colors[i]}} className={`cat_${i + 1} single-cat-project-unique`}>
                                                 <Icon className="cat-icon" type={icons[i]} />
                                                 <h4 className="cat-name">{cat}</h4>
-                                                <h4 className="cat-percent">{chartData.data[i]}%</h4>
+                                                <h4 className="cat-percent">{donnutData.data[i]}%</h4>
                                             </div>
                                         )
                                     :
-                                        chartData.labels.map((cat, i) =>
-                                            <div style={{ background: chartData.colors[i]}} className={`cat_${i + 1} single-cat-project-unique`}>
+                                        donnutData.labels.map((cat, i) =>
+                                            <div style={{ background: donnutData.colors[i]}} className={`cat_${i + 1} single-cat-project-unique`}>
                                                 <Icon className="cat-icon" type={icons[i]} />
                                                 <h4 className="cat-name">{cat}</h4>
                                                 <h4 className="cat-percent">{state.chart_data[i]}%</h4>
@@ -129,7 +153,7 @@ const ProjectUnique = props => {
                     <div className="container-chart-vertical">
                         <div className="container-bars">
                             <BarChart
-                                data={chartData}
+                                data={barData}
                                 path={props.path}
                             />
                         </div>
