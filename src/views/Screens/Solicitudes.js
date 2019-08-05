@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import People from '../../assets/People-asking.svg';
 import { Icon, Input } from 'antd';
 import '../../Styles/Solicitudes.css';
@@ -83,7 +83,7 @@ const conversation = [
 ]
 
 
-const Solicitudes = () =>{
+const Solicitudes = props =>{
 
     const [newReq, SetnewReq] = useState(false);
     const [chat,setChat] = useState(false);
@@ -92,6 +92,12 @@ const Solicitudes = () =>{
     const [singleLocalSubject, setSingleLocalSubject] = useState("")
     const [conversation, setConversation] = useState([])
     const db = firebase.firestore();
+
+    useEffect(() => {
+        db.doc(`responses/${props.path}`).onSnapshot(res => {
+            setLocalSubjects(res.data().subjects)
+        })
+    }, [])
 
     const CheckKey = (event) =>{
         if (event.keyCode == 13) {
@@ -115,7 +121,7 @@ const Solicitudes = () =>{
         }else {
             let aux = Message;
             setMessage("")
-            await db.doc(`chats/Eagle View/${singleLocalSubject}/${makeid(20)}`).set({
+            await db.doc(`chats/${props.path}/${singleLocalSubject}/${makeid(20)}`).set({
                 message: aux,
                 from: 'user',
                 role: 'user',
@@ -125,18 +131,16 @@ const Solicitudes = () =>{
     }
 
     const GetIntoProjectRequirements = () => {
-        db.doc(`responses/Eagle View`).onSnapshot(res => {
-            setLocalSubjects(res.data().subjects)
-        })
+        
     }
 
     const LoadMessages = subject => {
         setSingleLocalSubject(subject)
-        db.collection(`chats/Eagle View/${subject}`).orderBy('date').onSnapshot(res => {
+        db.collection(`chats/${props.path}/${subject}`).orderBy('date').onSnapshot(res => {
             setConversation(res.docs.map(x => x.data()))
             ScrollBottom()
         })
-        setChat(true)
+        setChat(true) 
     }
 
     const ScrollBottom = () => {
@@ -161,9 +165,9 @@ const Solicitudes = () =>{
                                 </div>
                                 <div className="container-date-solicitudes-view">
                                     <Icon type="clock-circle" />
-                                    <p c lassName="date-description-solicitudes-view">Fecha: 2019-07-01</p>
+                                    <p className="date-description-solicitudes-view">Fecha: 2019-07-01</p>
                                 </div>
-                                <div>
+                                <div >  
                                         <div className="container-buttom-solicitudes-view" onClick={() => LoadMessages(subject)}>
                                         <p className="text-open-chat"><Icon type="message" /> Abrir Chat</p>
                                     </div>
@@ -182,22 +186,22 @@ const Solicitudes = () =>{
                 <div className="container-right-solicitudes-view">
                     <div className={`container-new-solicitudes-view ${newReq ? "" : "hide"}`}>
                         <div className="container-create-new-solicitud-view">
-                            <p className="text-create-new-solicitud-view"><Icon type="plus-circle" /> Crear Requerimiento</p>
+                            <p className="text-create-new-solicitud-view"><Icon type="plus-circle" /> Crear Solicitud</p>
                             <hr></hr>
                         </div>
                         <div className="container-master-solicitud-modal-new">
                             <div className="container-master-input-new-solicitud">
-                                <TextArea rows={4} placeholder="Ingrese el asunto del requerimiento" />
+                                <TextArea rows={4} placeholder="Ingrese el asunto de la solicitud" />
                             </div>
                             <span className="span-solicitud-new-modal"></span>
                             <div className="container-master-last-div-modal-new-solicitud">
                                 <div className="buttom-solicitud-body-new">
-                                    <Icon type="check-circle"/><p className="text-buttom-solicitud-body">Crear Requerimiento</p>
+                                    <Icon type="check-circle"/><p className="text-buttom-solicitud-body">Crear Solicitud</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className={`container-master-chat-solicitudes-view ${chat ? "show" : ""}`}>
+                    <div className={`container-master-chat-solicitudes-view ${chat ? "show" : "hide"}`}>
                         <div className="container-master-text-header-chat">
                             <div className="container-text-header-chat">
                                 <Icon type="message" />
@@ -245,8 +249,9 @@ const Solicitudes = () =>{
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <p>holi</p>
+                    <div className={`container-master-emptydata-solicitudes-user ${!newReq && !chat ? "show" : "hide"}`}>
+                        <Icon type="warning" className="icon-emptydata-solicitudes-user" />
+                        <p className="container-text-emptydata-solicitudes-user">Inicia un chat de una solicitud o crea una nueva</p>
                     </div>
                 </div>
             </div>
