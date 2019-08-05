@@ -159,10 +159,9 @@ const InicioAdmin = props =>{
             </div>
         : 
             <div className='project-list-container'>
-                <Button 
-                    className="btn-back" 
-                    type="primary" 
-                    onClick={() => { setProjectList([]); setDetailProject({});}}>Volver</Button>
+                <div className="buttom-goback-single-project" onClick={() => { setProjectList([]); setDetailProject({});}}>
+                    <p className="text-buttom-goback-single-project"><Icon type="arrow-left" /> Volver</p>
+                </div>
                 <section className="project-mapper">         
                     {
                         projectList.map((project, i) => 
@@ -189,11 +188,13 @@ const InicioAdmin = props =>{
                         <section className="rendered-project-details">
                             <div className="grid-description">
                                 <h3>Descripción del Proyecto</h3>
+                                <div className="hr-single-project" />
                                 <p className="project-description">{detailProject.description}</p>
                             </div>
 
                             <div className="grid-tech">
                                 <h3>Requerimientos Técnicos</h3>
+                                <div className="hr-single-project" />
                                 <div className="project-tech-container">
                                     {
                                         detailProject.technologies.map(x =>
@@ -207,15 +208,20 @@ const InicioAdmin = props =>{
 
                             <div className="grid-observations">
                                 <h3>Obervaciones Técnicas</h3>
+                                <div className="hr-single-project" />
                                 <p className="technical-observations"> {detailProject.preferences} </p>
                             </div>
                             
                             <div className="grid-date">
                                 <h3> Fecha para entrega del Demo </h3>
+                                <div className="hr-single-project" />
                                 <p className="demo-date"> {detailProject.demo_date} </p>
                             </div>
 
-                            <Button type="primary" className="accept-btn" onClick={takeProject}>Empezar</Button>
+                            {/* <Button type="primary" className="accept-btn" onClick={takeProject}>Empezar</Button> */}
+                            <div className="buttom-accept-single-project" onClick={takeProject}>
+                                <p className="text-buttom-goback-single-project"><Icon type="check-circle" /> Empezar</p>
+                            </div>
                         </section>
                     :
                         <div/>

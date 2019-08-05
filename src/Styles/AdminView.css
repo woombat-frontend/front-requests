@@ -166,11 +166,11 @@
 .container-empty-user{
     flex-direction: column;
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
 }
 .robots-empty-img{
     width: 20rem;
+    margin: 6rem 0 2rem 0;
     pointer-events: none;
 }
  
@@ -339,6 +339,7 @@
 .container-master-admin-proyect-right{
     display: grid;
     grid-template-rows: 15% 1fr;
+    height: -webkit-fill-available;
 }
 .container-user-and-proyect{
     display: grid;
@@ -385,7 +386,7 @@
 .span-separator-proyect-admin{
     width: 100%;
     background-color: #000;
-    height: 8%;
+    height: 5%;
 }
 .buttom-options-proyect-admin{
     background-color: #831193;
@@ -434,7 +435,7 @@
 }
 .container-pychart-module {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: 10% 60% 1fr;
     grid-gap: .5em;
 }
 .graph-icon {
@@ -450,11 +451,44 @@
     grid-column: 5/7;
 }
 
-.title-description-pychart{
-    margin: 0;
+
+.buttom-show-graph{
+    background-color: #062C59;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
 }
+.buttom-show-graph:hover{
+    background-color: #041e3e;
+}
+.title-buttom-show-graph{
+    margin: 0;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+
+.hr-project{
+    width: 100% !important;
+    height: 1px !important;
+    border: none !important;
+    background: #D6D6D6;
+    margin-top: 1.6rem;
+}
+
+.hr-single-project{
+    width: 100% !important;
+    height: 1px !important;
+    border: none !important;
+    background: #D6D6D6;
+    margin-bottom: 0.4rem;
+}
+
 .title-description-pychart{
     margin: 0;
+    font-size: 0.8rem;
 }
 .container-pychart-apartado{
     display: flex;
@@ -481,6 +515,44 @@
     color: #fff;
     text-transform: uppercase;
 }
+
+.buttom-goback-single-project{
+    background-color: #062C59;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: absolute !important;
+    right: 2%;
+    top: 10%;
+    border-radius: 5rem;
+}
+.buttom-accept-single-project{
+    background-color: #062C59;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    grid-row: 12/13;
+    grid-column: 11/13;
+    margin-top: 2em;
+    border-radius: 5rem;
+}
+.buttom-accept-single-project:hover{
+    background-color: #041e3e;
+}
+.buttom-goback-single-project:hover{
+    background-color: #041e3e;
+}
+.text-buttom-goback-single-project{
+    margin: 0;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+
 .container-master-pychart-module{
     display: flex;
     flex-direction: column;
@@ -868,7 +940,7 @@
 }
 
 .span-chat-separator{
-    width: 4%;
+    width: 1%;
     height: 100%;
     background-color: #b5b5b5;
     margin-left: 1rem;
@@ -989,4 +1061,52 @@
 .container-body-chat::-webkit-scrollbar-thumb {
     background-color: #0fb2a6;
     margin-right: 1rem;
+}
+.empty-solicitudes-admin-view{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.empty-text-solicitudes-admin-view{
+    margin: 0;
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+.robots-empty{
+    width: 15rem;
+    pointer-events: none;
+}
+.icon-empty-solicitudes-admin-view{
+    color: #b80000 !important;
+    font-size: 1.3rem;
+}
+
+
+
+
+
+
+.buttom-goback-admin{
+    background-color: #093A6B;
+    padding: 0.4rem 1rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: scale(0.9);
+    position: absolute;
+    right: 3%;
+    top: 10%;
+    border-radius: 5rem;
+}
+.buttom-goback-admin:hover{
+    background-color: #052d55;
+}
+.text-buttom-goback-admin{
+    margin: 0;
+    color: #fff;
+    font-size: 0.75rem;
 }
