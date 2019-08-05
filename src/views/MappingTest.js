@@ -15,7 +15,7 @@ const MappingTest = () => {
 
         db.collection('users').get().then(querySnapshot => {
             setLocalUsers( querySnapshot.docs.map(doc => doc.data() ))
-            setLocalUsersId( querySnapshot.docs.map(doc => doc.id) )
+            setLocalUsersId(querySnapshot.docs.map(doc => doc.id) )
         })
         
     }
@@ -24,8 +24,8 @@ const MappingTest = () => {
         <div style={{padding: '2em'}}>
             
             <Button onClick={getUsers}>Test</Button>
-            <Button onClick={() => console.log(localUsers)}>Local Users</Button>
-            <Button onClick={() => console.log(localUsersId)}>Local Users Id's</Button>
+            <Button onClick={() => console.log()}>Local Users</Button>
+            <Button onClick={() => console.log()}>Local Users Id's</Button>
         </div>
     )
 }

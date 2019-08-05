@@ -22,7 +22,7 @@ const LeftMenu = props => {
     ]
 
     const changeCurrentMenuOption = option => {
-        console.log(option)
+        // console.log(option)
         actions({type: "setState", payload: {...state, current_menu_option: option }})
     }
 

@@ -58,7 +58,7 @@ const BodyAdminProyects = props => {
         let inputs = [bar[0], bar[1], bar[2], bar[3]]
         let finalArr = []
 
-        console.log("SUUUUBJECTs => ", props.subjects)
+        // console.log("SUUUUBJECTs => ", props.subjects)
 
         setDiseñoVisual(pie[0] + '%')
         setLogicaComponentes(pie[1] + "%")
@@ -69,10 +69,10 @@ const BodyAdminProyects = props => {
         setLogicaComponentesTotal(bar[1] + "%")
         setArquitecturaComponentesTotal(bar[2] + "%")
         setProduccionTotal(bar[3] + "%")
-        console.log(inputs)
+        // console.log(inputs)
         
         inputs.map(x => finalArr.push((x * 25) / 100))
-        console.log(finalArr)
+        // console.log(finalArr)
         setCompleteProgress(
             finalArr.reduce((x, y) => x + y) % 1 !== 0 ? 
                 Math.ceil(finalArr.reduce((x, y) => x + y))
@@ -145,7 +145,7 @@ const BodyAdminProyects = props => {
 
     const changeTotal = () => {
         let validation = validateTotal()
-        console.log(validation)
+        // console.log(validation)
         validation === 'complete' ?
             sendTotal()
         : 
@@ -213,6 +213,8 @@ const BodyAdminProyects = props => {
 
     return (
         <div className="container-master-proyects-admin">
+            <Button style={{transform: 'scale(.9)', position: 'absolute', right: '3%', top: '10%'}} 
+            onClick={() => props.back()} type="primary">Volver</Button>
             <div className="container-master-admin-proyect-left">
                 <div className="container-user-and-proyect">
                     <div className="container-user-data-1">

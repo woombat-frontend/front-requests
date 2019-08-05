@@ -43,9 +43,9 @@ const Sweet = () =>{
                 },
             }).then((result) => {
                 if (result.value) {
-                    console.log("YES")
+                    // console.log("YES")
                 }else {
-                    console.log("NOPE")
+                    // console.log("NOPE")
                 }
             })
         )

@@ -38,7 +38,7 @@ const SolicitudesProjectList = () => {
                                 </h4>
                             </div>
                             :
-                            console.log("nada")
+                            console.log()
                         )
                     }
                 </div>

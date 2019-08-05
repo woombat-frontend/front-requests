@@ -85,7 +85,7 @@ const InicioAdmin = props =>{
                 setDetailProject({})
             })
         
-        await db.doc(`/${detailProject.name}`)
+        await db.doc(`responses/${detailProject.name}`)
             .set({
                 metadata: {
                     in_charge: localUsers[userIndex],
@@ -93,6 +93,7 @@ const InicioAdmin = props =>{
                     demo_dresponsesate: detailProject.demo_date
                 },
                 task: [],
+                subjects: [],   
                 piechart_categories: [25, 25, 25, 25],
                 total_time: [0, 0, 0, 0],
                 requirements: []
@@ -112,7 +113,7 @@ const InicioAdmin = props =>{
                 
                 <div className="container-row-admin-proyects">
                     <div className="input-search-admin">
-                        <Icon onClick={() => console.log(userPair)} type="search" className="icon-admin-search" /><Input value={UsersSearch} placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value)} />
+                        <Icon type="search" className="icon-admin-search" /><Input value={UsersSearch} placeholder="Filtrar por jefe de proyecto..." onChange={e => search(e.target.value)} />
                     </div>
                 </div>
                 <span className="border-span-admin"></span>

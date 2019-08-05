@@ -12,7 +12,7 @@ const BarChart = props => {
     useEffect(() => {
 
         db.doc(`responses/${props.path}`).onSnapshot(res => {
-            console.log(res.data())
+            // console.log(res.data())
             setChartData({
                 labels: props.data.labels,
                 datasets: [
