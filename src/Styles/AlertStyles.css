@@ -1,8 +1,8 @@
 /* Sweet Alerts Styles */
 
 .test{
-    display: flex !important;
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
 }
 
 /* General Settings */
@@ -13,14 +13,13 @@
     background-color: #444 !important;
     box-shadow: 0px 0px 12px 0px !important;
 }
-
-.swal2-container.swal2-shown {
-    position: absolute !important ;
-    overflow-y: auto !important;
+.swal2-container.swal2-shown{
+    position: absolute !important;
+    overflow-y: auto;
     width: 84% !important;
     z-index: 1 !important;
     display: flex !important;
-    left: 16em !important;
+    left: 16em;
     justify-content: center !important;
     align-items: center !important;
 }
