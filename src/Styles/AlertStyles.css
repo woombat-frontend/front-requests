@@ -13,8 +13,9 @@
     background-color: #444 !important;
     box-shadow: 0px 0px 12px 0px !important;
 }
-.swal2-container.swal2-shown{
-    position: absolute !important;
+
+.swal2-container.swal2-shown {
+    position: absolute !important ;
     overflow-y: auto !important;
     width: 84% !important;
     z-index: 1 !important;

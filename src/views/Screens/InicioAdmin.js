@@ -15,10 +15,10 @@ import Azure from '../../assets/brands/Azure.svg';
 import Cloudera from '../../assets/brands/Cloudera.svg';
 import Lambda from '../../assets/brands/Lambda.svg';
 
-const InicioAdmin = props =>{
+const InicioAdmin = props => {
 
     const {state, actions} = useContext(Context)
-    const db = firebase.firestore()
+    const db = firebase.firestore() 
     const [localUsers, setLocalUsers] = useState([])
     const [localUsersId, setLocalUsersId] = useState([])
     const [UsersSearch, setUsersSearch] = useState("");
